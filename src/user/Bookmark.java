@@ -30,7 +30,7 @@ public class Bookmark {
 	 * 
 	 * @var Integer
 	 */
-	private int id;
+	private int id = 0;
 	
 	/**
 	 * Id of the user who has saved the bookmark
@@ -54,7 +54,7 @@ public class Bookmark {
 	private String link;
 	
 	/**
-	 * Creates an empty object
+	 * Constructs an empty object
 	 */
 	public Bookmark() {}
 	
@@ -71,13 +71,13 @@ public class Bookmark {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE id = " + id);
+		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE ID = " + id);
 		rs.next();
 		
 		this.id = id;
-		this.userid = rs.getInt("userid");
-		this.title = rs.getString("title");
-		this.link = rs.getString("link");
+		this.userid = rs.getInt("USERID");
+		this.title = rs.getString("TITLE");
+		this.link = rs.getString("LINK");
 		
 		db.disconnect();
 	}
@@ -146,6 +146,36 @@ public class Bookmark {
 	}
 	
 	/**
+	 * Saves the local values to the database
+	 * 
+	 * @return Boolean - Returns true on success
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public boolean save() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		String query = "";
+		
+		if(this.id == 0) {
+			query = "INSERT INTO " + t_name +
+					" VALUES(DEFAULT,'" + this.userid  + "','" + this.title + "','" + this.link + "')";
+		}
+		else {
+			query = "UPDATE " + t_name + " SET USERID = '" + this.userid + "', " +
+					"TITLE = '" + this.title + "', LINK = '" + this.link + "' WHERE ID = '" + this.id + "'";
+			
+		}
+		int n = db.executeUpdate(query);
+		db.disconnect();
+		
+		if(n > 0) return true;
+		else return false;
+	}
+	
+	/**
 	 * Returns a list of bookmark objects
 	 * 
 	 * @param String - Column name as the filter parameter
@@ -160,16 +190,16 @@ public class Bookmark {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM BOOKMARK WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
 		rs.next();
 		
 		Bookmark[] list = new Bookmark[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM BOOKMARK WHERE " + column + " = '" + value);
+		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value);
 		
 		int i=0;
 		while(rs.next()) {
-			list[i++] = new Bookmark(rs.getInt("id"));
+			list[i++] = new Bookmark(rs.getInt("ID"));
 		}
 		
 		return list;
@@ -189,7 +219,7 @@ public class Bookmark {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM BOOKMARK WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
 		rs.next();
 		
 		return rs.getInt(1);
