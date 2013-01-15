@@ -16,7 +16,7 @@ import db.Db;
  * @email	pv.srivathsa@gmail.com
  * @date	16/01/2013
  * 
- * Authentication class provides all functions that maintains the user's authenticity
+ * Authentication class provides all functions that maintain the user's authenticity
  */
 public class Authentication {
 	
