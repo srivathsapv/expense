@@ -206,6 +206,7 @@ public class Bookmark {
 	}
 	
 	/**
+	 * Returns a count based on the values
 	 * 
 	 * @param String - Column name as filter parameter
 	 * @param String - Value
