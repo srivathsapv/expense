@@ -304,17 +304,34 @@ public class Voucher {
 		this.policyid = policyid;
 	}
 	/**
-	 * Creates a new voucher with necessary details
+	 * Creates a new voucher with necessary detail
+	 * 
+	 * @return Boolean - Returns true on success
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
-	
-public void createVoucher() throws ClassNotFoundException, SQLException{
-	Db db = new Db();
-	db.connect();
-	
-	int i=db.executeUpdate("INSERT INTO "+ t_name +"(VOUCHER_ID,USER_ID,TITLE,AMOUNT,VTYPE_ID,DATE,DESCRIPTION,ATTACHMENT,REJECT_REASON,POLICY_ID)VALUES( voucherid,userid,title,amount,vtypeid,,description,attachment,rejectReason,policyid");
-	
-	
-	
-}
+	public boolean createVoucher() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		String query = "";
+		
+		if(this.voucherid == 0) {
+			query = "INSERT INTO " + t_name +
+					" VALUES(DEFAULT,'" + this.userid  + "','" + this.title + "','" + this.amount + "','" + this.vtypeid + "','"+ this.date + "','" + this.description + "','" + this.attachment + "','" + this.rejectReason+ "','" + this.policyid + "')";
+		}
+		else {
+			query = "UPDATE " + t_name + " SET USERID = '" + this.userid + "', " +
+					"TITLE = '" + this.title + "', AMOUNT = '" + this.amount + "', VTYPEID = '" + this.vtypeid+ "', DATE = '" + this.date +"', DESCRIPTION = '" + this.description +"', ATTACHMENT = '" + this.attachment + "', REJECT_REASON = '" + this.rejectReason + "', POLICYID = '" + this.policyid +"' WHERE VOUCHERID = '" + this.voucherid + "'";
+			
+			
+		}
+		int n = db.executeUpdate(query);
+		db.disconnect();
+		
+		if(n > 0) return true;
+		else return false;
+	}
 
 }

@@ -1,11 +1,3 @@
-
-	
-	
-	
-	 
-	
-	
-	
 	/**
 	 * Package that contains classes related to policy
 	 */
@@ -13,9 +5,6 @@ package policy;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import  java.util.Date;
-
-import user.Bookmark;
 
 
 import db.Db;
@@ -69,6 +58,7 @@ public class Policy {
 	 * @var Integer
 	 */
 	private int available;
+	
 	/**
 	 * Creates an empty object
 	 */
@@ -160,9 +150,27 @@ public int getAmountPercent() {
 public void setAmountPercent(int amountPercent) {
 	this.amountPercent = amountPercent;
 }
+/**
+ * Gets the availability of the policy
+ * 
+ * @return Integer
+ */
+
+public int getAvailable() {
+	return this.available;
+}
 
 /**
- * Returns a list of policys
+ * Sets the availability of the policy
+ * 
+ * @param Integer
+ */
+public void setAvailable(int available) {
+	this.available = available;
+}
+
+/**
+ * Returns a list of policies
  * 
  * @param String - Column name as the filter parameter
  * @param String - Value
@@ -192,5 +200,34 @@ public static Policy[] list(String column,String value) throws ClassNotFoundExce
 }
 
 
+/**
+ * Saves the local values to the database
+ * 
+ * @return Boolean - Returns true on success
+ * 
+ * @throws SQLException 
+ * @throws ClassNotFoundException 
+ */
+public boolean savePolicy() throws ClassNotFoundException, SQLException {
+	Db db = new Db();
+	db.connect();
+	
+	String query = "";
+	
+	if(this.policyid == 0) {
+		query = "INSERT INTO " + t_name +
+				" VALUES(DEFAULT,'" + this.title  + "','" + this.description + "','" + this.amountPercent + "','" + this.available +"')";
+	}
+	else {
+		query = "UPDATE " + t_name + " SET TITLE = '" + this.title + "', " +
+				"DESCRIPTION = '" + this.description + "', AMOUNT_PERCENT = '" + this.amountPercent + "', AVAILABLE = '" + this.available + "' WHERE POLICYID = '" + this.policyid + "'";
+		
+	}
+	int n = db.executeUpdate(query);
+	db.disconnect();
+	
+	if(n > 0) return true;
+	else return false;
+}
 
 }
