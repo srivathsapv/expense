@@ -231,7 +231,7 @@ public class Voucher {
 	 * @param String
 	 */
 	public void setDate() {
-		this.date = date.currentDate();
+		this.date = new java.util.Date();
 	}
 	
 	/**

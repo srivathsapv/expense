@@ -1,9 +1,7 @@
-* Package that contains classes related to voucher type
+/**
+ *  Package that contains classes related to voucher type
  **/
- package  vouchertype;
-
-
-
+ package  voucher.vouchertype;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -1,7 +1,7 @@
 /**
  * Package that contains classes related to voucher type
  **/
- package  vouchertype;
+ package  voucher.vouchertype;
 
 
 
