@@ -2,4 +2,4 @@ src/db/dbconfig.cfg
 .settings/
 .classpath
 .project
-build/classes/db/dbconfig.cfg
+build/
