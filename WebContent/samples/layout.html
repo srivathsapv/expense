@@ -5,8 +5,18 @@
 		<!-- Bootstrap -->
 		<script src = "../js/jquery-1.8.3.min.js"></script>
 		<script src = "../js/bootstrap-dropdown.js"></script>
+		<script src = "../js/bootstrap-tooltip.js"></script>
 		<link rel="stylesheet/less" href="../less/bootstrap.less">
 		<script src="../js/less.js"></script>
+		<style>
+			.excess {
+				margin-right: 4px;
+				margin-top: -1px;
+			}
+		</style>
+		<script>
+			$("#drop2").tooltip();
+		</script>
 	</head>
 	<body>
 		<div class="navbar">
@@ -27,7 +37,7 @@
                 	</ul>
               	</li>
               	<li class="dropdown">
-                	<a id="drop2" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i>Report <b class="caret"></b></a>
+                	<a id="drop2" title = "Employee's Exclusive Expense Statistical Reports" data-placement = "bottom" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i><img class = "excess" src = "../img/excess.png">Reports <b class="caret"></b></a>
                 	<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
                   		<li><a tabindex="-1" href="#"><i class = "icon-file"></i>Generate New</a></li>
                   		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i>My Reports</a></li>
@@ -41,7 +51,7 @@
                 	</ul>
               	</li>
               	<li class="dropdown">
-                	<a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-flag icon-white"></i>Company Policy<b class="caret"></b></a>
+                	<a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-flag icon-white"></i>Policy<b class="caret"></b></a>
                 	<ul class="dropdown-menu" role="menu" aria-labelledby="drop4">
                   		<li><a tabindex="-1" href="#"><i class = "icon-plus-sign"></i>Add New</a></li>
                   		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i>View</a></li>
