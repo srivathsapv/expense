@@ -6,13 +6,8 @@
 <script src="../js/less.js" type="text/javascript"></script>
 </head>
 <style type="text/css">
-html,body,#wrapper {
-	height: 100%;
-}
-
-body>#wrapper {
-	height: auto;
-	min-height: 100%;
+html,body{
+	height: 100%; 
 }
 </style>
 <body>
@@ -24,37 +19,35 @@ body>#wrapper {
 					<div class="row-fluid">
 						<div class="span6">
 						<div class="logo">
-						<img src = "../img/logo-large.png">
+						<img src = "../img/logo-large.png" class="offset2">
 						</div>
 						</div>
 						<div class="span3 offset2 standout">
-							<form style="color: white;" action="">
+							<form class="white">
 								<div class="control-group">
-									<fieldset>
+								</div>
 									<br/>
 										<div class="control-group">
 											<div class="controls">
-												<input type="text" id="username" placeholder="Username">
+												<input type="text" class="span10" id="username" placeholder="Username">
 											</div>
 										</div>
 
 
 										<div class="control-group">
 											<div class="controls">
-												<input type="password" id="password" placeholder="Password">
+												<input type="password" class="span10" id="password" placeholder="Password">
 											</div>
 										</div>
 										
 												<button type="submit" class="btn btn-info">Login</button>
-												<div class="control-group">
+												<div class="control-group span10">
 											<div class="controls">
 												<label class="checkbox"> <input type="checkbox">
 													Keep me logged in
 												</label>
 											</div>
 										</div>
-									</fieldset>
-								</div>
 							</form>
 						</div>
 					</div>
