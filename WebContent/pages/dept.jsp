@@ -10,7 +10,7 @@
     		</legend><br>
     		<input class = "span4" type="text" placeholder="Enter the department name..."><br>
     		<input class = "span4" type="text" placeholder="Enter the shortform for the department..."><br>
-    		<textarea rows="5" cols = "50" placeholder="Enter a description..."></textarea><br>
+    		<textarea rows = "5" cols = "50" placeholder="Enter a description..."></textarea><br>
     		<br><br><button type="submit" class="btn btn-info">Submit</button>
     	</fieldset>
 	</form>
