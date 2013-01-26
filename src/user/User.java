@@ -61,6 +61,13 @@ public class User {
 	private String lastName;
 	
 	/**
+	 * User's gender
+	 * 
+	 * @var String
+	 */
+	private String gender;
+	
+	/**
 	 * Id of the department to which the user belongs
 	 * 
 	 * @var Integer
@@ -142,6 +149,7 @@ public class User {
 		this.firstName = rs.getString("FIRSTNAME");
 		this.middleName = rs.getString("MIDDLENAME");
 		this.lastName = rs.getString("LASTNAME");
+		this.setGender(rs.getString("GENDER"));
 		this.deptid = rs.getInt("DEPTID");
 		this.designation = rs.getString("DESIGNATION");
 		this.address = rs.getString("ADDRESS");
@@ -234,6 +242,28 @@ public class User {
 	public void setlastName(String lastName) {
 		this.lastName = lastName;
 	}
+	
+	/**
+	 * Gets the gender
+	 * 
+	 * @return String
+	 */
+
+	public String getGender() {
+		return this.gender;
+	}
+	
+	/**
+	 * Sets the gender
+	 * 
+	 * @param String
+	 */
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+		
+
 	
 	/**
 	 * Gets the department id
@@ -396,7 +426,7 @@ public class User {
 		if(this.userid.equals("")) {
 			query = "INSERT INTO " + t_name + " VALUES(DEFAULT,'" + 
 					this.socialSecurity + "','" + this.firstName + "','" + this.middleName + "','" + 
-					this.lastName + "','" + this.deptid + "','" + this.designation + "','" + 
+					this.lastName + "','" + this.gender+ "','" + this.deptid + "','" + this.designation + "','" + 
 					this.address + "','" + this.phone + "','" + this.mobile + "','" + 
 					this.email  + "','" + this.photo + "','" + this.dob.toString() + "')";
 					
@@ -406,7 +436,8 @@ public class User {
 					this.socialSecurity + "', FIRSTNAME = '" + 
 					this.firstName + "', MIDDLENAME = '" + 
 					this.middleName + "', LASTNAME = '" + 
-					this.lastName + "', DEPTID = '" + 
+					this.lastName + "', GENDER = '" + 
+					this.gender + "', DEPTID= '" + 
 					this.deptid + "', DESIGNATION = '" + 
 					this.designation + "', ADDRESS = '" + 
 					this.address + "', PHONE = '" + 
@@ -475,7 +506,8 @@ public class User {
 		
 		return rs.getInt(1);
 	}
-		
+
+	
 
 	
 }
