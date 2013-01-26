@@ -17,7 +17,7 @@
 
 
 <div id = "body-content"> 
-<input class = "span4" type="text" placeholder="Enter the title...">
+<input class = "span4" type="text" placeholder="Enter the title..."> <br>
 	<div class = "input-append">
 	<textarea rows="5" cols = "50" placeholder="Enter the description..."></textarea><br>
 	
