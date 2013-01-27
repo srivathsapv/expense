@@ -23,10 +23,14 @@
 	
 			  	<input class="span4 prepend-input" id="prependedInput" type="text" placeholder="Enter the amount percent...">
 			</div>
-	<label>Available</label> 
-	<input class="span4" type="checkbox" > <label>Yes</label> <br>
-	<input class="span4" type="checkbox" > <label>No</label>
-	<br><button type="Save" class="btn btn-info">Save</button>
+	Available:
+	<div class="control-group">
+	<div class="controls">
+	<label class="radio"><input type="radio" name="available?" value="yes" checked> Yes</label></div>
+	<div class="control-group">
+	<div class="controls">
+	<label class="radio"><input type="radio" name="available?" value="No" > No</label></div>
+	<br/><button type="Save" class="btn btn-info">Save</button>
 <button type="Cancel" class="btn btn-info">Cancel</button>
 	
 	</fieldset>
