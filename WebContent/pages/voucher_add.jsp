@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <jsp:include page = "../include/layout.jsp"/>
+<title>Vowcher - Add New Voucher</title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
 <script src = "../js/bootstrap-datepicker.js"></script>
 <script type = "text/javascript">
@@ -30,9 +31,9 @@
    				<input type="text" class="span4 append-input" placeholder="Select the date..." id="dp1" >
    				<span class = "add-on"><i class="icon-calendar"></i></span>
    			</div>
-   			<textarea rows="5" cols = "50" placeholder="Enter a description..."></textarea><br>
+   			<textarea rows="5" cols = "50" placeholder="Enter description..."></textarea><br>
 			<label>Upload Attachment</label><input class = "span4" type="file">			
-    		<br><br><button type="submit" class="btn btn-info">Submit</button>
+    		<br><input type="submit" class="btn btn-info" value = "Add Voucher">
   		</fieldset>
 	</form>
 </div>

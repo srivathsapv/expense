@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <jsp:include page="../include/layout.jsp" />
+<title>Vowcher - New Voucher Type</title>
 <script type="text/javascript">
     $(document).ready(function() {
       $('.multicheck').click(function(e) {     
@@ -54,11 +55,10 @@
 					<li><a id="chk8" class="multicheck checked" href="#">Policy
 							8 <span class="pull-right"></span>
 					</a></li>
-					<div class="clearfix"></div>
 				</ul>
 			</div>
 			<br /> <br />
-			<button type="submit" class="btn btn-info">Create</button>
+			<input type = "submit" class = "btn btn-info" value = "Add Voucher Type">
 		</fieldset>
 	</form>
 </div>
