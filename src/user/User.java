@@ -141,7 +141,7 @@ public class User {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE USERID = '" + userid);
+		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE USERID = '" + userid + "'");
 		rs.next();
 		
 		this.userid = userid;
@@ -149,7 +149,7 @@ public class User {
 		this.firstName = rs.getString("FIRSTNAME");
 		this.middleName = rs.getString("MIDDLENAME");
 		this.lastName = rs.getString("LASTNAME");
-		this.setGender(rs.getString("GENDER"));
+		this.gender = rs.getString("GENDER");
 		this.deptid = rs.getInt("DEPTID");
 		this.designation = rs.getString("DESIGNATION");
 		this.address = rs.getString("ADDRESS");

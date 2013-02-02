@@ -61,10 +61,12 @@ public class Db {
 	public Db() {
 		try {
             File directory = new File(".");
-            String path = directory.getCanonicalPath();
             String s = File.separator;
-            FileInputStream fstream = new FileInputStream(path + s + "src" + s + "db" + s + "dbconfig.cfg");
-
+            String path = directory.getCanonicalPath();
+            
+            String cfg_path = path + s + ".." + s + "workspace" + s + "expense" + s + "src" + s + "db" + s + "dbconfig.cfg";            
+            FileInputStream fstream = new FileInputStream(cfg_path);
+            
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
             String strLine;
@@ -117,10 +119,9 @@ public class Db {
 	 * @throws SQLException 
 	 */
 	public ResultSet executeQuery(String query) throws SQLException{
-		System.out.println(query);
 		PreparedStatement Stmt=con.prepareStatement(query); 
 		Stmt.executeQuery(); 
-		ResultSet rs=Stmt.getResultSet(); 
+		ResultSet rs=Stmt.getResultSet();
 		return rs;
 	}
 	

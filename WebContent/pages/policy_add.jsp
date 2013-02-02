@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <title>Vowcher - Add New Policy</title>
-<jsp:include page = "../include/layout.jsp"/>
+<%@ include file = "../include/layout.jsp" %>
 <div id = "body-content">
 	<form>
   		<fieldset>

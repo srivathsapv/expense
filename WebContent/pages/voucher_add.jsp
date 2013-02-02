@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<jsp:include page = "../include/layout.jsp"/>
+<%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - Add New Voucher</title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
 <script src = "../js/bootstrap-datepicker.js"></script>

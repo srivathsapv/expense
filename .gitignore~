@@ -3,4 +3,3 @@ src/db/dbconfig.cfg
 .classpath
 .project
 build/
-WebContent/test/

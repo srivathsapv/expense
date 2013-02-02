@@ -3,12 +3,13 @@
  */
 package auth;
 
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
+import utility.Utility;
 import db.Db;
 
 /**
@@ -73,7 +74,7 @@ public class Authentication {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE ID = '" + userid + "'");
+		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE USERID = '" + userid + "'");
 		rs.next();
 		
 		this.userid = userid;
@@ -135,17 +136,12 @@ public class Authentication {
 	 */
 	private String encrypt(String password) throws NoSuchAlgorithmException {
 		
-		MessageDigest MD5 = MessageDigest.getInstance("MD5");
-        MD5.update(this.userid.getBytes());
-        BigInteger output = new BigInteger(1, MD5.digest());
-        
-        String hasheduserid = output.toString(16);
+        String hasheduserid = Utility.MD5(password);
         
         String salt = password + "{" + hasheduserid + "}";
-        MD5.update(salt.getBytes());
-        output = new BigInteger(1,MD5.digest());
+        String output = Utility.MD5(salt);
         
-        return output.toString(16);
+        return output;
 	}
 	
 	/**
@@ -172,16 +168,15 @@ public class Authentication {
 	 * @return String
 	 */
 	public String getLastlogin() {
-		return this.lastlogin;
+		//substring used to remove the millisecond part from yyyy-mm-dd hh:mm:ss.ms
+		return this.lastlogin.substring(0,this.lastlogin.indexOf("."));
 	}
 	
 	/**
 	 * Sets the last login timestamp
-	 * 
-	 * @param String
 	 */
-	public void setLastlogin(String lastlogin) {
-		this.lastlogin = lastlogin;
+	public void setLastlogin() {
+		this.lastlogin = "CURRENT TIMESTAMP";
 	}
 	
 	/**
@@ -200,11 +195,11 @@ public class Authentication {
 		
 		if(this.userid.equals("")) {
 			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.password  + "','" + this.role + "','" + this.lastlogin + "')";
+					" VALUES(DEFAULT,'" + this.password  + "','" + this.role + "'," + this.lastlogin + ")";
 		}
 		else {
 			query = "UPDATE " + t_name + " SET PASSWORD = '" + this.password + "', ROLE = '" + 
-					this.role + "', LASTLOGIN = '" + this.lastlogin + "' WHERE USERID = '" + this.userid + "'";
+					this.role + "', LASTLOGIN = " + this.lastlogin + " WHERE USERID = '" + this.userid + "'";
 			
 		}
 		int n = db.executeUpdate(query);
@@ -264,4 +259,21 @@ public class Authentication {
 		
 		return rs.getInt(1);
 	}
+	
+	/**
+	 * Encrypts the password in a public context ex: During Authentication
+	 * 
+	 * @param String - The password to be encrypted
+	 * @param String - The username of the string
+	 * 
+	 * @return String - The encrypted password
+	 */
+	public static String publicEncrypt(String password,String username) throws NoSuchAlgorithmException {
+        String hasheduserid = Utility.MD5(username);
+        String salt = password + "{" + hasheduserid + "}";
+        
+        String output = Utility.MD5(salt);
+        return output;
+	}
+	
 }

@@ -1,4 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import = "auth.Authentication,user.User" %>
 <html>
 	<head>
 		<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
@@ -17,36 +18,75 @@
 			.footer {				
 				position: relative;
 				z-index: 10;
-				margin-top: -3em;
+				margin-top: -2.75em;
 				background:#2a2a2a;
 				border-top:solid 4px #447FB8;
 				color:white;
+				height: 2.75em;
 			}
 			
 			.footer,.push {
 				clear:both;
-				height: 2.75em;
+				
 			}
+			
+			.push {
+				height:3.25em;
+			}
+			
 			#links {
 				float:right;
 				margin-right: 5px;
 			}
 			
 			#copyright {
-				margin-left: 5px;
+				margin-left:5px;
 			}
+			
+			.currency-change-menu {
+				width:180px!important;
+			}
+			
 		</style>
 		<script type = "text/javascript">
+		
+			function logout() {
+				localStorage.removeItem("vowcher_username");
+				window.location = "../server/logout.jsp";
+			}
+		
+		
 			$(document).ready(function(){
 				$("#drop1").tooltip();
 				var width = parseInt($(".sidebar-title").css("width"));
 				width = width + 10;
 				$(".sidebar-title").css("width",width+"px");
-				
+				width = width - 24;
+				$(".currency-change").css("width",width+"px");
+				$(".currency-change-menu").css("width",width+"px");
 			});
+			
+			if(localStorage.vowcher_username != undefined) {
+				<%
+					if(request.getParameter("username") != null) {
+						User sessionUser = new User(request.getParameter("username"));
+						session.setAttribute("sessionUser",sessionUser);
+						
+						Authentication auth = new Authentication(request.getParameter("username"));
+						session.setAttribute("lastlogin",auth.getLastlogin());
+					}
+				%>
+			}
 		</script>
 	</head>
 	<body>
+		<%
+			//Session Check
+			if(session.getAttribute("sessionUser") == null) {
+				response.sendRedirect("login.jsp");
+				return;
+			}
+		%>
 		<div class = "wrapper">
 			<div class="navbar">
 			  <div class="navbar-inner">
@@ -98,26 +138,26 @@
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop6">
 	                  		<li><a tabindex="-1" href="#"><i class = "icon-user"></i>Personal Details</a></li>
 	                  		<li><a tabindex="-1" href="change_password.jsp"><i class = "icon-pencil"></i>Change Password</a></li>
-	                  		<li><a href = "#"><i class = "icon-off"></i>Signout</a></li>
+	                  		<li><a onclick="logout()"><i class = "icon-off"></i>Signout</a></li>
 	                	</ul>
 	              	</li>
-			    </ul>
-		        <div class="btn-group">
-				    <a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
-				    	<img class = "currency-white" src = "../img/rupees-white.png">Rupees <span class="caret"></span>
-				    </a>
-				    <ul class="dropdown-menu">
-				    	<li><a><img class = "currency" src = "../img/dollar.png">American Dollars</a></li>
-				    	<li><a><img class = "currency" src = "../img/pound.png">Pounds</a></li>
-				    	<li><a><img class = "currency" src = "../img/yen.png">Yen</a></li>
-				    </ul>
-			    </div>
+			    </ul>		        
 			  </div>
 			</div>
 			<div class = "container-fluid">
 				<div class = "row-fluid">
 					<div class = "span2">
 						<!-- Sidebar -->
+						<div class="btn-group">
+						    <a class="btn btn-info dropdown-toggle currency-change" data-toggle="dropdown" href="#">
+						    	<img class = "currency-white" src = "../img/rupees-white.png">Rupees <span class = "custom-caret">&#9660;</span>
+						    </a>
+						    <ul class="dropdown-menu currency-change-menu">
+						    	<li><a><img class = "currency" src = "../img/dollar.png">American Dollars</a></li>
+						    	<li><a><img class = "currency" src = "../img/pound.png">Pounds</a></li>
+						    	<li><a><img class = "currency" src = "../img/yen.png">Yen</a></li>
+						    </ul>
+					    </div>
 						<div class = "sidebar recent-vouchers">
 							<h5 class = "sidebar-title"><i class = "icon-file icon-white"></i>Recent Vouchers</h5>
 							<ul>
@@ -157,5 +197,5 @@
 				</div>
 			</div> 
 			<div class = "push"></div>
-		</div>	
-		<jsp:include page = "footer.jsp"/>
+		</div>
+		<jsp:include page = "../include/footer.jsp"/>

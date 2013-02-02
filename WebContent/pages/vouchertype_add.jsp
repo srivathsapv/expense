@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<jsp:include page="../include/layout.jsp" />
+<%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - New Voucher Type</title>
 <script type="text/javascript">
     $(document).ready(function() {
