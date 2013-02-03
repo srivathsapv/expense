@@ -55,13 +55,11 @@
 				window.location = "../server/logout.jsp";
 			}
 		
-		
 			$(document).ready(function(){
 				$("#drop1").tooltip();
-				var width = parseInt($(".sidebar-title").css("width"));
-				width = width + 10;
+				var width = parseInt($(".sidebar").css("width"));
 				$(".sidebar-title").css("width",width+"px");
-				width = width - 24;
+				width = width - 26;
 				$(".currency-change").css("width",width+"px");
 				$(".currency-change-menu").css("width",width+"px");
 			});
@@ -160,35 +158,41 @@
 					    </div>
 						<div class = "sidebar recent-vouchers">
 							<h5 class = "sidebar-title"><i class = "icon-file icon-white"></i>Recent Vouchers</h5>
-							<ul>
-								<li>First voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-							</ul>
+							<div class = "sidebar-content">
+								<ul>
+									<li>First voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+								</ul>
+							</div>
 						</div>
 						
 						<div class = "sidebar bookmarks">
 							<h5 class = "sidebar-title"><i class = "icon-bookmark icon-white"></i>Bookmarks</h5>
-							<ul>
-								<li>First voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-							</ul>
+							<div class = "sidebar-content">
+								<ul>
+									<li>First voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+								</ul>
+							</div>
 						</div>
 						
 						<div class = "sidebar drafts">
 							<h5 class = "sidebar-title"><i class = "icon-envelope icon-white"></i>Drafts</h5>
-							<ul>
-								<li>First voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-								<li>Second voucher</li>
-							</ul>
+							<div class = "sidebar-content">
+								<ul>
+									<li>First voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+									<li>Second voucher</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<div class = "span9">
