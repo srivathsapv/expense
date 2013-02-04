@@ -81,7 +81,7 @@
 		<%
 			//Session Check
 			if(session.getAttribute("sessionUser") == null) {
-				response.sendRedirect("login.jsp");
+				response.sendRedirect("login.jsp?redirect_to="+request.getRequestURL());
 				return;
 			}
 		%>

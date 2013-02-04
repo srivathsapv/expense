@@ -54,6 +54,7 @@
 												<input type="password" class="span10" name="password" placeholder="Password...">
 											</div>
 										</div>
+										<input type = "hidden" name = "redirect" value = "<%= request.getParameter("redirect_to") %>">
 										<input type="submit" class="btn btn-info" value = "Login"></button>
 										<div class="control-group span10">
 											<div class="controls">

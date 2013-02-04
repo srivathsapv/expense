@@ -44,9 +44,15 @@
 			
 			auth.setLastlogin();
 			auth.save();
+			if(request.getParameter("redirect") == null) {
+				response.sendRedirect("../pages/dashboard.jsp");
+				return;
+			}
+			else {
+				response.sendRedirect(request.getParameter("redirect"));
+				return;	
+			}
 			
-			response.sendRedirect("../pages/dashboard.jsp");
-			return;
 		}
 		else {
 			java.util.Date date = new java.util.Date();
