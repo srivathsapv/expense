@@ -27,6 +27,14 @@
 			response.sendRedirect("dashboard.jsp");
 			return;
 		}
+	
+		String redirect = "";
+		if(request.getParameter("redirect_to") == null) {
+			redirect = "dashboard";
+		}
+		else {
+			redirect = request.getParameter("redirect_to");
+		}
 	%>
 	<div class="navbar">
 		<div class="navbar-inner">
@@ -54,7 +62,7 @@
 												<input type="password" class="span10" name="password" placeholder="Password...">
 											</div>
 										</div>
-										<input type = "hidden" name = "redirect" value = "<%= request.getParameter("redirect_to") %>">
+										<input type = "hidden" name = "redirect" value = "<%= redirect %>">
 										<input type="submit" class="btn btn-info" value = "Login"></button>
 										<div class="control-group span10">
 											<div class="controls">

@@ -4,7 +4,7 @@
 <%@ include file = "../include/layout.jsp" %>
 </head>
 <div id = "body-content">
-	<form>
+	<form method = "POST">
   		<fieldset>
     		<legend>
     			Password Change

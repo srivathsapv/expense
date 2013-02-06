@@ -8,6 +8,7 @@
 		<script src = "../js/bootstrap-dropdown.js"></script>
 		<script src = "../js/bootstrap-tooltip.js"></script>
 		<script src = "../js/layout.js"></script>
+		<script src = "../js/validate.js"></script>
 		<link rel="stylesheet/less" href="../less/bootstrap.less">
 		
 		<script src="../js/less.js"></script>
@@ -136,7 +137,7 @@
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop6">
 	                  		<li><a tabindex="-1" href="#"><i class = "icon-user"></i>Personal Details</a></li>
 	                  		<li><a tabindex="-1" href="change_password.jsp"><i class = "icon-pencil"></i>Change Password</a></li>
-	                  		<li><a onclick="logout()"><i class = "icon-off"></i>Signout</a></li>
+	                  		<li><a onclick="logout()" class = "poi"><i class = "icon-off"></i>Signout</a></li>
 	                	</ul>
 	              	</li>
 			    </ul>		        

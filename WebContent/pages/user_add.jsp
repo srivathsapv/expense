@@ -10,20 +10,20 @@
 	});
 </script>
 <div id = "body-content">
-	<form>
+	<form method = "POST" class = "validate">
   		<fieldset>
     		<legend>
     			New User
     			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p>
     		</legend><br>
-    		<input class = "span4 required" type="text" placeholder="First name..."><br>
-    		<input class = "span4" type="text" placeholder="Middle name..."><br>
+    		<input class = "span4 required" valtype = "required alpha" type="text" placeholder="First name..."><br>
+    		<input class = "span4" type="text" valtype = "alpha" placeholder="Middle name..."><br>
     		<input class = "span4" type="text" placeholder="Last Name..."><br>
-    		<input class = "span4 required" type="text" placeholder="Social Security..."><br>
+    		<input class = "span4 required" valtype = "required alphanumeric" type="text" placeholder="Social Security..."><br>
     		
     		<label>Date of Birth</label>
     		<div class = "input-append">
-   				<input type="text" class="span4 append-input" placeholder="Date of birth..." id="dp1" >
+   				<input type="text" class="span4 append-input" valtype = "required" placeholder="Date of birth..." id="dp1" >
    				<span class = "add-on required"><i class="icon-calendar"></i></span>
    			</div>
    			<label>Gender</label>
@@ -35,16 +35,23 @@
    				<input type = "radio" name = "gender" value = "female">
    				Female
    			</label>
-    		<select class = "span4 required">
+    		<select class = "span4 required" valtype = "required">
    				<option value = ''>Select your department</option>
    				<option value = 'type1'>Dept1</option>
    				<option value = 'type2'>Dept2</option>
    			</select><br>
-   			<input class = "span4 required" type="text" placeholder="Designation..."><br>
-    		<textarea rows="5 required" cols = "50" placeholder="Address..."></textarea><br>
-    		<input class = "span4" type="text" placeholder="Phone number.."><br>
-    		<input class = "span4" type="text" placeholder="Mobile number.."><br>
-    		<input class = "span4 required" type="text" placeholder="Email..."><br>
+   			<input class = "span4 required" valtype = "required alpha" type="text" placeholder="Designation..."><br>
+    		<textarea rows="5" cols = "50" placeholder="Address..."></textarea><br>
+    		
+    		<div class="input-prepend">
+				<span class="add-on rupee">+</span>
+    			<input class = "span4 prepend-input" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Phone number..."><br>
+    		</div>
+    		<div class="input-prepend">
+				<span class="add-on rupee">+</span>
+    			<input class = "span4 prepend-input" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Mobile..."><br>
+    		</div>
+    		<input class = "span4 required" type="text" valtype = "email required" placeholder="Email..."><br>
     		<label>Upload Photo</label><input class = "span4" type="file"><br>
     		<br><input type="submit" class="btn btn-info" value = "Add User">
     	</fieldset>

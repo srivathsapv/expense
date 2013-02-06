@@ -13,7 +13,7 @@
     </script>
 
 <div id="body-content">
-	<form action="">
+	<form method = "POST">
 		<fieldset>
 			<legend>
 				Create New Voucher Type

@@ -3,7 +3,7 @@
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - Department Add</title> 
 <div id = "body-content">
-	<form>
+	<form method = "POST">
   		<fieldset>
     		<legend>
     			Add new department

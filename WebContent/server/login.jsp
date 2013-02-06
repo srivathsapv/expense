@@ -43,8 +43,8 @@
 			session.setAttribute("lastlogin",lastLogin);
 			
 			auth.setLastlogin();
-			auth.save();
-			if(request.getParameter("redirect") == null) {
+			auth.save();			
+			if(request.getParameter("redirect").equals("dashboard")) {	
 				response.sendRedirect("../pages/dashboard.jsp");
 				return;
 			}
@@ -52,7 +52,6 @@
 				response.sendRedirect(request.getParameter("redirect"));
 				return;	
 			}
-			
 		}
 		else {
 			java.util.Date date = new java.util.Date();

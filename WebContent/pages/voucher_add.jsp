@@ -10,7 +10,7 @@
 	});
 </script>
 <div id = "body-content">
-	<form>
+	<form method = "POST">
   		<fieldset>
     		<legend>
     			Add new voucher

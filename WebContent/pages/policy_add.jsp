@@ -3,7 +3,7 @@
 <title>Vowcher - Add New Policy</title>
 <%@ include file = "../include/layout.jsp" %>
 <div id = "body-content">
-	<form>
+	<form method = "POST">
   		<fieldset>
     		<legend>
     			Add new policy
