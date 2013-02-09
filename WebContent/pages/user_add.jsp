@@ -16,10 +16,10 @@
     			New User
     			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p>
     		</legend><br>
-    		<input class = "span4 required" valtype = "required alpha" type="text" placeholder="First name..."><br>
-    		<input class = "span4" type="text" valtype = "alpha" placeholder="Middle name..."><br>
-    		<input class = "span4" type="text" placeholder="Last Name..."><br>
-    		<input class = "span4 required" valtype = "required alphanumeric" type="text" placeholder="Social Security..."><br>
+    		<input class = "span4 required" valtype = "required alpha" valmsg="Invalid First name" type="text" placeholder="First name..."><br/>
+    		<input class = "span4" type="text" valtype = "alpha" valmsg="Invalid Middle name" placeholder="Middle name..."><br>
+    		<input class = "span4" type="text" valtype = "alpha" valmsg="Invalid Last name" placeholder="Last Name..."><br>
+    		<input class = "span4 required" valtype = "required alphanumeric" valmsg="Invalid Social security key" type="text" placeholder="Social Security..."><br>
     		
     		<label>Date of Birth</label>
     		<div class = "input-append">
@@ -40,18 +40,21 @@
    				<option value = 'type1'>Dept1</option>
    				<option value = 'type2'>Dept2</option>
    			</select><br>
-   			<input class = "span4 required" valtype = "required alpha" type="text" placeholder="Designation..."><br>
+   			<input class = "span4 required" valtype = "required alpha" valmsg="Invalid Designation" type="text" placeholder="Designation..."><br>
     		<textarea rows="5" cols = "50" placeholder="Address..."></textarea><br>
-    		
-    		<div class="input-prepend">
+    		<div>
+    		<span class="input-prepend">
 				<span class="add-on rupee">+</span>
-    			<input class = "span4 prepend-input" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Phone number..."><br>
-    		</div>
-    		<div class="input-prepend">
+    			<input class = "span4 prepend-input" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Phone number...">
+    		</span>
+    		</div><p></p>
+    		<div>
+    		<span class="input-prepend">
 				<span class="add-on rupee">+</span>
-    			<input class = "span4 prepend-input" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Mobile..."><br>
-    		</div>
-    		<input class = "span4 required" type="text" valtype = "email required" placeholder="Email..."><br>
+    			<input class = "span4 prepend-input" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Mobile...">
+    		</span>
+    		</div><p></p>
+    		<input class = "span4 required" type="text" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
     		<label>Upload Photo</label><input class = "span4" type="file"><br>
     		<br><input type="submit" class="btn btn-info" value = "Add User">
     	</fieldset>

@@ -22,7 +22,7 @@
 					voucher type
 				</p>
 			</legend>
-			<br /> <input type="text" class="span4" id="voucher_name"
+			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Invalid title" id="voucher_name"
 				placeholder="Enter voucher name..."><br />
 			<textarea rows="5" cols="50" placeholder="Enter a description..."></textarea>
 			<br />
