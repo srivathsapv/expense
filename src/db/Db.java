@@ -16,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.swing.JOptionPane;
+import utility.LocalValues;
 
 /**
  * @author	Srivathsa PV
@@ -59,32 +60,9 @@ public class Db {
 	 * Accesses the dbconfig.cfg file ,reads the values and initialized it to the respective variables
 	 */
 	public Db() {
-		try {
-            File directory = new File(".");
-            String s = File.separator;
-            String path = directory.getCanonicalPath();
-            
-            String cfg_path = path + s + ".." + s + "workspace" + s + "expense" + s + "src" + s + "db" + s + "dbconfig.cfg";            
-            FileInputStream fstream = new FileInputStream(cfg_path);
-            
-            DataInputStream in = new DataInputStream(fstream);
-            BufferedReader br = new BufferedReader(new InputStreamReader(in));
-            String strLine;
-
-            while ((strLine = br.readLine()) != null) {
-                if(strLine.indexOf("username") >= 0){
-                	this.username = strLine.substring(strLine.indexOf('\t')+1);
-                }
-                if(strLine.indexOf("password") >= 0){
-                	this.password = strLine.substring(strLine.indexOf('\t')+1);
-                }
-                if(strLine.indexOf("database") >= 0){
-                	this.database = strLine.substring(strLine.indexOf('\t')+1);
-                }
-            }
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
+		this.username = LocalValues.dbUsername;
+		this.password = LocalValues.dbPwd;
+		this.database = LocalValues.dbName;
 	}
 	
 	/**
