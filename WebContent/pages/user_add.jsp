@@ -16,6 +16,7 @@
     			New User
     			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p>
     		</legend><br>
+    		<input class = "span4 required" type = "text" valtype = "required alphanumeric" valmsg = "Username should be alphanumeric" placeholder = "Choose a login ID ..."><br/>
     		<input class = "span4 required" valtype = "required alpha" valmsg="Invalid First name" type="text" placeholder="First name..."><br/>
     		<input class = "span4" type="text" valtype = "alpha" valmsg="Invalid Middle name" placeholder="Middle name..."><br>
     		<input class = "span4" type="text" valtype = "alpha" valmsg="Invalid Last name" placeholder="Last Name..."><br>

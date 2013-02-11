@@ -95,7 +95,8 @@ function ajaxcheck(currentElement,type){
 			if(msg.indexOf("false") >= 0){
 				if(element.parent().find("> .text-error").html() == undefined) {
 					element.wrap("<span class = 'control-group error'></span>");
-					element.after("<span class = 'text-error'>" + valmsg + "</span>");
+					element.after("<div class = 'text-error'>" + valmsg + "</div>");
+					currentElement.focus();
 				}
 			}
 			else {					
