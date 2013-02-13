@@ -100,10 +100,10 @@ function ajaxcheck(currentElement,type){
 				}
 			}
 			else {					
-				if(element.parent().attr('class').indexOf('control-group') >= 0) {
+				//if(element.parent().attr('class').indexOf('control-group') >= 0) {
 					element.parent().find("> .text-error").remove();
 					element.unwrap();
-				}
+				//}
 			}
 		}
 	});

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - New Voucher Type</title>
+<script src = "../js/bootstrap-multiselect.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
       $('.multicheck').click(function(e) {     
@@ -9,6 +10,8 @@
          $(this).find("span").toggleClass("icon-ok"); 
          return false;
       });
+      
+      $("#policy").multiselect();
     });
     </script>
 
@@ -27,36 +30,13 @@
 			<textarea rows="5" cols="50" placeholder="Enter a description..."></textarea>
 			<br />
 
-			<div class="dropdown">
-				<a href="#" class="dropdown-toggle" data-toggle="dropdown">Select
-					Policy<b class="caret"></b>
-				</a>
-				<ul class="dropdown-menu scroll">
-					<li><a id="chk1" class="multicheck" href="#">Policy 1 <span
-							class="pull-right"></span></a></li>
-					<li><a id="chk2" class="multicheck checked" href="#">Policy
-							2 <span class="pull-right"></span>
-					</a></li>
-					<li><a id="chk3" class="multicheck checked" href="#">Policy
-							3 <span class="pull-right"></span>
-					</a></li>
-					<li><a id="chk4" class="multicheck checked" href="#">Policy
-							4 <span class="pull-right"></span>
-					</a></li>
-					<li><a id="chk5" class="multicheck checked" href="#">Policy
-							5 <span class="pull-right"></span>
-					</a></li>
-					<li><a id="chk6" class="multicheck checked" href="#">Policy
-							6 <span class="pull-right"></span>
-					</a></li>
-					<li><a id="chk7" class="multicheck checked" href="#">Policy
-							7 <span class="pull-right"></span>
-					</a></li>
-					<li><a id="chk8" class="multicheck checked" href="#">Policy
-							8 <span class="pull-right"></span>
-					</a></li>
-				</ul>
-			</div>
+			<select id = "policy" multiple="multiple">
+				<option value = "policy1">Policy 1</option>
+				<option value = "policy2">Policy 2</option>
+				<option value = "policy3">Policy 3</option>
+				<option value = "policy4">Policy 4</option>
+				<option value = "policy5">Policy 5</option>
+			</select>
 			<br /> <br />
 			<input type = "submit" class = "btn btn-info" value = "Add Voucher Type">
 		</fieldset>
