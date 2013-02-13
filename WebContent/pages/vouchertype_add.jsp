@@ -22,7 +22,7 @@
 					voucher type
 				</p>
 			</legend>
-			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Invalid title" id="voucher_name"
+			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" id="voucher_name"
 				placeholder="Enter voucher name..."><br />
 			<textarea rows="5" cols="50" placeholder="Enter a description..."></textarea>
 			<br />
@@ -34,25 +34,25 @@
 				<ul class="dropdown-menu scroll">
 					<li><a id="chk1" class="multicheck" href="#">Policy 1 <span
 							class="pull-right"></span></a></li>
-					<li><a id="chk2" class="multicheck checked" href="#">Policy
+					<li><a id="chk2" class="multicheck" href="#">Policy
 							2 <span class="pull-right"></span>
 					</a></li>
-					<li><a id="chk3" class="multicheck checked" href="#">Policy
+					<li><a id="chk3" class="multicheck" href="#">Policy
 							3 <span class="pull-right"></span>
 					</a></li>
-					<li><a id="chk4" class="multicheck checked" href="#">Policy
+					<li><a id="chk4" class="multicheck" href="#">Policy
 							4 <span class="pull-right"></span>
 					</a></li>
-					<li><a id="chk5" class="multicheck checked" href="#">Policy
+					<li><a id="chk5" class="multicheck" href="#">Policy
 							5 <span class="pull-right"></span>
 					</a></li>
-					<li><a id="chk6" class="multicheck checked" href="#">Policy
+					<li><a id="chk6" class="multicheck" href="#">Policy
 							6 <span class="pull-right"></span>
 					</a></li>
-					<li><a id="chk7" class="multicheck checked" href="#">Policy
+					<li><a id="chk7" class="multicheck" href="#">Policy
 							7 <span class="pull-right"></span>
 					</a></li>
-					<li><a id="chk8" class="multicheck checked" href="#">Policy
+					<li><a id="chk8" class="multicheck" href="#">Policy
 							8 <span class="pull-right"></span>
 					</a></li>
 				</ul>
