@@ -25,11 +25,10 @@
 					voucher type
 				</p>
 			</legend>
-			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Invalid title" id="voucher_name"
+			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" id="voucher_name"
 				placeholder="Enter voucher name..."><br />
 			<textarea rows="5" cols="50" placeholder="Enter a description..."></textarea>
 			<br />
-
 			<select id = "policy" multiple="multiple">
 				<option value = "policy1">Policy 1</option>
 				<option value = "policy2">Policy 2</option>
