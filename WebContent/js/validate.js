@@ -106,7 +106,7 @@ function ajaxcheck(currentElement,type){
 					currentElement.focus();
 				}
 			}
-			else {					
+			else {
 				try{
 				if(element.parent().attr('class').indexOf('control-group') >= 0) {
 					element.parent().find("> .text-error").remove();
