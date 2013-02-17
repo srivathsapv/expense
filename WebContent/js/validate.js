@@ -83,8 +83,17 @@ function ajaxcheck(currentElement,type){
 	var element;
 	var valmsg = $(currentElement).attr('valmsg');		
 	if($(currentElement).attr('class').indexOf('prepend-input') >= 0 || $(currentElement).attr('class').indexOf('append-input') >= 0 || $(currentElement).attr('class').indexOf('required') >= 0)
+	{		
 		element = $(currentElement).parent();
-	else
+		try{
+		if($(currentElement).parent().parent().attr('class').indexOf('input-prepend') >= 0)
+			element = $(currentElement).parent().parent();
+		if($(currentElement).parent().parent().parent().attr('class').indexOf('input-append') >= 0)
+			element = $(currentElement).parent().parent().parent();
+		}catch(err){
+			//do nothing
+		}
+	}else
 		element = $(currentElement);
 	
 	$.ajax({
@@ -99,11 +108,15 @@ function ajaxcheck(currentElement,type){
 					currentElement.focus();
 				}
 			}
-			else {					
-				//if(element.parent().attr('class').indexOf('control-group') >= 0) {
+			else {
+				try{
+				if(element.parent().attr('class').indexOf('control-group') >= 0) {
 					element.parent().find("> .text-error").remove();
 					element.unwrap();
-				//}
+				}
+				}catch(err){
+					//do nothing
+				}
 			}
 		}
 	});

@@ -5,12 +5,7 @@ $(document).ready(function(){
 	
 	//required fields	
 	var element=$(".required");
-	/*if($(element).parent().attr('class').indexOf('input-append') >= 0)
-	{
-		alert($(element).parent().attr('class').indexOf('input-append'));
-	}
-	else{*/
 	$(element).wrap("<span class = 'required_marker' />");
 	$(".required_marker").append("*");
-	//}
+	
 });
