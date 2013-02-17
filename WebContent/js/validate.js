@@ -75,6 +75,13 @@ $(document).ready(function(){
 	});
 	/**Email fields**/
 	
+	/**Unique Username**/
+	$("[valtype~='unique_username']").blur(function(){
+		if($(this).val() == '') { return ;}
+		ajaxcheck(this,'unique_username');
+		
+	});
+	/**Unique Username**/
 	
 });
 
@@ -96,11 +103,15 @@ function ajaxcheck(currentElement,type){
 	}else
 		element = $(currentElement);
 	
+	if(type == 'unique_username')
+		valmsg = "Username already exists";
+	
 	$.ajax({
 		type:"POST",
 		data: "valtype="+type+"&value=" + $(currentElement).val(),
 		url: "../server/validation.jsp",
 		success:function(msg){
+			
 			if(msg.indexOf("false") >= 0){
 				if(element.parent().find("> .text-error").html() == undefined) {
 					element.wrap("<span class = 'control-group error'></span>");

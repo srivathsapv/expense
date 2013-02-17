@@ -224,16 +224,28 @@ public class Department {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		String cnt_query = "";
+		String query = "";
+		if(column.equals("")){
+			query = "SELECT * FROM " + t_name;
+			cnt_query = "SELECT COUNT(*) FROM " + t_name;
+			
+		}
+		else {
+			query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+			cnt_query = "SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+		}
+		
+		ResultSet rs = db.executeQuery(cnt_query);
 		rs.next();
 		
 		Department[] list = new Department[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value);
+		rs = db.executeQuery(query);
 		
 		int i=0;
 		while(rs.next()) {
-			list[i++] = new Department(rs.getInt("ID"));
+			list[i++] = new Department(rs.getInt("DEPTID"));
 		}
 		
 		return list;

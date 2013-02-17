@@ -122,12 +122,21 @@ public class User {
 	 * 
 	 * @var Date
 	 */
-	private Date dob;
+	private String dob;
+	
+	/**
+	 * Mode of operation
+	 * 
+	 * @var String
+	 */
+	private String mode;
 	
 	/**
 	 * Constructs an empty object
 	 */
-	public User() {}
+	public User() {
+		mode = "insert";
+	}
 	
 	/**
 	 * Fetches necessary data and initializes the variables
@@ -139,6 +148,8 @@ public class User {
 	 * @throws ClassNotFoundException 
 	 */
 	public User(String userid) throws ClassNotFoundException, SQLException {
+		mode = "update";
+		
 		Db db = new Db();
 		db.connect();
 		
@@ -158,7 +169,7 @@ public class User {
 		this.mobile = rs.getString("MOBILE");
 		this.email = rs.getString("EMAIL");
 		this.photo = rs.getString("PHOTO");
-		this.dob = rs.getDate("DOB");
+		this.dob = rs.getString("DOB");
 		
 		db.disconnect();
 	}
@@ -170,6 +181,15 @@ public class User {
 	 */
 	public String getUserid() {
 		return this.userid;
+	}
+	
+	/**
+	 * Sets the id of the user
+	 * 
+	 * @param String
+	 */
+	public void setUserid(String userid) {
+		this.userid = userid;
 	}
 	
 	/**
@@ -397,7 +417,7 @@ public class User {
 	 * 
 	 * @return Date
 	 */
-	public Date getDob() {
+	public String getDob() {
 		return this.dob;
 	}
 	
@@ -406,7 +426,7 @@ public class User {
 	 * 
 	 * @param Date
 	 */
-	public void setDate(Date dob) {
+	public void setDate(String dob) {
 		this.dob = dob;
 	}
 	
@@ -423,12 +443,12 @@ public class User {
 		db.connect();
 		
 		int n = 0;
-		if(this.userid.equals("")) {		
-			String values[] = {this.socialSecurity,this.firstName,this.middleName,this.lastName,
+		if(mode.equals("insert")) {		
+			String values[] = {this.userid,this.socialSecurity,this.firstName,this.middleName,this.lastName,
 							   this.gender,Integer.toString(this.deptid),this.designation,this.address,this.phone,
 							   this.mobile,this.email,this.photo,this.dob.toString()};
 			
-			this.userid = db.insert(t_name, values, true,true).toString();
+			db.insert(t_name, values, false,false).toString();
 			n=1;
 		}
 		else {

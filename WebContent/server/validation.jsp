@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import = "utility.Validation"%>
+    pageEncoding="UTF-8" import = "utility.Validation,auth.Authentication"%>
 <%
 	String valtype = request.getParameter("valtype");
 	String value = request.getParameter("value");
@@ -26,6 +26,15 @@
 	
 	if(valtype.equals("alphanumericwithspace")){
 		msg = Boolean.toString(Validation.isAlphaNumeric(value, 1));
+	}
+	
+	if(valtype.equals("unique_username")) {
+		int n = Authentication.count("USERID",value);
+		if(n > 0) 
+			msg = "false";
+		else 
+			msg = "true";
+		
 	}
 	
 	//include other validation types here

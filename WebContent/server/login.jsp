@@ -15,8 +15,8 @@
 %>
 
 <%
-	String username = request.getParameter("username");
-	String password = request.getParameter("password");
+	String username = Utility.filter(request.getParameter("username"));
+	String password = Utility.filter(request.getParameter("password"));
 	
 	Db db = new Db();
 	db.connect();

@@ -59,9 +59,18 @@ public class Authentication {
 	private String lastlogin;
 	
 	/**
+	 * Mode of creation
+	 * 
+	 * @var String
+	 */
+	private String mode;
+	
+	/**
 	 * Constructs an empty object
 	 */
-	public Authentication() {}
+	public Authentication() {
+		mode = "insert";
+	}
 	
 	/**
 	 * Fetches necessary data and initializes the variables
@@ -73,6 +82,7 @@ public class Authentication {
 	 * @throws ClassNotFoundException 
 	 */
 	public Authentication(String userid) throws ClassNotFoundException, SQLException {
+		mode = "update";
 		Db db = new Db();
 		db.connect();
 		
@@ -94,6 +104,14 @@ public class Authentication {
 	 */
 	public String getUserid() {
 		return this.userid;
+	}
+	
+	/**Sets the id of the user
+	 * 
+	 * @param String
+	 */
+	public void setUserid(String userid){
+		this.userid = userid;
 	}
 	
 	/**
@@ -202,13 +220,14 @@ public class Authentication {
 		db.connect();
 		
 		int n =0;
-		if(this.userid.equals("")) {
-			String values[] = {this.password,this.role,this.lastlogin};
-			this.userid = db.insert(t_name, values , true, true).toString();
+		if(mode.equals("insert")) {
+			String values[] = {this.userid,this.password,this.role,this.lastlogin};
+			db.insert(t_name, values , false, false).toString();
 			n=1;
 		}
 		else {
 			HashMap<String,String> map = new HashMap<String,String>();
+			
 			map.put("PASSWORD",this.password);
 			map.put("ROLE",this.role);
 			map.put("LASTLOGIN",this.lastlogin);
@@ -267,7 +286,7 @@ public class Authentication {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'");
 		rs.next();
 		
 		return rs.getInt(1);
