@@ -3,19 +3,17 @@
  */
 package db;
 
-import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
-import javax.swing.JOptionPane;
 import utility.LocalValues;
 
 /**
@@ -86,38 +84,180 @@ public class Db {
 	}
 	
 	/**
-	 * Executes the given query and returns the result set
+	 * Selects and returns a result set based on the given conditions.
+	 * To be used when the WHERE clause values contain values entered by the user.
+	 * 
+	 * @param String
+	 * The table name
+	 * 
+	 * @param String[]
+	 * The set of columns that needs to be selected
+	 * 
+	 * @param String[]
+	 * The set of WHERE clause conditions
+	 * 
+	 * @param String[]
+	 * The set of WHERE clause values
+	 * 
+	 * @param String[]
+	 * The set of logical connectors like AND , OR etc
+	 * 
+	 * @return java.sql.ResultSet
+	 * 
+	 * @throws java.sql.SQLException
+	 */
+	public ResultSet select(String table,String selectcols,String[] whereCols,String[] whereVals,String logicalConnectors[]) throws SQLException {
+		String query = "SELECT " + selectcols + " FROM " + table;
+		
+		PreparedStatement stmt;
+		
+		if(whereCols.length > 0) {
+			query += " WHERE ";
+			for(int i=0;i<whereCols.length;i++){
+				if(i != 0)
+					query += " " + logicalConnectors[i] + " ";
+				
+				query += whereCols[i] + " = ?"; 
+			}
+		}
+		
+		stmt = con.prepareStatement(query);
+		
+		
+		if(whereVals.length > 0) {
+			for(int i=0;i<whereVals.length;i++)
+				stmt.setString(i+1, whereVals[i]);	
+		}
+			
+		ResultSet rs = stmt.executeQuery();
+		return rs;
+	}
+	
+	
+	
+	/**
+	 * Inserts a row in the database
+	 * 
+	 * @param String
+	 * The table name
+	 * 
+	 * @param String[]
+	 * Array of values
+	 * 
+	 * @param Boolean
+	 * Whether default value to be inserted in primary key column
+	 * 
+	 * @param Boolean
+	 * Whether the newly inserted row's generated key has to be returned or not
+	 * 
+	 * @return Integer
+	 * Number of rows affected/generated key
+	 * 
+	 * @throws SQLException 
+	 */
+	public Object insert(String table,String values[],boolean default_value,boolean generate_keys) throws SQLException {
+		String query = "";
+		
+		query = "INSERT INTO " + table + " VALUES(";
+		
+		if(default_value)
+			query += "DEFAULT";
+		
+		for(int i=0;i<values.length;i++)
+			query += "?,";
+		query = query.substring(0,query.length()-1);
+		query += ")";
+		
+		PreparedStatement stmt;
+		if(generate_keys)
+			stmt=con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+		else 
+			stmt=con.prepareStatement(query);
+		
+		for(int i=0;i<values.length;i++){
+			stmt.setString(i+1,values[i]);
+		}
+		int n = stmt.executeUpdate();
+		
+		if(generate_keys){
+			ResultSet rs = stmt.getGeneratedKeys();
+			rs.next();
+			
+			return rs.getString(1);
+		}
+		else {
+			return n;
+		}
+		
+	}
+	
+	/**
+	 * Executes the given string and returns the resultset
+	 * To be used when queries contain LIKE , BETWEEN and other clauses , and the values
+	 * are either fetched from the database or internally calculated.
 	 * 
 	 * @param String
 	 * The query string
 	 * 
 	 * @return java.sql.ResultSet
-	 * The result set containing the required data
+	 * The result set containing the queried data
 	 * 
-	 * @throws SQLException 
+	 * @throws java.sql.SQLException
 	 */
 	public ResultSet executeQuery(String query) throws SQLException{
-		PreparedStatement Stmt=con.prepareStatement(query); 
-		Stmt.executeQuery(); 
-		ResultSet rs=Stmt.getResultSet();
+		PreparedStatement stmt = con.prepareStatement(query);
+		ResultSet rs = stmt.executeQuery();
 		return rs;
 	}
 	
 	/**
-	 * Execute the given DML statement and returns the number of rows affected
+	 * Updates the given values in the specified table with the where condition
 	 * 
 	 * @param String
-	 * The query string
+	 * The Table Name
+	 * 
+	 * @param java.util.HashMap
+	 * Map containing (key,value) pairs of (columnName,columnValue)
+	 * 
+	 * @param String
+	 * The column name in the where condition
+	 * 
+	 * @param String
+	 * The column value in the where condition
 	 * 
 	 * @return Integer
 	 * The number of rows affected
 	 * 
-	 * @throws SQLException 
+	 * @throws SQLException
 	 */
-	public int executeUpdate(String query) throws SQLException {
-		PreparedStatement Stmt=con.prepareStatement(query); 
-		int n = Stmt.executeUpdate();
-		return n;
+	public int update(String table,HashMap colValues,String whereColumn,String whereValue) throws SQLException{
+		String query = "UPDATE " + table + " SET ";
+		
+		Set set = colValues.entrySet();
+		Iterator iter = set.iterator();
+		
+		while(iter.hasNext()) {
+			Map.Entry cur = (Map.Entry)iter.next();
+			
+			query += cur.getKey() + " = ?,";
+		}
+		query = query.substring(0,query.length()-1);
+		if(!whereColumn.equals(""))
+			query += " WHERE " + whereColumn + " = ?";
+		
+		iter = set.iterator();
+		PreparedStatement stmt = con.prepareStatement(query);
+		
+		int i=1;
+		while(iter.hasNext()){
+			Map.Entry cur = (Map.Entry)iter.next();
+			stmt.setString(i++, cur.getValue().toString());
+		}
+		if(!whereValue.equals(""))
+			stmt.setString(i++,whereValue);
+		
+		return stmt.executeUpdate();
+		
 	}
 }
 

@@ -4,6 +4,7 @@
 package user;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.sql.Timestamp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -187,18 +188,28 @@ public class Notification {
 		
 		String query = "";
 		
+		int n = 0;
+		
 		if(this.id == 0) {
 			query = "INSERT INTO " + t_name +
 					" VALUES(DEFAULT,'" + this.userid  + "','" + this.category + "','" + 
 					this.categoryid + "','" + this.timeupdate + "')";
+			
+			String values[] = {this.userid,this.category,this.categoryid,this.timeupdate};
+			this.id = Integer.parseInt(db.insert(t_name,values,true,true).toString());
+				
 		}
 		else {
-			query = "UPDATE " + t_name + " SET USERID = '" + this.userid + "', CATEGORY = '" + 
-					this.category + "', CATEGORYID = '" + this.categoryid + "', TIMEUPDATE = '" + 
-					this.timeupdate + "' WHERE ID = " + this.id;
+			HashMap<String,String> map = new HashMap<String,String>();
+			
+			map.put("USERID", this.userid);
+			map.put("CATEGORY",this.category);
+			map.put("CATEGORYID",this.categoryid);
+			map.put("TIMEUPDATE",this.timeupdate);
+			
+			n = db.update(t_name,map,"ID",Integer.toString(this.id));
 			
 		}
-		int n = db.executeUpdate(query);
 		db.disconnect();
 		
 		if(n > 0) return true;

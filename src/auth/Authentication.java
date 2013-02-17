@@ -6,8 +6,10 @@ package auth;
 import java.security.NoSuchAlgorithmException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 import utility.Utility;
 import db.Db;
@@ -174,9 +176,17 @@ public class Authentication {
 	
 	/**
 	 * Sets the last login timestamp
+	 * 
+	 * @throws ParseException 
 	 */
-	public void setLastlogin() {
-		this.lastlogin = "CURRENT TIMESTAMP";
+	public void setLastlogin() throws ParseException {
+		Date d = new Date();
+		
+		SimpleDateFormat f0 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		Date d0 = f0.parse(d.toString());
+		
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+		this.lastlogin = f.format(d0);
 	}
 	
 	/**
@@ -191,18 +201,21 @@ public class Authentication {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
-		
+		int n =0;
 		if(this.userid.equals("")) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.password  + "','" + this.role + "'," + this.lastlogin + ")";
+			String values[] = {this.password,this.role,this.lastlogin};
+			this.userid = db.insert(t_name, values , true, true).toString();
+			n=1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET PASSWORD = '" + this.password + "', ROLE = '" + 
-					this.role + "', LASTLOGIN = " + this.lastlogin + " WHERE USERID = '" + this.userid + "'";
+			HashMap<String,String> map = new HashMap<String,String>();
+			map.put("PASSWORD",this.password);
+			map.put("ROLE",this.role);
+			map.put("LASTLOGIN",this.lastlogin);
 			
+			n = db.update(t_name, map, "USERID", this.userid);
 		}
-		int n = db.executeUpdate(query);
+		
 		db.disconnect();
 		
 		if(n > 0) return true;

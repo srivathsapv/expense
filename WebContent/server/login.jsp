@@ -21,8 +21,11 @@
 	Db db = new Db();
 	db.connect();
 	
-	String query = "SELECT COUNT(*) FROM LOGIN WHERE USERID = '" + username + "' AND PASSWORD = '" + Authentication.publicEncrypt(password, username) + "'";
-	ResultSet rs = db.executeQuery(query);
+	String wherecols[] = {"USERID","PASSWORD"};
+	String wherevals[] = {username,Authentication.publicEncrypt(password, username)};
+	String logicalconnectors[] = {"","AND"};
+	
+	ResultSet rs = db.select("LOGIN","COUNT(*)",wherecols,wherevals,logicalconnectors); 
 	try{
 		rs.next();
 		if(rs.getInt(1) == 1) {
@@ -66,7 +69,7 @@
 		}
 	}
 	catch(Exception e){
-		System.out.println(e.getMessage());
+		e.printStackTrace();
 	}
 	db.disconnect();
 %>

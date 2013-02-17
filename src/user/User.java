@@ -6,6 +6,7 @@ package user;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 
 import db.Db;
 
@@ -421,35 +422,33 @@ public class User {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
-		
-		if(this.userid.equals("")) {
-			query = "INSERT INTO " + t_name + " VALUES(DEFAULT,'" + 
-					this.socialSecurity + "','" + this.firstName + "','" + this.middleName + "','" + 
-					this.lastName + "','" + this.gender+ "','" + this.deptid + "','" + this.designation + "','" + 
-					this.address + "','" + this.phone + "','" + this.mobile + "','" + 
-					this.email  + "','" + this.photo + "','" + this.dob.toString() + "')";
-					
+		int n = 0;
+		if(this.userid.equals("")) {		
+			String values[] = {this.socialSecurity,this.firstName,this.middleName,this.lastName,
+							   this.gender,Integer.toString(this.deptid),this.designation,this.address,this.phone,
+							   this.mobile,this.email,this.photo,this.dob.toString()};
+			
+			this.userid = db.insert(t_name, values, true,true).toString();
+			n=1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET SOCIALSECURITY = '" + 
-					this.socialSecurity + "', FIRSTNAME = '" + 
-					this.firstName + "', MIDDLENAME = '" + 
-					this.middleName + "', LASTNAME = '" + 
-					this.lastName + "', GENDER = '" + 
-					this.gender + "', DEPTID= '" + 
-					this.deptid + "', DESIGNATION = '" + 
-					this.designation + "', ADDRESS = '" + 
-					this.address + "', PHONE = '" + 
-					this.phone + "', MOBILE = '" + 
-					this.mobile + "', EMAIL = '" + 
-					this.email + "', PHOTO = '" + 
-					this.photo + "', DOB = '" + 
-					this.dob.toString() + "' WHERE USERID = '" + this.userid + "'";
-		
+			HashMap<String,String> map = new HashMap<String,String>();
+				
+			map.put("SOCIALSECURITY",this.socialSecurity);
+			map.put("FIRSTNAME",this.firstName);
+			map.put("MIDDLENAME",this.middleName);
+			map.put("LASTNAME",this.lastName);
+			map.put("GENDER",this.gender);
+			map.put("DEPTID",Integer.toString(this.deptid));
+			map.put("DESIGNATION", this.designation);
+			map.put("ADDRESS",this.address);
+			map.put("MOBILE",this.mobile);
+			map.put("EMAIL",this.email);
+			map.put("PHOTO", this.photo);
+			map.put("DOB", this.dob.toString());
 			
+			n = db.update(t_name,map,"USERID",this.userid);
 		}
-		int n = db.executeUpdate(query);
 		db.disconnect();
 		
 		if(n > 0) return true;

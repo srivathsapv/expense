@@ -6,6 +6,7 @@ package report;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 
 import db.Db;
 
@@ -234,18 +235,27 @@ public class Report {
 		
 		String query = "";
 		
+		int n=0;
 		if(this.reportid == 0) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.title  + "','" + this.description + "','" + 
-					this.type + "','" + this.date.toString() + "','" + this.userid + "','" + this.file + "')";
+			String values[] = {this.title,this.description,this.type,this.date.toString(),this.userid,this.file};
+			this.reportid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
 		}
 		else {
 			query = "UPDATE " + t_name + " SET TITLE = '" + this.title + "', DESCRIPTION = '" + 
 					this.description + "', TYPE = '" + this.type + "', DATE = '" + this.date.toString() + "' USERID = '" + 
 					this.userid + "', FILE = '" + this.file + "' WHERE REPORTID = " + this.reportid;
 			
+			HashMap<String,String> map = new HashMap<String,String>();
+			
+			map.put("TITLE",this.title);
+			map.put("DESCRIPTION",this.description);
+			map.put("TYPE",this.type);
+			map.put("DATE", this.date.toString());
+			map.put("USERID", this.userid);
+			map.put("FILE",this.file);
+			
+			n = db.update(t_name,map,"REPORTID",Integer.toString(this.reportid));
 		}
-		int n = db.executeUpdate(query);
 		db.disconnect();
 		
 		if(n > 0) return true;

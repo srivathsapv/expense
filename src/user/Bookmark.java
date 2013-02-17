@@ -5,6 +5,7 @@ package user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import db.Db;
 
@@ -35,9 +36,9 @@ public class Bookmark {
 	/**
 	 * Id of the user who has saved the bookmark
 	 * 
-	 * @var Integer
+	 * @var String
 	 */
-	private int userid;
+	private String userid;
 	
 	/**
 	 * Title of the bookmark
@@ -75,7 +76,7 @@ public class Bookmark {
 		rs.next();
 		
 		this.id = id;
-		this.userid = rs.getInt("USERID");
+		this.userid = rs.getString("USERID");
 		this.title = rs.getString("TITLE");
 		this.link = rs.getString("LINK");
 		
@@ -96,7 +97,7 @@ public class Bookmark {
 	 * 
 	 * @return Integer
 	 */
-	public int getUserid() {
+	public String getUserid() {
 		return this.userid;
 	}
 	
@@ -105,7 +106,7 @@ public class Bookmark {
 	 * 
 	 * @param Integer
 	 */
-	public void setUserid(int userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	
@@ -157,18 +158,22 @@ public class Bookmark {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
-		
+		int n=0;
 		if(this.id == 0) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.userid  + "','" + this.title + "','" + this.link + "')";
+			String values[] = {this.userid,this.title,this.link};
+			this.id = Integer.parseInt(db.insert(t_name, values, true,true).toString());
+			n=1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET USERID = '" + this.userid + "', " +
-					"TITLE = '" + this.title + "', LINK = '" + this.link + "' WHERE ID = '" + this.id + "'";
+			HashMap<String,String> map = new HashMap<String,String>();
 			
+			map.put("USERID",this.userid);
+			map.put("TITLE",this.title);
+			map.put("LINK",this.link);
+			
+			n = db.update(t_name,map,"ID",Integer.toString(this.id));
 		}
-		int n = db.executeUpdate(query);
+		
 		db.disconnect();
 		
 		if(n > 0) return true;

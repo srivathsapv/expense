@@ -6,8 +6,8 @@ package voucher;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 
-import policy.Policy;
 import db.Db;
 
 /**
@@ -198,6 +198,27 @@ public class Status{
 		
 		return list;
 	}
+	
+	/**
+	 * Returns a count based on the values
+	 * 
+	 * @param String - Column name as filter parameter
+	 * @param String - Value
+	 * 
+	 * @return Integer - The count
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public static int count(String column,String value) throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		rs.next();
+		
+		return rs.getInt(1);
+	}
 
 
 	/**
@@ -208,22 +229,27 @@ public class Status{
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public boolean saveStatus() throws ClassNotFoundException, SQLException {
+	public boolean save() throws ClassNotFoundException, SQLException {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
 		
+		int n =0;
 		if(this.statusid == 0) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.voucherid + "','" + this.status + "','" + this.userid + "','" + this.time +"')";
+			String values[] = {Integer.toString(this.voucherid),this.status,this.userid,this.time.toString()};
+			this.statusid = Integer.parseInt(db.insert(t_name, values, true,true).toString());
+			n=1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET VOUCHERID = '" + this.voucherid + "', " +
-					"STATUS = '" + this.status + "', USERID = '" + this.userid + "', TIME = '" + this.time + "' WHERE STATUSID = '" + this.statusid + "'";
+			HashMap<String,String> map = new HashMap<String,String>();
+			
+			map.put("VOUCHERID",Integer.toString(this.voucherid));
+			map.put("STATUS",this.status);
+			map.put("USERID",this.userid);
+			map.put("TIME", this.time.toString());
 			
 		}
-		int n = db.executeUpdate(query);
+		
 		db.disconnect();
 		
 		if(n > 0) return true;

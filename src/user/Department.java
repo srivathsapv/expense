@@ -5,6 +5,7 @@ package user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
 import db.Db;
 
@@ -184,20 +185,24 @@ public class Department {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
 		
+		int n = 0;
 		if(this.deptid == 0) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.deptname  + "','" + this.shortname + "','" + 
-					this.description + "','" + this.userid + "')";
+			String values[] = {this.deptname,this.shortname,this.description,this.userid};
+			this.deptid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
+			n=1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET DEPTNAME = '" + this.deptname + "', SHORTNAME = '" + 
-					this.shortname + "', DESCRIPTION = '" + this.description + "', USERID = '" + 
-					this.userid + "' WHERE DEPTID = " + this.deptid;
+			HashMap<String,String> map = new HashMap<String,String>();
 			
+			map.put("DEPTNAME",this.deptname);
+			map.put("SHORTNAME",this.shortname);
+			map.put("DESCRIPTION",this.description);
+			map.put("USERID", this.userid);
+			
+			n=db.update(t_name, map, "DEPTID", Integer.toString(this.deptid));
 		}
-		int n = db.executeUpdate(query);
+		
 		db.disconnect();
 		
 		if(n > 0) return true;

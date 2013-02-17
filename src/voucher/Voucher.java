@@ -1,25 +1,23 @@
-	/**
-	 * Package that contains classes related to voucher
-	 */
-	package voucher;
+/**
+ * Package that contains classes related to voucher
+ */
+package voucher;
 	
-	
-	import java.sql.ResultSet;
-	import java.sql.SQLException;
-	import  java.util.Date;
-
-import org.omg.CORBA.Current;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Date;
+import java.util.HashMap;
 
 import db.Db;
 
 	 
-	/**
-	 * @author	Saranya C
-	 * @email	saranyachidambaram11@gmail.com
-	 * @date	12/01/2013
-	 * 
-	 * Voucher contains detail regarding the employee's expense.
-	 */
+/**
+ * @author	Saranya C
+ * @email	saranyachidambaram11@gmail.com
+ * @date	12/01/2013
+ * 
+ * Voucher contains detail regarding the employee's expense.
+ */
 
 
 public class Voucher {
@@ -123,16 +121,15 @@ public class Voucher {
 		rs.next();
 		
 		this.voucherid = voucherid;
-		this.userid = rs.getString("userid");
-		this.title = rs.getString("title");
-		this.amount = rs.getInt("amount");
-		this.vtypeid=rs.getInt("vtypeid");
-		this.date=rs.getDate("date");
-		this.description=rs.getString("description");
-		this.attachment=rs.getString("attachment");
-		this.rejectReason=rs.getString("rejectReason");
-		this.policyid=rs.getInt("policyid");
-		
+		this.userid = rs.getString("USERID");
+		this.title = rs.getString("TITLE");
+		this.amount = rs.getInt("AMOUNT");
+		this.vtypeid=rs.getInt("VTYPEID");
+		this.date=rs.getDate("DATE");
+		this.description=rs.getString("DESCRIPTION");
+		this.attachment=rs.getString("ATTACHMENT");
+		this.rejectReason=rs.getString("REJECTREASON");
+		this.policyid=rs.getInt("POLICYID");
 		
 		db.disconnect();
 	}
@@ -311,27 +308,90 @@ public class Voucher {
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public boolean createVoucher() throws ClassNotFoundException, SQLException {
+	public boolean save() throws ClassNotFoundException, SQLException {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
-		
+		int n = 0;
 		if(this.voucherid == 0) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.userid  + "','" + this.title + "','" + this.amount + "','" + this.vtypeid + "','"+ this.date + "','" + this.description + "','" + this.attachment + "','" + this.rejectReason+ "','" + this.policyid + "')";
+			String values[] = {this.userid,this.title,Double.toString(this.amount),
+							   Integer.toString(this.vtypeid),this.date.toString(),
+							   this.description,this.attachment,this.rejectReason,Integer.toString(this.policyid)};
+			
+			this.voucherid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
+			n = 1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET USERID = '" + this.userid + "', " +
-					"TITLE = '" + this.title + "', AMOUNT = '" + this.amount + "', VTYPEID = '" + this.vtypeid+ "', DATE = '" + this.date +"', DESCRIPTION = '" + this.description +"', ATTACHMENT = '" + this.attachment + "', REJECT_REASON = '" + this.rejectReason + "', POLICYID = '" + this.policyid +"' WHERE VOUCHERID = '" + this.voucherid + "'";
+			HashMap<String,String> map = new HashMap<String,String>();
 			
+			map.put("USERID",this.userid);
+			map.put("TITLE",this.title);
+			map.put("AMOUNT",Double.toString(this.amount));
+			map.put("VTYPEID",Integer.toString(this.vtypeid));
+			map.put("DATE",this.date.toString());
+			map.put("DESCRIPTION",this.description);
+			map.put("ATTACHMENT",this.attachment);
+			map.put("REJECTREASON",this.rejectReason);
+			map.put("POLICYID",Integer.toString(this.policyid));
 			
+			n = db.update(t_name, map, "VOUCHERID", Integer.toString(this.voucherid));
 		}
-		int n = db.executeUpdate(query);
+		
 		db.disconnect();
 		
 		if(n > 0) return true;
 		else return false;
+	}
+	
+	/**
+	 * Returns a list of user objects
+	 * 
+	 * @param String - Column name as the filter parameter
+	 * @param String - Value
+	 * 
+	 * @return Array[user.User]
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public static Voucher[] list(String column,String value) throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		rs.next();
+		
+		Voucher[] list = new Voucher[rs.getInt(1)];
+		
+		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value);
+		
+		int i=0;
+		while(rs.next()) {
+			list[i++] = new Voucher(rs.getInt("VOUCHERID"));
+		}
+		
+		return list;
+	}
+	
+	/**
+	 * Returns a count based on the values
+	 * 
+	 * @param String - Column name as filter parameter
+	 * @param String - Value
+	 * 
+	 * @return Integer - The count
+	 * 
+	 * @throws ClassNotFoundException
+	 * @throws SQLException
+	 */
+	public static int count(String column,String value) throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		rs.next();
+		
+		return rs.getInt(1);
 	}
 
 }

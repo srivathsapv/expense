@@ -5,8 +5,7 @@ package voucher;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import user.Bookmark;
+import java.util.HashMap;
 
 import db.Db;
 
@@ -134,17 +133,25 @@ public class Type {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
+		int n = 0;
 		
 		if(this.vtypeid == 0) {
-			query = "INSERT INTO " + t_name +
-					" VALUES(DEFAULT,'" + this.title  + "','" + this.description + "')";
+						
+			String values[] = {this.title,this.description};
+			this.vtypeid = Integer.parseInt(db.insert(t_name, values, true,true).toString());
+			n=1;
 		}
 		else {
-			query = "UPDATE " + t_name + " SET TITLE = '" + this.title + "', DESCRIPTION = '" + this.description + "' WHERE VTYPEID = '" + this.vtypeid + "'";
+			
+			
+			HashMap<String,String> map = new HashMap<String,String>();
+			
+			map.put("TITLE",this.title);
+			map.put("DESCRIPTION",this.description);
+			
+			n = db.update(t_name, map, "VTYPEID",Integer.toString(this.vtypeid));
 			
 		}
-		int n = db.executeUpdate(query);
 		db.disconnect();
 		
 		if(n > 0) return true;

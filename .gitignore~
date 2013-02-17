@@ -1,5 +1,6 @@
-src/db/dbconfig.cfg
+src/utility/LocalValues.java
 .settings/
 .classpath
 .project
 build/
+WebContent/test/
