@@ -11,7 +11,7 @@
 				java.security.NoSuchAlgorithmException,
 				java.sql.Timestamp,
 				java.text.SimpleDateFormat,
-				java.util.Date" 
+				java.util.Date"
 %>
 
 <%
