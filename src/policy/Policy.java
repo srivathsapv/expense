@@ -148,7 +148,7 @@ public class Policy {
 	 * 
 	 * @param Integer
 	 */
-	public void setAmountPercent(int amountPercent) {
+	public void setAmountPercent(double amountPercent) {
 		this.amountPercent = amountPercent;
 	}
 	/**

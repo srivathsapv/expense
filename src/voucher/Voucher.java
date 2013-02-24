@@ -66,9 +66,9 @@ public class Voucher {
 	/**
 	 * Date of creation of the voucher
 	 * 
-	 * @var Date
+	 * @var String
 	 */
-	private Date date;
+	private String date;
 	
 	/**
 	 * Description about the voucher
@@ -125,7 +125,7 @@ public class Voucher {
 		this.title = rs.getString("TITLE");
 		this.amount = rs.getInt("AMOUNT");
 		this.vtypeid=rs.getInt("VTYPEID");
-		this.date=rs.getDate("DATE");
+		this.date=rs.getString("DATE");
 		this.description=rs.getString("DESCRIPTION");
 		this.attachment=rs.getString("ATTACHMENT");
 		this.rejectReason=rs.getString("REJECTREASON");
@@ -182,7 +182,7 @@ public class Voucher {
 	 * 
 	 * @return Double
 	 */
-	public Double getAmount() {
+	public double getAmount() {
 		return this.amount;
 	}
 	
@@ -191,7 +191,7 @@ public class Voucher {
 	 * 
 	 * @param Double
 	 */
-	public void setAmount(Double amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	
@@ -216,9 +216,9 @@ public class Voucher {
 	/**
 	 * Gets the date of creation of the voucher
 	 * 
-	 * @return Date
+	 * @return String
 	 */
-	public Date getDate() {
+	public String getDate() {
 		return this.date;
 	}
 	
@@ -227,8 +227,8 @@ public class Voucher {
 	 * 
 	 * @param String
 	 */
-	public void setDate() {
-		this.date = new java.util.Date();
+	public void setDate(String d) {
+		this.date = d;
 	}
 	
 	/**
