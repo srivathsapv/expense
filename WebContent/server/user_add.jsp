@@ -71,7 +71,6 @@
 	SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
 	Date d1 = fmt.parse(values[5]);
 	
-	
 	SimpleDateFormat fmt2 = new SimpleDateFormat("yyyy-MM-dd");
 	String d2 = fmt2.format(d1);
 	
