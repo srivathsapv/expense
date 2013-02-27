@@ -30,8 +30,17 @@ $(document).ready(function(){
 		ajaxcheck(this,'number');
 		
 	});
-	
 	/** Number fields **/
+	
+	/** Decimal Fields **/
+	
+	$("[valtype~='decimal']").blur(function(){
+		if($(this).val() == '') { return ;}
+		ajaxcheck(this,'decimal');
+		
+	});
+	
+	/** Decimal fields **/
 	
 	
 	/** Alphabet fields**/

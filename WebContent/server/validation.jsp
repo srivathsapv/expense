@@ -7,6 +7,9 @@
 	if(valtype.equals("number")){
 		msg = Boolean.toString(Validation.isNumeric(value));
 	}
+	if(valtype.equals("decimal")){
+		msg = Boolean.toString(Validation.isDecimal(value));
+	}
 	
 	if(valtype.equals("alpha")){
 		msg = Boolean.toString(Validation.isAlpha(value, 0));

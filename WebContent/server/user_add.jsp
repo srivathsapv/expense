@@ -6,8 +6,6 @@
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%
-	
-	//photo!!
 	String values[] = new String[13];
 	int i =0;
 	String path = "";
@@ -30,10 +28,7 @@
 	        		values[i++] = item.getString();
 	        } 
 	        else {
-	        	try {
-	        		Date date = new Date();
-	        		Timestamp tstamp = new Timestamp(date.getTime());
-	        		
+	        	try {	        		
 		            String itemName = item.getName();
 		            path = config.getServletContext().getRealPath("/")+"uploads/"+itemName;
 		            File savedFile = new File(path);

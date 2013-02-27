@@ -7,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import user.User;
+
 
 import db.Db;
 
@@ -82,10 +84,10 @@ public class Policy {
 		rs.next();
 		
 		this.policyid = policyid;
-		this.title = rs.getString("title");
-		this.description=rs.getString("descriptiion");
-		this.amountPercent=rs.getInt("amountPercent");
-		this.available=rs.getInt("available");
+		this.title = rs.getString("TITLE");
+		this.description=rs.getString("DESCRIPTION");
+		this.amountPercent=rs.getInt("AMOUNTPERCENT");
+		this.available=rs.getInt("AVAILABLE");
 		
 		db.disconnect();
 	}
@@ -185,16 +187,28 @@ public class Policy {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM"+ t_name +" WHERE " + column + " = '" + value);
+		String cnt_query = "";
+		String query = "";
+		if(column.equals("")){
+			query = "SELECT * FROM " + t_name;
+			cnt_query = "SELECT COUNT(*) FROM " + t_name;
+			
+		}
+		else {
+			query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+			cnt_query = "SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+		}
+		
+		ResultSet rs = db.executeQuery(cnt_query);
 		rs.next();
 		
 		Policy[] list = new Policy[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM"+ t_name +"WHERE " + column + " = '" + value);
+		rs = db.executeQuery(query);
 		
 		int i=0;
 		while(rs.next()) {
-			list[i++] = new Policy(rs.getInt("policyid"));
+			list[i++] = new Policy(rs.getInt("POLICYID"));
 		}
 		
 		return list;
@@ -223,7 +237,7 @@ public class Policy {
 			HashMap<String,String> map = new HashMap<String,String>();
 			map.put("TITLE",this.title);
 			map.put("DESCRIPTION",this.description);
-			map.put("AMOUNT_PERCENT",Double.toString(this.amountPercent));
+			map.put("AMOUNTPERCENT",Double.toString(this.amountPercent));
 			map.put("AVAILABLE",Integer.toString(this.available));
 			
 			n = db.update(t_name, map, "POLICYID", Integer.toString(this.policyid));

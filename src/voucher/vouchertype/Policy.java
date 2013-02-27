@@ -94,12 +94,30 @@ public class Policy {
 	}
 	
 	/**
+	 * Sets the id of the voucher type
+	 * 
+	 * @param Integer
+	 */
+	public void setVtypeid(int vtid) {
+		this.vtypeid = vtid;
+	}
+	
+	/**
 	 * Gets the id of the policy
 	 * 
 	 * @return Integer
 	 */
 	public int getPolicyid() {
 		return this.policyid;
+	}
+	
+	/**
+	 * Sets the id of the policy
+	 * 
+	 * @param Integer
+	 */
+	public void setPolicyid(int pid) {
+		this.policyid = pid;
 	}
 	
 	/**
@@ -169,14 +187,14 @@ public class Policy {
 		
 		int n =0;
 		if(this.id == 0) {
-			String values[] = {Integer.toString(this.policyid),Integer.toString(this.vtypeid)};
+			String values[] = {Integer.toString(this.vtypeid),Integer.toString(this.policyid)};
 			this.id = Integer.parseInt(db.insert(t_name, values, true,true).toString());
 			n=1;
 		}
 		else {
 			HashMap<String,String> map = new HashMap<String,String>();
 			
-			map.put("DEPTID",Integer.toString(this.policyid));
+			map.put("POLICYID",Integer.toString(this.policyid));
 			map.put("VTYPEID",Integer.toString(this.vtypeid));
 			
 			n = db.update(t_name,map,"ID",Integer.toString(this.id));

@@ -22,6 +22,15 @@ public class Validation {
 	}
 	
 	/**
+	 * Checks if the string is all decimal or not
+	 * 
+	 * @return Boolean
+	 */
+	public static boolean isDecimal(String input) {
+		return input.matches("[0-9]+(.[0-9][0-9]?)?");
+	}
+	
+	/**
 	 * Checks if the string contains only alphabets
 	 * 
 	 * @param String

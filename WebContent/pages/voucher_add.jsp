@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import = "voucher.Type"%>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - Add New Voucher</title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
@@ -7,7 +7,7 @@
 <script src = "../js/tiny_mce/tiny_mce.js"></script>
 <script type = "text/javascript">
 	$(function(){
-		$("#dp1").datepicker({format: 'dd-mm-yyyy'});	
+		$("#date").datepicker({format: 'dd-mm-yyyy'});	
 	});
 	
 	tinyMCE.init({
@@ -38,31 +38,35 @@
 
 </style>
 <div id = "body-content">
-	<form method = "POST" class="validate">
+	<form method = "POST" class="validate" action = "../server/voucher_add.jsp" enctype="multipart/form-data">
   		<fieldset>
     		<legend>
     			Add new voucher
     			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter details about your voucher and submit to claim your expenses</p>
     		</legend><br>
     		
-    		<input class = "span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" type="text" placeholder="Enter a title...">
+    		<input class = "span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" type="text" id = "title" name = "title" placeholder="Enter a title...">
     		
     		<div class="input-prepend">
 				<span class="add-on rupee">`</span>
-			  	<input class="span4 prepend-input required" valtype="number required" valmsg="Numeric value expected" id="prependedInput" type="text" placeholder="Enter the amount...">
+			  	<input class="span4 prepend-input required prependedInput" valtype="decimal required" valmsg="Demail value with precision of 2 is expected" id = "amount" name = "amount" type="text" placeholder="Enter the amount...">
 			</div>
-   			<select class = "span4">
-   				<option value = ''>Select Voucher Type</option>
-   				<option value = 'type1'>Type1</option>
-   				<option value = 'type2'>Type2</option>
+   			<select class = "span4" id = "type" name = "type">
+   				<option value = "">Choose Voucher Type</option>
+   				<%
+   					Type[] types = Type.list("","");
+   					for(Type t : types) {
+   						%> <option value = "<%= t.getVtypeid() %>"><%= t.getTitle() %></option> <%
+   					}
+   				%>
    			</select><br>
    			<div class = "input-append">
-   				<input type="text" class="span4 append-input" placeholder="Select the date..." id="dp1" >
+   				<input type="text" class="span4 append-input" placeholder="Select the date..." id="date" name = "date">
    				<span class = "add-on"><i class="icon-calendar"></i></span>
    			</div>
    			<label>Enter Description</label>
-   			<textarea rows="10" cols = "50"></textarea><br>
-			<label>Upload Attachment</label><input class = "span4" type="file">			
+   			<textarea rows="10" cols = "50" id = "description" name = "description"></textarea><br>
+			<label>Upload Attachment</label><input class = "span4" type="file" id = "attachment" name = "attachment">			
     		<br><input type="submit" class="btn btn-info" value = "Add Voucher">
   		</fieldset>
 	</form>

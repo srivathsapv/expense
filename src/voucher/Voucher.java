@@ -316,9 +316,14 @@ public class Voucher {
 		if(this.voucherid == 0) {
 			String values[] = {this.userid,this.title,Double.toString(this.amount),
 							   Integer.toString(this.vtypeid),this.date.toString(),
-							   this.description,this.attachment,this.rejectReason,Integer.toString(this.policyid)};
+							   this.description,null,this.rejectReason,Integer.toString(this.policyid)};
 			
 			this.voucherid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
+			
+			//insert attachment
+			if(!this.attachment.equals(""))
+				db.updateBlob(t_name,"ATTACHMENT","VOUCHERID",Integer.toString(this.voucherid),this.attachment);
+			
 			n = 1;
 		}
 		else {
@@ -330,11 +335,15 @@ public class Voucher {
 			map.put("VTYPEID",Integer.toString(this.vtypeid));
 			map.put("DATE",this.date.toString());
 			map.put("DESCRIPTION",this.description);
-			map.put("ATTACHMENT",this.attachment);
+			map.put("ATTACHMENT",null);
 			map.put("REJECTREASON",this.rejectReason);
 			map.put("POLICYID",Integer.toString(this.policyid));
 			
 			n = db.update(t_name, map, "VOUCHERID", Integer.toString(this.voucherid));
+			
+			//update attachment
+			if(!this.attachment.equals(""))
+				db.updateBlob(t_name,"ATTACHMENT","VOUCHERID",Integer.toString(this.voucherid),this.attachment);
 		}
 		
 		db.disconnect();

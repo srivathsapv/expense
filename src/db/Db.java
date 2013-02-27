@@ -165,7 +165,7 @@ public class Db {
 		query = "INSERT INTO " + table + " VALUES(";
 		
 		if(default_value)
-			query += "DEFAULT";
+			query += "DEFAULT,";
 		
 		for(int i=0;i<values.length;i++){
 			query += "?,";
@@ -173,7 +173,7 @@ public class Db {
 		
 		query = query.substring(0,query.length()-1);
 		query += ")";
-		
+		System.out.println(query);
 		PreparedStatement stmt;
 		if(generate_keys)
 			stmt=con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
@@ -257,8 +257,6 @@ public class Db {
 		int i=1;
 		while(iter.hasNext()){
 			Map.Entry cur = (Map.Entry)iter.next();
-			System.out.println(cur.getKey().toString());
-			System.out.println(cur.getValue().toString());
 			stmt.setString(i++, cur.getValue().toString());
 		}
 		if(!whereValue.equals(""))

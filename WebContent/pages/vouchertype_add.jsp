@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import = "policy.Policy,utility.Utility" %>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - New Voucher Type</title>
 <script src = "../js/bootstrap-multiselect.js"></script>
@@ -16,7 +16,17 @@
     </script>
 
 <div id="body-content">
-	<form method = "POST">
+	<%
+		if(request.getParameter("status") != null) {
+			if(request.getParameter("status").equals(Utility.MD5("success"))){
+				%> <div class = "alert alert-success">Voucher type added successfully</div> <%
+			}
+			else if(request.getParameter("status").equals(Utility.MD5("error"))) {
+				%> <div class = "alert alert-error">Error while adding voucher type</div> <%	
+			}	
+		}
+	%>
+	<form method = "POST" action = "../server/vouchertype_add.jsp">
 		<fieldset>
 			<legend>
 				Create New Voucher Type
@@ -26,15 +36,16 @@
 				</p>
 			</legend>
 			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" id="voucher_name"
-				placeholder="Enter voucher name..."><br />
-			<textarea rows="5" cols="50" placeholder="Enter a description..."></textarea>
+				placeholder="Enter the Title ..." name = "title"><br />
+			<textarea rows="5" cols="50" placeholder="Enter a description..." name = "description"></textarea>
 			<br />
-			<select id = "policy" multiple="multiple">
-				<option value = "policy1">Policy 1</option>
-				<option value = "policy2">Policy 2</option>
-				<option value = "policy3">Policy 3</option>
-				<option value = "policy4">Policy 4</option>
-				<option value = "policy5">Policy 5</option>
+			<select id = "policy" name = "policy" multiple="multiple">
+				<%
+					Policy[] policies = Policy.list("","");
+					for(Policy p : policies) {
+						%> <option value = "<%= p.getPolicyid() %>"><%= p.getTitle() %></option> <%
+					}
+				%>
 			</select>
 			<br /> <br />
 			<input type = "submit" class = "btn btn-info" value = "Add Voucher Type">
