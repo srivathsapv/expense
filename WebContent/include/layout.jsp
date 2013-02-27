@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import = "auth.Authentication,user.User" %>
+<%@ page import = "auth.Authentication,user.User,java.util.Map" %>
 <html>
 	<head>
 		<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
@@ -82,7 +82,18 @@
 		<%
 			//Session Check
 			if(session.getAttribute("sessionUser") == null) {
-				response.sendRedirect("login.jsp?redirect_to="+request.getRequestURL());
+				String paramStr = "";
+				Map<String, String[]> parameters = request.getParameterMap();
+				for(String parameter : parameters.keySet()) {	
+			        String[] values = parameters.get(parameter);
+			        paramStr += parameter + "=" + values[0] + "&";
+			        
+				    
+				}
+				paramStr = paramStr.substring(0,paramStr.length()-1);
+				String redirectStr = request.getRequestURL().toString();
+				if(!paramStr.equals("")) redirectStr += "?" + paramStr;
+				response.sendRedirect("login.jsp?redirect_to="+redirectStr);
 				return;
 			}
 		%>

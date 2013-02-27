@@ -59,6 +59,13 @@ public class Authentication {
 	private String lastlogin;
 	
 	/**
+	 * Secure ID for OAuth
+	 * 
+	 * @var String
+	 */
+	private String secureId;
+	
+	/**
 	 * Mode of creation
 	 * 
 	 * @var String
@@ -93,6 +100,7 @@ public class Authentication {
 		this.password = rs.getString("PASSWORD");
 		this.role = rs.getString("ROLE");
 		this.lastlogin = rs.getString("LASTLOGIN");
+		this.secureId = rs.getString("SECUREID");
 		
 		db.disconnect();
 	}
@@ -156,7 +164,7 @@ public class Authentication {
 	 */
 	private String encrypt(String password) throws NoSuchAlgorithmException {
 		
-        String hasheduserid = Utility.MD5(password);
+        String hasheduserid = Utility.MD5(this.userid);
         
         String salt = password + "{" + hasheduserid + "}";
         String output = Utility.MD5(salt);
@@ -208,6 +216,24 @@ public class Authentication {
 	}
 	
 	/**
+	 * Gets the secure ID of OAuth
+	 * 
+	 * @return String
+	 */
+	public String getSecureId(){
+		return this.secureId;
+	}
+	
+	/**
+	 * Sets the secure ID for OAuth
+	 * 
+	 * @param String
+	 */
+	public void setSecureId(String sid){
+		this.secureId = sid;
+	}
+	
+	/**
 	 * Saves the local values to the database
 	 * 
 	 * @return Boolean - Returns true on success
@@ -221,7 +247,7 @@ public class Authentication {
 		
 		int n =0;
 		if(mode.equals("insert")) {
-			String values[] = {this.userid,this.password,this.role,this.lastlogin};
+			String values[] = {this.userid,this.password,this.role,this.lastlogin,this.secureId};
 			db.insert(t_name, values , false, false).toString();
 			n=1;
 		}
@@ -231,6 +257,7 @@ public class Authentication {
 			map.put("PASSWORD",this.password);
 			map.put("ROLE",this.role);
 			map.put("LASTLOGIN",this.lastlogin);
+			map.put("SECUREID",this.secureId);
 			
 			n = db.update(t_name, map, "USERID", this.userid);
 		}

@@ -3,6 +3,10 @@
  */
 package db;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -163,8 +167,10 @@ public class Db {
 		if(default_value)
 			query += "DEFAULT";
 		
-		for(int i=0;i<values.length;i++)
+		for(int i=0;i<values.length;i++){
 			query += "?,";
+		}
+		
 		query = query.substring(0,query.length()-1);
 		query += ")";
 		
@@ -251,6 +257,8 @@ public class Db {
 		int i=1;
 		while(iter.hasNext()){
 			Map.Entry cur = (Map.Entry)iter.next();
+			System.out.println(cur.getKey().toString());
+			System.out.println(cur.getValue().toString());
 			stmt.setString(i++, cur.getValue().toString());
 		}
 		if(!whereValue.equals(""))
@@ -258,6 +266,41 @@ public class Db {
 		
 		return stmt.executeUpdate();
 		
+	}
+	
+	/**
+	 * Create blob data and updates it in the database
+	 * 
+	 * @param String
+	 * The table name
+	 * 
+	 * @param String
+	 * The WHERE clause column name
+	 * 
+	 * @param String
+	 * The WHERE clause column's value
+	 * 
+	 * @param String
+	 * The file path
+	 * 
+	 * @throws java.sql.SQLException
+	 * @throws java.io.FileNotFoundException
+	 */
+	public int updateBlob(String tableName,String col,String whereCol,String whereVal,String path) throws SQLException{
+		
+		String query = "UPDATE " + tableName + " SET " + col + "  = ? WHERE " + whereCol + " = '" + whereVal + "'";
+		PreparedStatement stmt = con.prepareStatement(query);
+		
+		File file = new File(path);
+		int success=0;
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			stmt.setBinaryStream(1,(InputStream)fis,(int)(file.length()));
+			success = stmt.executeUpdate();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		return success;
 	}
 }
 

@@ -29,6 +29,26 @@
 	try{
 		rs.next();
 		if(rs.getInt(1) == 1) {
+			
+			// for OpenAuthentication
+			if(request.getParameter("mode") != null){
+				if(request.getParameter("mode").equals("sid")){
+					Date d = new Date();
+					Timestamp t = new Timestamp(d.getTime());
+					String timestamp = t.toString();
+					
+					String encUnameStr = Utility.MD5(Utility.MD5("{vowcher---secure--id--!|-" + username + "==|=" + password + "}"));
+					String sid = Utility.MD5(encUnameStr + Utility.MD5(timestamp));
+					
+					Authentication secureAuth = new Authentication(username);
+					secureAuth.setSecureId(sid);
+					secureAuth.save();
+					
+					%> <%= sid %> <%
+					return;
+				}
+			}
+			
 			 // Writing the user object to the session
 			User sessionUser = new User(username);
 			session.setAttribute("sessionUser",sessionUser);
@@ -46,6 +66,7 @@
 			session.setAttribute("lastlogin",lastLogin);
 			
 			auth.setLastlogin();
+			auth.setSecureId("");
 			auth.save();			
 			if(request.getParameter("redirect").equals("dashboard")) {	
 				response.sendRedirect("../pages/dashboard.jsp");
@@ -57,6 +78,12 @@
 			}
 		}
 		else {
+			if(request.getParameter("mode") != null){
+				if(request.getParameter("mode").equals("sid")){
+					%> invalid <%
+					return;
+				}
+			}
 			java.util.Date date = new java.util.Date();
 			String timeStamp = new Timestamp(date.getTime()).toString();
 			session.setAttribute("timestamp",timeStamp);

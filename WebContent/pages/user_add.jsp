@@ -6,7 +6,7 @@
 <script src = "../js/bootstrap-datepicker.js"></script>
 <script type = "text/javascript">
 	$(function(){
-		$("#dp1").datepicker({format: 'dd-mm-yyyy'});
+		$("#dob").datepicker({format: 'dd-mm-yyyy'});
 	});
 </script>
 <div id = "body-content">
@@ -21,33 +21,33 @@
 		}
 		
 	%>
-	<form method = "POST" class = "validate" action = "../server/user_add.jsp">
+	<form method = "POST" class = "validate" action = "../server/user_add.jsp" enctype="multipart/form-data">
   		<fieldset>
     		<legend>
     			New User
     			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p>
     		</legend><br>
-    		<input class = "span4 required" type = "text" valtype = "required alphanumeric unique_username" valmsg = "Username should be alphanumeric" name = "userid" placeholder = "Choose a login ID ..."><br/>
-    		<input class = "span4 required" valtype = "required alpha" valmsg="First name should contain only alphabets" type="text" name = "firstName" placeholder="First name..."><br/>
-    		<input class = "span4" type="text" valtype = "alpha" valmsg="Middle name should contain only alphabets" name = "middleName" placeholder="Middle name..."><br>
-    		<input class = "span4" type="text" valtype = "alpha" valmsg="Last name should contain only alphabets" name = "lastName" placeholder="Last Name..."><br>
-    		<input class = "span4 required" valtype = "required alphanumeric" valmsg="Invalid Social security key" name = "socialSecurity" type="text" placeholder="Social Security..."><br>
+    		<input class = "span4 required" type = "text" valtype = "required alphanumeric unique_username" valmsg = "Username should be alphanumeric" id = "userid" name = "userid" placeholder = "Choose a login ID ..."><br/>
+    		<input class = "span4 required" valtype = "required alpha" valmsg="First name should contain only alphabets" type="text" id = "firstName" name = "firstName" placeholder="First name..."><br/>
+    		<input class = "span4" type="text" valtype = "alpha" valmsg="Middle name should contain only alphabets" id = "middleName" name = "middleName" placeholder="Middle name..."><br>
+    		<input class = "span4" type="text" valtype = "alpha" valmsg="Last name should contain only alphabets" id = "lastName" name = "lastName" placeholder="Last Name..."><br>
+    		<input class = "span4 required" valtype = "required alphanumeric" valmsg="Invalid Social security key" id = "socialSecurity" name = "socialSecurity" type="text" placeholder="Social Security..."><br>
     		
     		<label>Date of Birth</label>
     		<div class = "input-append">
-   				<input type="text" class="span4 append-input" name = "dob" valtype = "required" placeholder="Date of birth..." id="dp1" >
+   				<input type="text" class="span4 append-input" id = "dob" name = "dob" valtype = "required" placeholder="Date of birth..." >
    				<span class = "add-on required"><i class="icon-calendar"></i></span>
    			</div>
    			<label>Gender</label>
    			<label class = "radio">
-   				<input type = "radio" name = "gender" value = "male" checked>
+   				<input type = "radio" id = "gender" name = "gender" value = "M" checked>
    				Male
    			</label>
    			<label class = "radio">
-   				<input type = "radio" name = "gender" value = "female">
+   				<input type = "radio" id = "gender" name = "gender" value = "F">
    				Female
    			</label>
-    		<select class = "span4 required" valtype = "required" name = "deptid">
+    		<select class = "span4 required" valtype = "required" id = "deptid" name = "deptid">
     			<option value = "">Choose Department</option>
    				<%
    					Department[] depts = Department.list("","");
@@ -56,22 +56,22 @@
    					}
    				%>
    			</select><br>
-   			<input class = "span4 required" name = "designation" valtype = "required alpha" valmsg="Designation should contain only alphabets" type="text" placeholder="Designation..."><br>
+   			<input class = "span4 required" id = "designation" name = "designation" valtype = "required alpha" valmsg="Designation should contain only alphabets" type="text" placeholder="Designation..."><br>
     		<textarea rows="5" cols = "50" name = "address" placeholder="Address..."></textarea><br>
     		<div>
     		<span class="input-prepend">
 				<span class="add-on rupee">+</span>
-    			<input class = "span4 prepend-input" name = "phone" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Phone number...">
+    			<input class = "span4 prepend-input" id = "phone" name = "phone" id="prependedInput" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Phone number...">
     		</span>
     		</div><p></p>
     		<div>
     		<span class="input-prepend">
 				<span class="add-on rupee">+</span>
-    			<input class = "span4 prepend-input" id="prependedInput" name = "mobile" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Mobile...">
+    			<input class = "span4 prepend-input" id="prependedInput" id = "mobile" name = "mobile" type="text" valtype = "number" valmsg = "Numeric value expected" placeholder="Mobile...">
     		</span>
     		</div><p></p>
-    		<input class = "span4 required" type="text" name = "email" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
-    		<label>Upload Photo</label><input name = "photo" class = "span4" type="file"><br>
+    		<input class = "span4 required" type="text" id = "email" name = "email" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
+    		<label>Upload Photo</label><input id = "photo" name = "photo" class = "span4" type="file"><br>
     		<br><input type="submit" class="btn btn-info" value = "Add User">
     	</fieldset>
 	</form>

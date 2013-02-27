@@ -5,7 +5,6 @@ package user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 import java.util.HashMap;
 
 import db.Db;
@@ -446,9 +445,14 @@ public class User {
 		if(mode.equals("insert")) {		
 			String values[] = {this.userid,this.socialSecurity,this.firstName,this.middleName,this.lastName,
 							   this.gender,Integer.toString(this.deptid),this.designation,this.address,this.phone,
-							   this.mobile,this.email,this.photo,this.dob.toString()};
+							   this.mobile,this.email,null,this.dob.toString()};
 			
 			db.insert(t_name, values, false,false).toString();
+			
+			//insert photo
+			if(!this.photo.equals(""))
+				db.updateBlob(t_name,"PHOTO","USERID",this.userid,this.photo);
+			
 			n=1;
 		}
 		else {
@@ -463,11 +467,16 @@ public class User {
 			map.put("DESIGNATION", this.designation);
 			map.put("ADDRESS",this.address);
 			map.put("MOBILE",this.mobile);
-			map.put("EMAIL",this.email);
-			map.put("PHOTO", this.photo);
+			map.put("EMAIL",this.email);			
 			map.put("DOB", this.dob.toString());
+			map.put("PHOTO", null);
 			
 			n = db.update(t_name,map,"USERID",this.userid);
+			
+			//update photo
+			if(!this.photo.equals(""))
+				db.updateBlob(t_name, "PHOTO", "USERID", this.userid, this.photo);
+			
 		}
 		db.disconnect();
 		
