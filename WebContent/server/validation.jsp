@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import = "utility.Validation,auth.Authentication"%>
+    pageEncoding="UTF-8" import = "utility.Validation,auth.Authentication,user.User"%>
 <%
 	String valtype = request.getParameter("valtype");
 	String value = request.getParameter("value");
@@ -36,9 +36,24 @@
 		if(n > 0) 
 			msg = "false";
 		else 
-			msg = "true";
-		
+			msg = "true";	
 	}
+	
+	if(valtype.equals("check_old")){
+		User user = (User)session.getAttribute("sessionUser");
+		Authentication auth = new Authentication(user.getUserid());
+		if(!auth.isPassword(value))
+			msg = "false";
+		else
+			msg = "true";
+	}
+	if(valtype.equals("pass_length")){
+		if(value.length() < 6) 
+			msg = "false";
+		else
+			msg = "true";
+	}
+	
 	
 	//include other validation types here
 %>

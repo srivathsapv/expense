@@ -1,4 +1,6 @@
-$(document).ready(function(){
+var validated = false;
+
+$(document).ready(function() {	
 	/** Required field error check **/
 	
 	$(".validate").submit(function(){
@@ -86,12 +88,32 @@ $(document).ready(function(){
 	
 	/**Unique Username**/
 	$("[valtype~='unique_username']").blur(function(){
-		if($(this).val() == '') { return ;}
+		if($(this).val() == '') { return; }
 		ajaxcheck(this,'unique_username');
 		
 	});
 	/**Unique Username**/
 	
+	/**Check old password**/
+	$("[valtype~='check_old']").blur(function(){
+		if($(this).val() == '') { return; }
+		ajaxcheck(this,'check_old');
+	});
+	/**Check old password**/
+	
+	/**Check password confirmation**/
+	$("#confirm").blur(function(){
+		if($(this).val() == ''){ return; }
+		ajaxcheck(this,'confirm_password');
+	});
+	/**Check password confirmation**/
+	
+	/**Check password length**/
+	$("[valtype~='pass_length']").blur(function(){
+		if($(this).val() == '') { return; }
+		ajaxcheck(this,'pass_length');
+	});
+	/**Check password length**/
 });
 
 
@@ -114,19 +136,31 @@ function ajaxcheck(currentElement,type){
 	
 	if(type == 'unique_username')
 		valmsg = "Username already exists";
+	else if(type == 'check_old')
+		valmsg = "Old password is incorrect";
+	else if(type == 'confirm_password') {
+		valmsg = "Passwords do not match";
+		element = $("#confirm");
+	}
+		
 	
 	$.ajax({
 		type:"POST",
 		data: "valtype="+type+"&value=" + $(currentElement).val(),
 		url: "../server/validation.jsp",
 		success:function(msg){
-			
+			if(type == 'confirm_password'){
+				if($("#curr").val() != $("#confirm").val())
+					msg = "false";
+				else
+					msg = "true";
+			}
 			if(msg.indexOf("false") >= 0){
 				if(element.parent().find("> .text-error").html() == undefined) {
 					element.wrap("<span class = 'control-group error'></span>");
 					element.after("<div class = 'text-error'>" + valmsg + "</div>");
-					currentElement.focus();
 				}
+				currentElement.focus();
 			}
 			else {
 				try{

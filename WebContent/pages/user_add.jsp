@@ -19,7 +19,6 @@
 				%> <div class = "alert alert-error">Error while adding user</div> <%	
 			}	
 		}
-		
 	%>
 	<form method = "POST" class = "validate" action = "../server/user_add.jsp" enctype="multipart/form-data">
   		<fieldset>
