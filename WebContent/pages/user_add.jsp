@@ -7,6 +7,10 @@
 <script type = "text/javascript">
 	$(function(){
 		$("#dob").datepicker({format: 'dd-mm-yyyy'});
+		$(".refresh").click(function(){
+			$("img[src='../captchaImg']").attr("src","../captchaImg");
+		});
+	
 	});
 </script>
 <div id = "body-content">
@@ -70,8 +74,10 @@
     		</span>
     		</div><p></p>
     		<input class = "span4 required" type="text" id = "email" name = "email" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
-    		<label>Upload Photo</label><input id = "photo" name = "photo" class = "span4" type="file"><br>
-    		<br><input type="submit" class="btn btn-info" value = "Add User">
+    		<label>Upload Photo</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
+    		<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi"></i><br><br>
+    		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha"><br><br>
+    		<input type="submit" class="btn btn-info" value = "Add User">
     	</fieldset>
 	</form>
 </div>

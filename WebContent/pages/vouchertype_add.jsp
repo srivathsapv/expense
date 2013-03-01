@@ -26,7 +26,7 @@
 			}	
 		}
 	%>
-	<form method = "POST" action = "../server/vouchertype_add.jsp">
+	<form method = "POST" action = "../server/vouchertype_add.jsp" class = "validate">
 		<fieldset>
 			<legend>
 				Create New Voucher Type

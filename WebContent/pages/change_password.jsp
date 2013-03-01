@@ -1,7 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import = "utility.Utility"%>
 <%@ include file = "../include/layout.jsp" %>
-
+<script>
+	$(document).ready(function(){
+		$(".refresh").click(function(){
+			$("img[src='../captchaImg']").attr("src","../captchaImg");
+		});
+	});
+</script>
 <title>Vowcher - Change Password</title>
 <div id = "body-content">
 	<%
@@ -24,7 +30,9 @@
 			<input class = "span4 required" valtype="required pass_length" id = "curr" type="password" name = "password" valmsg = "Password should contain at least 6 characters" placeholder="Enter the new password..."><br>
 			<input class = "span4 required" valtype="required pass_length" id = "confirm" type="password" valmsg = "Password should contain at least 6 characters" placeholder="Confirm password..."><br>
 			
-			<br><input type="submit" class="btn btn-info" value = "Change Password">
+			<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi"></i><br><br>
+    		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha"><br><br>
+			<input type="submit" class="btn btn-info" value = "Change Password">
 		</fieldset>
 	</form>
 </div>

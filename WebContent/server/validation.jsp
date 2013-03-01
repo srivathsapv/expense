@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import = "utility.Validation,auth.Authentication,user.User"%>
+    pageEncoding="UTF-8" import = "utility.Validation,auth.Authentication,user.User,nl.captcha.Captcha"%>
 <%
 	String valtype = request.getParameter("valtype");
 	String value = request.getParameter("value");
@@ -54,7 +54,14 @@
 			msg = "true";
 	}
 	
-	
-	//include other validation types here
+	if(valtype.equals("captcha")){
+		Captcha c = (Captcha)session.getAttribute(Captcha.NAME);
+		request.setCharacterEncoding("UTF-8");
+		String answer = request.getParameter("value");
+		if(!c.isCorrect(answer))
+			msg = "false";
+		else
+			msg = "true";
+	}
 %>
 <%= msg %>

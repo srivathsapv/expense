@@ -3,8 +3,7 @@ var validated = false;
 $(document).ready(function() {	
 	/** Required field error check **/
 	
-	$(".validate").submit(function(){
-		
+	$(".validate").submit(function(){		
 		$(".alert-error").remove();
 		
 		$("[valtype~='required']").each(function(index,element){
@@ -13,8 +12,7 @@ $(document).ready(function() {
 				return false;
 			}
 		});
-		
-		if($(".alert-error").html() == undefined){
+		if($(".alert-error").html() == undefined && $(".text-error").html() == undefined){
 			return true;
 		}
 		else {
@@ -24,11 +22,18 @@ $(document).ready(function() {
 	
 	/** Required field error check ends **/
 	
+	/** Captcha field **/
+	$("input[name='captcha']").blur(function(){
+		if($(this).val() == '') { return; }
+		ajaxcheck(this,'captcha');
+	});
+	/** Captcha field **/
+	
 	
 	/** Number fields **/
 	
 	$("[valtype~='number']").blur(function(){
-		if($(this).val() == '') { return ;}
+		if($(this).val() == '') { return; }
 		ajaxcheck(this,'number');
 		
 	});
@@ -142,7 +147,6 @@ function ajaxcheck(currentElement,type){
 		valmsg = "Passwords do not match";
 		element = $("#confirm");
 	}
-		
 	
 	$.ajax({
 		type:"POST",
