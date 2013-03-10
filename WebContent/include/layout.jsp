@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import = "auth.Authentication,user.User,java.util.Map" %>
+<%@ page import = "auth.Authentication,user.User,java.util.Map,java.io.File" %>
 <html>
 	<head>
 		<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
@@ -87,14 +87,21 @@
 				for(String parameter : parameters.keySet()) {	
 			        String[] values = parameters.get(parameter);
 			        paramStr += parameter + "=" + values[0] + "&";
-			        
-				    
 				}
-				paramStr = paramStr.substring(0,paramStr.length()-1);
 				String redirectStr = request.getRequestURL().toString();
-				if(!paramStr.equals("")) redirectStr += "?" + paramStr;
-				response.sendRedirect("login.jsp?redirect_to="+redirectStr);
-				return;
+				if(!redirectStr.equals("")){
+					if(!paramStr.equals("")) {
+						paramStr = paramStr.substring(0,paramStr.length()-1);
+						redirectStr += "?" + paramStr;
+					}
+					response.sendRedirect("login.jsp?redirect_to="+redirectStr);
+					return;	
+				}
+				else {
+					response.sendRedirect("login.jsp");
+					return;
+				}
+				
 			}
 		%>
 		<div class = "wrapper">
@@ -198,11 +205,31 @@
 							<h5 class = "sidebar-title"><i class = "icon-envelope icon-white"></i>Drafts</h5>
 							<div class = "sidebar-content">
 								<ul>
-									<li>First voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
+									<%
+									String directory_path = config.getServletContext().getRealPath("/")+"drafts/";
+									String files;
+									File folder = new File(directory_path);
+									File[] listOfFiles = folder.listFiles();
+									
+									User layout_user = (User)session.getAttribute("sessionUser");
+									String layout_username = layout_user.getUserid();
+									
+									for (int i = 0; i < listOfFiles.length; i++) 
+									{
+										if (listOfFiles[i].isFile()) 
+								 		{
+								 			files = listOfFiles[i].getName();
+								 			String[] parts = files.split("-");
+								 			if(parts[0].equals(layout_username)){
+								 				String shortened_filename = parts[1];
+								 				if(parts[1].length() > 15){
+								 					shortened_filename = parts[1].substring(0,15) + "...";
+								 				}
+								 				%> <li><a href = '../pages/voucher_add.jsp?mode=drafts&filename=<%=files%>'><%= shortened_filename %></a></li> <%
+								 			}
+								    	}
+									}
+									%>
 								</ul>
 							</div>
 						</div>

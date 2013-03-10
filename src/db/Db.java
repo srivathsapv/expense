@@ -173,7 +173,6 @@ public class Db {
 		
 		query = query.substring(0,query.length()-1);
 		query += ")";
-		System.out.println(query);
 		PreparedStatement stmt;
 		if(generate_keys)
 			stmt=con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);

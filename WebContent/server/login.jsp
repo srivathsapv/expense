@@ -11,8 +11,7 @@
 				java.security.NoSuchAlgorithmException,
 				java.sql.Timestamp,
 				java.text.SimpleDateFormat,
-				java.util.Date"
-%>
+				java.util.Date"%>
 
 <%
 	String username = Utility.filter(request.getParameter("username"));
@@ -91,8 +90,14 @@
 			String status = "{failed}" + timeStamp;
 	        String hashedstatus = Utility.MD5(status);
 	        
-			response.sendRedirect("../pages/login.jsp?status="+hashedstatus);
-			return;	
+	        if(request.getParameter("redirect") != null){
+	        	response.sendRedirect("../pages/login.jsp?status="+hashedstatus+"&redirect_to="+request.getParameter("redirect"));
+	        	return;
+	        }
+	        else{
+	        	response.sendRedirect("../pages/login.jsp?status="+hashedstatus);
+	        	return;
+	        }
 		}
 	}
 	catch(Exception e){
