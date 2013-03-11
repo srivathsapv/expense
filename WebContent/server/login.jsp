@@ -12,7 +12,6 @@
 				java.sql.Timestamp,
 				java.text.SimpleDateFormat,
 				java.util.Date"%>
-
 <%
 	String username = Utility.filter(request.getParameter("username"));
 	String password = Utility.filter(request.getParameter("password"));

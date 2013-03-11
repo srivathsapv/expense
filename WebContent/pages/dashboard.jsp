@@ -14,6 +14,6 @@
 		<div id = "lastlogin" class = "font-italic">Your last login was on <%= session.getAttribute("lastlogin").toString() %></div>
 	</legend>
 	
-	<!--  <h3><i class = "icon-star notif-icon"></i>Notifications</h3>-->
+	<h3><i class = "icon-star notif-icon"></i>Notifications</h3>
 	
 </div>

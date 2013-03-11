@@ -1,4 +1,5 @@
 <%@ page import="utility.Utility,user.Department,user.User,auth.Authentication,java.text.*,java.util.*" %>
+<%@ include file = "server_authenticate.jsp" %>
 <%
 	String deptname = Utility.filter(request.getParameter("deptname"));
 	String shortname = Utility.filter(request.getParameter("shortname"));

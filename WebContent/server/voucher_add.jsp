@@ -5,8 +5,9 @@
 <%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ include file = "server_authenticate.jsp" %>
 <%
-	String values[] = new String[5];
+	String values[] = new String[6];
 	
 	int i =0;
 	String path = "";
@@ -68,6 +69,11 @@
 	
 	if(voucher_success)
 	{
+		//delete the draft
+		if(!values[5].equals("")){
+			File draft_file = new File(config.getServletContext().getRealPath("/")+"drafts/"+values[5]);
+			draft_file.delete();
+		}
 		response.sendRedirect("../pages/voucher_add.jsp?status=" + Utility.MD5("success"));
 		return;
 	}

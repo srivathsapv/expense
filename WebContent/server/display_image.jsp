@@ -1,5 +1,6 @@
 <%@ page import ="java.sql.ResultSet,java.sql.Blob,db.Db,java.io.OutputStream" %>
 <%@ page trimDirectiveWhitespaces="true" %>
+<%@ include file = "server_authenticate.jsp" %>
 <%
 	String userid = request.getParameter("userid");
 	

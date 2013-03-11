@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import = "utility.Validation,auth.Authentication,user.User,nl.captcha.Captcha"%>
+<%@ include file = "server_authenticate.jsp" %>
 <%
 	String valtype = request.getParameter("valtype");
 	String value = request.getParameter("value");

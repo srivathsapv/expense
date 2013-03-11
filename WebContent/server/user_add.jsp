@@ -5,8 +5,9 @@
 <%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ include file = "server_authenticate.jsp" %>
 <%
-	String values[] = new String[14];
+	String values[] = new String[17];
 	int i =0;
 	String path = "";
 	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -47,7 +48,7 @@
 	
 	new_login.setUserid(values[0]);
 	new_login.setPassword("asdf"); //later change it to random
-	new_login.setRole("emp");
+	new_login.setRole(values[7]);
 	new_login.setLastlogin();
 	new_login.setSecureId(""); //OAuth ID is initially null
 	
@@ -72,12 +73,13 @@
 	user.setDate(d2);
 	
 	user.setGender(values[6]);
-	user.setDeptid(Integer.parseInt(values[7]));
-	user.setDesignation(values[8]);
-	user.setAddress(values[9]);
-	user.setPhone(values[10]);
-	user.setMobile(values[11]);
-	user.setEmail(values[12]);
+	user.setDeptid(Integer.parseInt(values[8]));
+	user.setManager(values[9]);
+	user.setDesignation(values[10]);
+	user.setAddress(values[11]);
+	user.setPhone(values[12]);
+	user.setMobile(values[13]);
+	user.setEmail(values[14]);
 	user.setPhoto(path);
 	
 	boolean user_success = user.save();

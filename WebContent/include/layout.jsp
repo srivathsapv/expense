@@ -213,8 +213,8 @@
 									
 									User layout_user = (User)session.getAttribute("sessionUser");
 									String layout_username = layout_user.getUserid();
-									
-									for (int i = 0; i < listOfFiles.length; i++) 
+									int i =0;
+									for (i = 0; i < listOfFiles.length; i++) 
 									{
 										if (listOfFiles[i].isFile()) 
 								 		{
@@ -228,6 +228,9 @@
 								 				%> <li><a href = '../pages/voucher_add.jsp?mode=drafts&filename=<%=files%>'><%= shortened_filename %></a></li> <%
 								 			}
 								    	}
+									}
+									if(i == 0){
+										%> No drafts saved <%
 									}
 									%>
 								</ul>

@@ -10,7 +10,29 @@
 		$(".refresh").click(function(){
 			$("img[src='../captchaImg']").attr("src","../captchaImg");
 		});
-	
+		$("#deptid").change(function(){
+			$.ajax({
+				type : "POST",
+				data : "mode=managers&deptid="+$(this).val(),
+				url : "../server/fetch_data.jsp",
+				success:function(msg){
+					$("#manager").html(msg);
+				}
+			});
+		});
+		
+		$("#photo").change(function(){
+			var filename = $(this).val();
+			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
+			ext = ext.toLowerCase();
+			
+			if(!(ext == "jpeg" || ext == "jpg" || ext =="png")) {
+				alert("." + ext + " files are not allowed");
+			}
+			
+			$(this).val("");
+		});
+		
 	});
 </script>
 <div id = "body-content">
@@ -50,6 +72,13 @@
    				<input type = "radio" id = "gender" name = "gender" value = "F">
    				Female
    			</label>
+   			<select class = "span4 required" valtype = "required" id = "role" name = "role">
+   				<option value = "">Type of user</option>
+   				<option value = "employee">Employee</option>
+   				<option value = "manager">Manager</option>
+   				<option value = "ceo">Chief Executive Officer</option>
+   				<option value = "md">Managing Director</option>
+   			</select><br>
     		<select class = "span4 required" valtype = "required" id = "deptid" name = "deptid">
     			<option value = "">Choose Department</option>
    				<%
@@ -58,6 +87,9 @@
    						%> <option value = "<%= d.getDeptid() %>"><%= d.getDeptname() %></option> <%
    					}
    				%>
+   			</select><br>
+   			<select class = "span4 required" valtype = "required" id = "manager" name = "manager">
+   				<option value = "">Choose Manager</option>
    			</select><br>
    			<input class = "span4 required" id = "designation" name = "designation" valtype = "required alpha" valmsg="Designation should contain only alphabets" type="text" placeholder="Designation..."><br>
     		<textarea rows="5" cols = "50" name = "address" placeholder="Address..."></textarea><br>
@@ -74,7 +106,7 @@
     		</span>
     		</div><p></p>
     		<input class = "span4 required" type="text" id = "email" name = "email" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
-    		<label>Upload Photo</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
+    		<label>Upload Photo (jpg, jpeg, png)</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
     		<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi"></i><br><br>
     		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha" id = "captcha"><br><br>
     		<input type="submit" class="btn btn-info" value = "Add User">

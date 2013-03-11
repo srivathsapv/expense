@@ -7,7 +7,7 @@
     							   javax.xml.transform.dom.*,
     							   javax.xml.transform.stream.*,
     							   java.sql.Timestamp,user.User,utility.Utility"%>
-
+<%@ include file = "server_authenticate.jsp" %>
 <%
 	if(session.getAttribute("sessionUser") == null) return;
 	

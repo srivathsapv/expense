@@ -13,9 +13,6 @@
 <script src = "../js/bootstrap-datepicker.js"></script>
 <script src = "../js/tiny_mce/tiny_mce.js"></script>
 <script src = "../js/bootstrap-alert.js"></script>
-<%
-	String hello = "hey";
-%>
 <script type = "text/javascript">
 	$(document).ready(function(){
 		$("#date").datepicker({format: 'dd-mm-yyyy'});
@@ -56,6 +53,18 @@
 				}
 			});
 		});
+		
+		$("#attachment").change(function(){
+			var filename = $(this).val();
+			var ext = filename.substring(filename.lastIndexOf(".")+1,filename.length);
+			ext = ext.toLowerCase();
+			
+			if(!(ext == "doc" || ext == "docx" || ext == "jpeg" || ext == "pdf" || ext == "jpg" || ext =="png")) {
+				alert("." + ext + " files are not allowed");
+			}
+			
+			$(this).val("");
+		});
 	});
 	
 	tinyMCE.init({
@@ -89,11 +98,12 @@
 	<%
 		String mode = "";
 		String title="";String amount="";String type="";String date="";String description="";
+		String filename="";
 		if(request.getParameter("mode") != null){
 			mode = request.getParameter("mode");
 		}
 		if(mode.equals("drafts")){
-			String filename = request.getParameter("filename");
+			filename = request.getParameter("filename");
 			String path = config.getServletContext().getRealPath("/")+"drafts/"+filename;
 			File fXmlFile = new File(path);
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -129,7 +139,7 @@
    				<%
    					Type[] types = Type.list("","");
    					for(Type t : types) {
-   						if(mode.equals("drafts")) {
+   						if(mode.equals("drafts") && !type.equals("")) {
    							if(t.getVtypeid() == Integer.parseInt(type)){
    								%> <option value = "<%= t.getVtypeid() %>" selected = "true"><%= t.getTitle() %></option> <%
    							}
@@ -146,7 +156,7 @@
    			</div>
    			<label>Enter Description</label>
    			<textarea rows="10" cols = "50" id = "description" name = "description"><%=description %></textarea><br>
-			<label>Upload Attachment</label><input class = "span4" type="file" id = "attachment" name = "attachment">			
+			<label>Upload Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment">			
     		<br><input type="submit" class="btn btn-info" value = "Add Voucher">
     		<input type = "button" id="draft" class = "btn btn-warning" value = "Save Draft">
     		<%
@@ -154,6 +164,7 @@
     				%> <input type = "button" id="discard-draft" class = "btn btn-danger" value = "Discard Draft"> <%
     			}
     		%>
+    		<input type = "hidden" name = "draft_filename" id = "draft_filename" value = "<%= filename %>">
   		</fieldset>
 	</form>
 	

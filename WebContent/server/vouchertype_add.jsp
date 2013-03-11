@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" import = "utility.Utility,voucher.Type,voucher.vouchertype.Policy"%>
+<%@ include file = "server_authenticate.jsp" %>
 <%
 	String title = Utility.filter(request.getParameter("title"));
 	String description = Utility.filter(request.getParameter("description"));

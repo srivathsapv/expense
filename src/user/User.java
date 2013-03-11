@@ -75,6 +75,13 @@ public class User {
 	private int deptid;
 	
 	/**
+	 * Manager of the user
+	 * 
+	 * @var String
+	 */
+	private String manager;
+	
+	/**
 	 * User's designation
 	 * 
 	 * @var String
@@ -162,6 +169,7 @@ public class User {
 		this.lastName = rs.getString("LASTNAME");
 		this.gender = rs.getString("GENDER");
 		this.deptid = rs.getInt("DEPTID");
+		this.manager = rs.getString("MANAGER");
 		this.designation = rs.getString("DESIGNATION");
 		this.address = rs.getString("ADDRESS");
 		this.phone = rs.getString("PHONE");
@@ -301,6 +309,24 @@ public class User {
 	 */
 	public void setDeptid(int deptid) {
 		this.deptid = deptid;
+	}
+	
+	/**
+	 * Gets the user id of the manager
+	 * 
+	 * @return String
+	 */
+	public String getManager() {
+		return this.manager;
+	}
+	
+	/**
+	 * Sets the user id of the manager
+	 * 
+	 * @param String
+	 */
+	public void setManager(String mgr){
+		this.manager = mgr;
 	}
 	
 	/**
@@ -444,7 +470,7 @@ public class User {
 		int n = 0;
 		if(mode.equals("insert")) {		
 			String values[] = {this.userid,this.socialSecurity,this.firstName,this.middleName,this.lastName,
-							   this.gender,Integer.toString(this.deptid),this.designation,this.address,this.phone,
+							   this.gender,Integer.toString(this.deptid),this.manager,this.designation,this.address,this.phone,
 							   this.mobile,this.email,null,this.dob.toString()};
 			
 			db.insert(t_name, values, false,false).toString();
@@ -464,6 +490,7 @@ public class User {
 			map.put("LASTNAME",this.lastName);
 			map.put("GENDER",this.gender);
 			map.put("DEPTID",Integer.toString(this.deptid));
+			map.put("MANAGER",this.manager);
 			map.put("DESIGNATION", this.designation);
 			map.put("ADDRESS",this.address);
 			map.put("MOBILE",this.mobile);
