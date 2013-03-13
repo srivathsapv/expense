@@ -2,7 +2,7 @@
  * Package that contains general utility classes
  */
 package utility;
-
+import org.apache.commons.validator.routines.EmailValidator;
 /**
  * @author	Srivathsa PV
  * @email	pv.srivathsa@gmail.com
@@ -68,7 +68,7 @@ public class Validation {
 	 * @return Boolean
 	 */
 	public static boolean isEmail(String input) {
-        return input.matches("(\\W*\\w+\\W*)*[@]\\w+[.]\\w+");
+        return EmailValidator.getInstance().isValid(input);
     }
 	
 	/**
