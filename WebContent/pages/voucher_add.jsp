@@ -61,9 +61,10 @@
 			
 			if(!(ext == "doc" || ext == "docx" || ext == "jpeg" || ext == "pdf" || ext == "jpg" || ext =="png")) {
 				alert("." + ext + " files are not allowed");
+				$(this).val("");
 			}
 			
-			$(this).val("");
+			
 		});
 	});
 	
@@ -143,10 +144,11 @@
    							if(t.getVtypeid() == Integer.parseInt(type)){
    								%> <option value = "<%= t.getVtypeid() %>" selected = "true"><%= t.getTitle() %></option> <%
    							}
-   							else {
-   								%> <option value = "<%= t.getVtypeid() %>"><%= t.getTitle() %></option> <%
-   							}
    						}
+						else {
+ 							%> <option value = "<%= t.getVtypeid() %>"><%= t.getTitle() %></option> <%
+ 						}
+   						
    					}
    				%>
    			</select><br>

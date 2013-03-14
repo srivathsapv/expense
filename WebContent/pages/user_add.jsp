@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
     pageEncoding="UTF-8" import = "user.Department,utility.Utility"%>
-<%@ include file = "../include/layout.jsp" %>
+<%@ include file ="../include/layout.jsp" %>
 <title>Vowcher - Add New User</title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
 <script src = "../js/bootstrap-datepicker.js"></script>
@@ -28,9 +28,8 @@
 			
 			if(!(ext == "jpeg" || ext == "jpg" || ext =="png")) {
 				alert("." + ext + " files are not allowed");
+				$(this).val("");
 			}
-			
-			$(this).val("");
 		});
 		
 	});

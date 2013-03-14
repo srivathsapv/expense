@@ -11,6 +11,7 @@
 	
 	int i =0;
 	String path = "";
+	String ext = "";
 	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 	if (!isMultipart) {
 	} else {
@@ -34,6 +35,7 @@
 	        	try {	        		
 		            String itemName = item.getName();
 		            path = config.getServletContext().getRealPath("/")+"uploads/"+itemName;
+		            ext = itemName.substring(itemName.lastIndexOf(".")+1,itemName.length());
 		            File savedFile = new File(path);
 		            item.write(savedFile);
 		            
@@ -64,9 +66,12 @@
 	
 	voucher.setDescription(values[4]);
 	voucher.setAttachment(path);
+	voucher.setExtension(ext);
 	
 	boolean voucher_success = voucher.save();
 	
+	
+	//adding notifications, status , etc etc
 	if(voucher_success)
 	{
 		//delete the draft
@@ -74,7 +79,7 @@
 			File draft_file = new File(config.getServletContext().getRealPath("/")+"drafts/"+values[5]);
 			draft_file.delete();
 		}
-		response.sendRedirect("../pages/voucher_add.jsp?status=" + Utility.MD5("success"));
+		response.sendRedirect("../pages/voucher_view.jsp?status=" + Utility.MD5("success")+"&id="+voucher.getVoucherid());
 		return;
 	}
 	else {

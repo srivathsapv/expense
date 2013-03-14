@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import = "auth.Authentication,user.User,java.util.Map,java.io.File" %>
+<%@ page import = "auth.Authentication,user.User,java.util.Map,java.io.File,voucher.Voucher" %>
 <html>
 	<head>
 		<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
@@ -153,7 +153,11 @@
 	              	<li class="dropdown">
 	                	<a id="drop6" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-wrench icon-white"></i>My Account<b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop6">
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-user"></i>Personal Details</a></li>
+	                		<%
+	                			User l_user = (User)session.getAttribute("sessionUser");
+	                			String l_username = l_user.getUserid();
+	                		%>
+	                  		<li><a tabindex="-1" href="../pages/user_view.jsp?userid=<%=l_username%>"><i class = "icon-user"></i>Personal Details</a></li>
 	                  		<li><a tabindex="-1" href="change_password.jsp"><i class = "icon-pencil"></i>Change Password</a></li>
 	                  		<li><a onclick="logout()" class = "poi"><i class = "icon-off"></i>Signout</a></li>
 	                	</ul>
@@ -179,12 +183,22 @@
 							<h5 class = "sidebar-title"><i class = "icon-file icon-white"></i>Recent Vouchers</h5>
 							<div class = "sidebar-content">
 								<ul>
-									<li>First voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
+									<%
+										Voucher[] vouchers = Voucher.list("userid",l_username,5);
+										int i=0;
+										for(Voucher v:vouchers){
+											String title = v.getTitle();
+											if(title.length() > 15){
+												title = title.substring(0,15) + "...";
+											}
+											%> <li><a href = "../pages/voucher_view.jsp?id=<%=v.getVoucherid() %>"><%= title %></a></li> <%
+											i++;
+										}
+									%>
 								</ul>
+								<%
+									if(i==0) %> <center>No recent vouchers</center> <%
+									else %> <center><i class = "icon-search icon-white"></i><a href = "../pages/voucher_list.jsp?userid=<%=l_username %>">View all</a></center>
 							</div>
 						</div>
 						
@@ -213,7 +227,7 @@
 									
 									User layout_user = (User)session.getAttribute("sessionUser");
 									String layout_username = layout_user.getUserid();
-									int i =0;
+									i =0;
 									for (i = 0; i < listOfFiles.length; i++) 
 									{
 										if (listOfFiles[i].isFile()) 

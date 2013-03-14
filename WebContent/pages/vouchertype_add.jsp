@@ -39,6 +39,7 @@
 				placeholder="Enter the Title ..." name = "title"><br />
 			<textarea rows="5" cols="50" placeholder="Enter a description..." name = "description"></textarea>
 			<br />
+			<label>Policy</label>
 			<select id = "policy" name = "policy" multiple="multiple">
 				<%
 					Policy[] policies = Policy.list("","");

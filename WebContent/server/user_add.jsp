@@ -34,7 +34,6 @@
 		            path = config.getServletContext().getRealPath("/")+"uploads/"+itemName;
 		            File savedFile = new File(path);
 		            item.write(savedFile);
-		            
 	                          
 	            } catch (Exception e) {
 	            	e.printStackTrace();

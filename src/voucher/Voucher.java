@@ -86,6 +86,13 @@ public class Voucher {
 	private String attachment;
 	
 	/**
+	 * File extension of the attachment
+	 * 
+	 * @var String
+	 */
+	private String extension;
+	
+	/**
 	 * Reason for the rejection of the voucher
 	 * 
 	 * @var String
@@ -128,6 +135,7 @@ public class Voucher {
 		this.date=rs.getString("DATE");
 		this.description=rs.getString("DESCRIPTION");
 		this.attachment=rs.getString("ATTACHMENT");
+		this.extension = rs.getString("EXTENSION");
 		this.rejectReason=rs.getString("REJECTREASON");
 		this.policyid=rs.getInt("POLICYID");
 		
@@ -266,6 +274,25 @@ public class Voucher {
 	public void setAttachment(String attachment) {
 		this.attachment = attachment;
 	}
+	
+	/**
+	 * Gets the file extension of the attachment
+	 * 
+	 * @return String
+	 */
+	public String getExtension() {
+		return this.extension;
+	}
+	
+	/**
+	 * Sets the file extension of the attachment
+	 * 
+	 * @param String
+	 */
+	public void setExtension(String ext){
+		this.extension = ext;
+	}
+	
 	/**
 	 * Gets the reject reason of the voucher
 	 * 
@@ -316,7 +343,7 @@ public class Voucher {
 		if(this.voucherid == 0) {
 			String values[] = {this.userid,this.title,Double.toString(this.amount),
 							   Integer.toString(this.vtypeid),this.date.toString(),
-							   this.description,null,this.rejectReason,Integer.toString(this.policyid)};
+							   this.description,null,this.extension,this.rejectReason,Integer.toString(this.policyid)};
 			
 			this.voucherid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
 			
@@ -336,6 +363,7 @@ public class Voucher {
 			map.put("DATE",this.date.toString());
 			map.put("DESCRIPTION",this.description);
 			map.put("ATTACHMENT",null);
+			map.put("EXTENSION", this.extension);
 			map.put("REJECTREASON",this.rejectReason);
 			map.put("POLICYID",Integer.toString(this.policyid));
 			
@@ -363,16 +391,20 @@ public class Voucher {
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public static Voucher[] list(String column,String value) throws ClassNotFoundException, SQLException {
+	public static Voucher[] list(String column,String value,int limit) throws ClassNotFoundException, SQLException {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'");
 		rs.next();
 		
 		Voucher[] list = new Voucher[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value);
+		String query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+		
+		if(limit != 0) query += " ORDER BY DATE FETCH FIRST " + Integer.toString(limit) + " ROWS ONLY";
+		
+		rs = db.executeQuery(query);
 		
 		int i=0;
 		while(rs.next()) {

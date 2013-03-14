@@ -22,7 +22,7 @@
 		<span class = 'designation'><%= user.getDesignation() %> - <%= deptname %> Department</span>
 	</legend>
 	<% if(user.getPhoto() != null) { %>
-		<img src = "../server/display_image.jsp?userid=<%= userid %>" class = "profile-image img-rounded img-polaroid" width = 15%>
+		<img src = "../server/display_image.jsp?userid=<%= userid %>&mode=profile_picture" class = "profile-image img-rounded img-polaroid" width = 15%>
 	<% } else { %>
 		<img src = "../img/profile_default.png" class = "profile-image img-rounded img-polaroid" width = 15%>
 	<% } %>
@@ -32,11 +32,11 @@
 	</span><br>
 	<span class = 'profile-info phone'>
 		<i class = 'icon-user'></i>
-		<%= user.getPhone() %>
+		+<%= user.getPhone() %>
 	</span><br>
 	<span class = 'profile-info mobile'>
 		<i class = 'icon-star'></i>
-		<%= user.getMobile() %>
+		+<%= user.getMobile() %>
 	</span><br>
 	<span class = 'profile-info email'>
 		<i class = 'icon-envelope'></i>
