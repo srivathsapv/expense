@@ -55,7 +55,9 @@
 				localStorage.removeItem("vowcher_username");
 				window.location = "../server/logout.jsp";
 			}
-		
+			
+			
+			
 			$(document).ready(function(){
 				$("#drop1").tooltip();
 				var width = parseInt($(".sidebar").css("width"));
@@ -63,6 +65,10 @@
 				width = width - 26;
 				$(".currency-change").css("width",width+"px");
 				$(".currency-change-menu").css("width",width+"px");
+				
+				$("button[type='button']").click(function(){
+					$(this).parent().attr("style","display:none");
+				});
 			});
 			
 			if(localStorage.vowcher_username != undefined) {

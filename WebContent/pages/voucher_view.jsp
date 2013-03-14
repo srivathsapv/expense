@@ -66,7 +66,7 @@
 	<%
 		if(request.getParameter("status") != null) {
 			if(request.getParameter("status").equals(Utility.MD5("success"))){
-				%> <div class = "alert alert-success">Voucher added successfully</div> <%
+				%> <div class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Voucher added successfully</div> <%
 			}
 			else if(request.getParameter("status").equals(Utility.MD5("error"))) {
 				%> <div class = "alert alert-error">Error while adding voucher</div> <%	

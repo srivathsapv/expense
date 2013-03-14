@@ -4,6 +4,12 @@
 package voucher;
 	
 import java.sql.ResultSet;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import utility.Utility;
+
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -327,6 +333,32 @@ public class Voucher {
 	public void setPolicyid(int policyid) {
 		this.policyid = policyid;
 	}
+	
+	/**
+	 * Get JSON representation of the class
+	 * 
+	 * @return org.json.JSONObject
+	 * @throws JSONException 
+	 */
+	public String getJSON() throws JSONException{
+		JSONObject voucher = new JSONObject();
+		
+		voucher.put("title", this.title);
+		voucher.put("amount",this.amount);
+		voucher.put("type",this.vtypeid);
+		voucher.put("date",this.date);
+		
+		String desc = this.description;
+		desc = desc.replaceAll("<","&lt;");
+		desc = desc.replaceAll(">","&gt;");
+		desc = desc.replaceAll("/","&#47");
+		desc = desc.replaceAll("\\/","");
+
+		voucher.put("description",desc);
+		
+		return voucher.toString();
+	}
+	
 	/**
 	 * Creates a new voucher with necessary detail
 	 * 

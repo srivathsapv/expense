@@ -16,16 +16,6 @@
     </script>
 
 <div id="body-content">
-	<%
-		if(request.getParameter("status") != null) {
-			if(request.getParameter("status").equals(Utility.MD5("success"))){
-				%> <div class = "alert alert-success">Voucher type added successfully</div> <%
-			}
-			else if(request.getParameter("status").equals(Utility.MD5("error"))) {
-				%> <div class = "alert alert-error">Error while adding voucher type</div> <%	
-			}	
-		}
-	%>
 	<form method = "POST" action = "../server/vouchertype_add.jsp" class = "validate">
 		<fieldset>
 			<legend>

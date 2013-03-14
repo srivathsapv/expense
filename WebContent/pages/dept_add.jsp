@@ -4,16 +4,6 @@
 <script src="../js/custom.js"></script>
 <title>Vowcher - Department Add</title> 
 <div id = "body-content">
-	<%
-		if(request.getParameter("status") != null) {
-			if(request.getParameter("status").equals(Utility.MD5("success"))){
-				%> <div class = "alert alert-success">Department added successfully</div> <%
-			}
-			else if(request.getParameter("status").equals(Utility.MD5("error"))) {
-				%> <div class = "alert alert-error">Error while adding department</div> <%	
-			}	
-		}
-	%>
 	<form method = "POST" class="validate" action = "../server/dept_add.jsp">
   		<fieldset>
     		<legend>
