@@ -104,6 +104,24 @@ public class Department {
 	}
 	
 	/**
+	 * Sets the voucher type id
+	 * 
+	 * @param Integer
+	 */
+	public void setVtypeid(Integer vtid){
+		this.vtypeid = vtid;
+	}
+	
+	/**
+	 * Sets the department id
+	 * 
+	 * @param Integer
+	 */
+	public void setDeptid(Integer did){
+		this.deptid = did;
+	}
+	
+	/**
 	 * Returns a list of departments
 	 * 
 	 * @param String - Column name as the filter parameter
@@ -117,13 +135,14 @@ public class Department {
 	public static Department[] list(String column,String value) throws ClassNotFoundException, SQLException {
 		Db db = new Db();
 		db.connect();
+		String query = "SELECT COUNT(*) FROM "+ t_name +" WHERE " + column + " = " + value;
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM"+ t_name +" WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery(query);
 		rs.next();
 		
 		Department[] list = new Department[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM"+ t_name +"WHERE " + column + " = '" + value);
+		rs = db.executeQuery("SELECT * FROM "+ t_name +" WHERE " + column + " = " + value);
 		
 		int i=0;
 		while(rs.next()) {
@@ -170,7 +189,7 @@ public class Department {
 		
 		int n =0;
 		if(this.id == 0) {
-			String values[] = {Integer.toString(this.deptid),Integer.toString(this.vtypeid)};
+			String values[] = {Integer.toString(this.vtypeid),Integer.toString(this.deptid)};
 			this.id = Integer.parseInt(db.insert(t_name, values, true,true).toString());
 			n=1;
 		}

@@ -110,10 +110,14 @@
 				
 			}
 		%>
+		<%
+   			User l_user = (User)session.getAttribute("sessionUser");
+   			String l_username = l_user.getUserid();
+   		%>
 		<div class = "wrapper">
 			<div class="navbar">
 			  <div class="navbar-inner">
-			  	<a class = "logo" href="#">
+			  	<a class = "logo" href="../pages/dashboard.jsp">
 			    	<img src = "../img/logo.png">
 			    </a>
 			    <ul class="nav">
@@ -124,8 +128,8 @@
 	                	<a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-file icon-white"></i>Voucher <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
 	                  		<li><a tabindex="-1" href="voucher_add.jsp"><i class = "icon-plus-sign"></i>New Voucher</a></li>
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i>My Vouchers</a></li>
-	                  		<li><a tabindex="-1" href="vouchertype_add.jsp"><i class = "icon-list"></i>Voucher Types</a></li>
+	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp?userid=<%=l_username%>"><i class = "icon-list-alt"></i>My Vouchers</a></li>
+	                  		<li><a tabindex="-1" href="vouchertype_list.jsp"><i class = "icon-list"></i>Voucher Types</a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
@@ -146,7 +150,7 @@
 	                	<a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-flag icon-white"></i>Policy<b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop4">
 	                  		<li><a tabindex="-1" href="policy_add.jsp"><i class = "icon-plus-sign"></i>Add New</a></li>
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i>View</a></li>
+	                  		<li><a tabindex="-1" href="policy_list.jsp"><i class = "icon-list-alt"></i>View</a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
@@ -159,10 +163,7 @@
 	              	<li class="dropdown">
 	                	<a id="drop6" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-wrench icon-white"></i>My Account<b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop6">
-	                		<%
-	                			User l_user = (User)session.getAttribute("sessionUser");
-	                			String l_username = l_user.getUserid();
-	                		%>
+	                		
 	                  		<li><a tabindex="-1" href="../pages/user_view.jsp?userid=<%=l_username%>"><i class = "icon-user"></i>Personal Details</a></li>
 	                  		<li><a tabindex="-1" href="change_password.jsp"><i class = "icon-pencil"></i>Change Password</a></li>
 	                  		<li><a onclick="logout()" class = "poi"><i class = "icon-off"></i>Signout</a></li>
@@ -204,7 +205,7 @@
 								</ul>
 								<%
 									if(i==0) %> <center>No recent vouchers</center> <%
-									else %> <center><i class = "icon-search icon-white"></i><a href = "../pages/voucher_list.jsp?userid=<%=l_username %>">View all</a></center>
+									else %> <center><i class = "icon-th-list icon-white"></i><a href = "../pages/voucher_list.jsp?userid=<%=l_username %>">View all</a></center>
 							</div>
 						</div>
 						
@@ -248,12 +249,20 @@
 								 				%> <li><a href = '../pages/voucher_add.jsp?mode=drafts&filename=<%=files%>'><%= shortened_filename %></a></li> <%
 								 			}
 								    	}
-									}
-									if(i == 0){
-										%> No drafts saved <%
+										if(i == 4) {
+											break;
+										}
 									}
 									%>
 								</ul>
+									<%
+									if(i == 0){
+										%> <center>No drafts saved</center> <%
+									}
+									else {
+										%><center><i class = "icon-th-list icon-white"></i><a href = "../pages/draft_list.jsp?userid=<%=l_username %>">View all</a></center> <%
+									}
+									%>
 							</div>
 						</div>
 					</div>

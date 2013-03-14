@@ -247,5 +247,21 @@ public class Policy {
 		if(n > 0) return true;
 		else return false;
 	}
+	
+	/**
+	 * Deletes the policy
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("VOUCHERTYPE_POLICY", "POLICYID",Integer.toString(this.policyid));
+		db.delete("POLICY", "POLICYID", Integer.toString(this.policyid));
+		
+		db.disconnect();
+	}
 
 }
