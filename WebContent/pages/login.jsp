@@ -8,7 +8,18 @@
 	<link rel="stylesheet/less" href="../less/bootstrap.less">
 	<script src = "../js/jquery-1.8.3.min.js"></script>
 	<script src="../js/less.js" type="text/javascript"></script>
-	
+	<script>
+		function setCookie() {
+			if($("#remember").is(":checked")){
+				localStorage.vowcher_username = $("#username").val();
+			}
+		}
+		
+		if(localStorage.vowcher_username != undefined) {
+			var username = localStorage.vowcher_username;
+			window.location = "dashboard.jsp?username="+username;
+		}
+	</script>
 </head>
 <body>
 	<%
@@ -24,20 +35,7 @@
 		else {
 			redirect = request.getParameter("redirect_to");
 		}
-		
 	%>
-	
-	<script>
-		function setCookie() {
-			if($("#remember").is(":checked")){
-				localStorage.vowcher_username = $("#username").val();
-			}
-		}
-		if(localStorage.vowcher_username != undefined) {
-			var username = localStorage.vowcher_username;
-			window.location = "dashboard.jsp?username="+username+"&redirect_to=<%=redirect%>";
-		}
-	</script>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="row-fluid">

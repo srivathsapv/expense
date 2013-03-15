@@ -466,21 +466,5 @@ public class Voucher {
 		
 		return rs.getInt(1);
 	}
-	
-	/**
-	 * Deletes the voucher
-	 * 
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 */
-	public void delete() throws ClassNotFoundException, SQLException{
-		Db db = new Db();
-		db.connect();
-		
-		db.delete("VOUCHER_STATUS", "VOUCHERID", Integer.toString(this.voucherid));
-		db.delete("VOUCHER", "VOUCHERID", Integer.toString(this.voucherid));
-		
-		db.disconnect();
-	}
 
 }

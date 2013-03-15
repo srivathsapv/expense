@@ -299,15 +299,6 @@ public class Db {
 		}
 		return success;
 	}
-	
-	public int delete(String tableName,String whereCol,String whereVal) throws SQLException{
-		String query = "DELETE FROM " + tableName + " WHERE " + whereCol + " = ?";
-		PreparedStatement stmt = con.prepareStatement(query);
-		stmt.setString(1,whereVal);
-		
-		return stmt.executeUpdate();
-		
-	}
 }
 
 
