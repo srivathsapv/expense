@@ -231,38 +231,40 @@
 									String files;
 									File folder = new File(directory_path);
 									File[] listOfFiles = folder.listFiles();
-									
+										
 									User layout_user = (User)session.getAttribute("sessionUser");
 									String layout_username = layout_user.getUserid();
 									i =0;
-									for (i = 0; i < listOfFiles.length; i++) 
-									{
-										if (listOfFiles[i].isFile()) 
-								 		{
-								 			files = listOfFiles[i].getName();
-								 			String[] parts = files.split("-");
-								 			if(parts[0].equals(layout_username)){
-								 				String shortened_filename = parts[1];
-								 				if(parts[1].length() > 15){
-								 					shortened_filename = parts[1].substring(0,15) + "...";
-								 				}
-								 				%> <li><a href = '../pages/voucher_add.jsp?mode=drafts&filename=<%=files%>'><%= shortened_filename %></a></li> <%
-								 			}
-								    	}
-										if(i == 4) {
-											break;
+									if(listOfFiles != null) {
+										for (i = 0; i < listOfFiles.length; i++) 
+										{
+											if (listOfFiles[i].isFile()) 
+									 		{
+									 			files = listOfFiles[i].getName();
+									 			String[] parts = files.split("-");
+									 			if(parts[0].equals(layout_username)){
+									 				String shortened_filename = parts[1];
+									 				if(parts[1].length() > 15){
+									 					shortened_filename = parts[1].substring(0,15) + "...";
+									 				}
+									 				%> <li><a href = '../pages/voucher_add.jsp?mode=drafts&filename=<%=files%>'><%= shortened_filename %></a></li> <%
+									 			}
+									    	}
+											if(i == 4) {
+												break;
+											}
 										}
-									}
-									%>
-								</ul>
-									<%
-									if(i == 0){
-										%> <center>No drafts saved</center> <%
-									}
-									else {
-										%><center><i class = "icon-th-list icon-white"></i><a href = "../pages/draft_list.jsp?userid=<%=l_username %>">View all</a></center> <%
-									}
-									%>
+										%>
+									</ul>
+										<%
+										if(i == 0){
+											%> <center>No drafts saved</center> <%
+										}
+										else {
+											%><center><i class = "icon-th-list icon-white"></i><a href = "../pages/draft_list.jsp?userid=<%=l_username %>">View all</a></center> <%
+										}
+										
+									} %>
 							</div>
 						</div>
 					</div>
