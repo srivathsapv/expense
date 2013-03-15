@@ -7,11 +7,17 @@
 		$(".del-voucher").click(function(){
 			window.location = $(this).attr("alt");
 		});
+		
+		$(".edit-voucher").click(function(){
+			window.location = $(this).attr("alt");
+		});
 	});
 </script>
 <div id = "body-content">
-	<h1>Voucher List</h1>
-	<table class = "table">
+	<legend>
+		<h1>Voucher List</h1>
+	</legend>
+	<table class = "table table-striped table-bordered">
 	<%
 		Voucher[] vlist;
 		if(request.getParameter("userid") != null){
@@ -22,7 +28,21 @@
 			vlist = Voucher.list("","",0);
 		}
 		for(Voucher v: vlist){
-			%><tr><td><a href = "voucher_view.jsp?id=<%=v.getVoucherid()%>"><%=v.getTitle() %></a></td><td><button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger">Delete</button></td></tr> <%
+			%>
+			<tr>
+				<td>
+					<a href = "voucher_view.jsp?id=<%=v.getVoucherid()%>"><%=v.getTitle() %></a>
+				</td>
+				<td>
+					<button alt = "voucher_add.jsp?mode=edit&vid=<%=v.getVoucherid() %>" class = "btn btn-warning edit-voucher">Edit</button>
+				</td>
+				<td>
+					<button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger">Delete</button>
+				</td>
+			</tr> <%
+		}
+		if(vlist.length == 0){
+			%> <h4>No vouchers added</h4> <%
 		}
 	%>
 	</table>

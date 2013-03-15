@@ -35,6 +35,10 @@
 		$(".del-vtype").click(function(){
 			window.location = $(this).attr("alt");
 		});
+		
+		$(".edit-vtype").click(function(){
+			window.location = $(this).attr("alt");
+		});
 	});
 </script>
 <style>
@@ -76,6 +80,9 @@
 					<h4>View</h4>
 				</th>
 				<th>
+					<h4>Edit</h4>
+				</th>
+				<th>
 					<h4>Delete</h4>
 				</th>
 			</tr>
@@ -100,6 +107,9 @@
 							<button class = "btn btn-info type-view" id = "t<%=t.getVtypeid()%>">
 								<i class = "icon-search icon-white"></i>
 							</button>
+						</td>
+						<td>
+							<button class = "btn btn-warning edit-vtype" alt = "vouchertype_add.jsp?mode=edit&vtypeid=<%=t.getVtypeid() %>">Edit</button>
 						</td>
 						<td>
 							<button class = "btn btn-danger del-vtype" alt = "../server/delete.jsp?type=vtype&source=list&vtypeid=<%=t.getVtypeid() %>">

@@ -143,7 +143,7 @@
 	                	<a id="drop3" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-user icon-white"></i>Users <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
 	                  		<li><a tabindex="-1" href="user_add.jsp"><i class = "icon-plus-sign"></i>Add New</a></li>
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i>List</a></li>
+	                  		<li><a tabindex="-1" href="user_list.jsp"><i class = "icon-list-alt"></i>List</a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">

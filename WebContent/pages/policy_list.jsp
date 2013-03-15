@@ -11,6 +11,10 @@
 		$(".delete-policy").click(function(){
 			window.location = $(this).attr("alt");
 		});
+		
+		$(".edit-policy").click(function(){
+			window.location = $(this).attr("alt");
+		});
 	});
 </script>
 <div id = "body-content">
@@ -31,6 +35,9 @@
 				</th>
 				<th>
 					<h4>Available</h4>
+				</th>
+				<th>
+					<h4>Edit</h4>
 				</th>
 				<th>
 					<h4>Delete</h4>
@@ -61,6 +68,9 @@
 									%> <i class = "icon-remove"></i> <%
 								}
 							%>
+						</td>
+						<td>
+							<button class = "btn btn-warning edit-policy" alt = "policy_add.jsp?mode=edit&pid=<%=p.getPolicyid() %>">Edit</button>
 						</td>
 						<td>
 							<button class = "delete-policy btn btn-danger" alt = "../server/delete.jsp?type=policy&pid=<%=p.getPolicyid() %>&source=list">Delete</button>

@@ -45,10 +45,6 @@
 	$(document).ready(function(){
 		$("#date").datepicker({format: 'dd-mm-yyyy'});
 		
-		$("#description").blur(function(){
-			alert($(this).val());
-		})
-		
 		$("#draft").click(function(){
 			
 			var concText = $("#title").val() + $("#amount").val() + $("#type").val()
@@ -63,9 +59,9 @@
 					url: "../server/create_draft.jsp",
 					success:function(msg){
 						if($("#draft-save-alert").html() == undefined && msg.indexOf("saved") >= 0){
-							$("form").prepend('<div id = "draft-save-alert" class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Draft saved successfully</div>');	
+							$("form").prepend('<div id = "draft-save-alert" class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Draft saved successfully</div>');
+							
 						}
-						
 					}
 				});
 			}
@@ -170,9 +166,9 @@
    			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter details about your voucher and submit to claim your expenses</p>
    		</legend>
    		<div id = "button-options" style = "display:<%=option_style%>">
-   		   	<button class = "btn btn-info" id = "new-voucher">Create a new voucher</button>
+   		   	<button class = "btn btn-info" id = "new-voucher"><i class = "icon-white icon-file"></i>Create a new voucher</button>
    			<h4>OR</h4>
-   			<button class = "btn btn-info" id = "existing-voucher">Create from an existing voucher</button><br><br>
+   			<button class = "btn btn-info" id = "existing-voucher"><i class = "icon-white icon-book"></i>Create from an existing voucher</button><br><br>
    			<div class = "existing-option" style = "display:none">
    				<select class = "span4" id = "voucher-list">
 	   				<option value = "">Select a voucher</option>
@@ -185,7 +181,7 @@
 	   					}
 	   				%>
 	   			</select>
-	   			<button class = "btn btn-success" id = "start-existing">Go</button>
+	   			<button class = "btn btn-success" id = "start-existing"><i class = "icon-white icon-arrow-right"></i>Go</button>
    			</div>
    		</div>
     	<form style = "display:<%=form_style %>" method = "POST" class="validate" action = "../server/voucher_add.jsp" enctype="multipart/form-data">
@@ -205,12 +201,14 @@
    					
    					for(Department d:vtypedepts) {
    						Type t = new Type(d.getVtypeid());
+   						boolean displayed = false;
    						if((mode.equals("drafts") || mode.equals("from_existing")) && !type.equals("")) {
    							if(t.getVtypeid() == Integer.parseInt(type)){
    								%> <option value = "<%= t.getVtypeid() %>" selected = "true"><%= t.getTitle() %></option> <%
+								displayed=true;   							
    							}
    						}
-						else {
+						if(!displayed) {
  							%> <option value = "<%= t.getVtypeid() %>"><%= t.getTitle() %></option> <%
  						}
    						
@@ -225,10 +223,10 @@
    			<textarea rows="10" cols = "50" id = "description" name = "description"><%=description %></textarea><br>
 			<label>Upload Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment"><br>			
     		<br><input type="submit" class="btn btn-info" value = "Add Voucher">
-    		<input type = "button" id="draft" class = "btn btn-warning" value = "Save Draft">
+    		<input type="button" id="draft" class = "btn btn-warning" value = "Save Draft">
     		<%
     			if(mode.equals("drafts")) {
-    				%> <input type = "button" id="discard-draft" class = "btn btn-danger" value = "Discard Draft"> <%
+    				%> <button type = "button" id="discard-draft" class = "btn btn-danger"><i class = "icon-white icon-remove"></i>Discard Draft</button> <%
     			}
     		%>
     		<input type = "hidden" name = "draft_filename" id = "draft_filename" value = "<%= filename %>">

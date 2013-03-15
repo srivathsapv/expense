@@ -271,4 +271,21 @@ public class Department {
 		
 		return rs.getInt(1);
 	}	
+	
+	/**
+	 * Deletes the department
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("VOUCHERTYPE_DEPT","DEPTID",Integer.toString(this.deptid));
+		db.delete("DEPARTMENT","DEPTID",Integer.toString(this.deptid));
+		
+		db.disconnect();
+		
+	}
 }

@@ -18,6 +18,9 @@
 			response.sendRedirect("../pages/voucher_list.jsp?userid="+suser.getUserid());
 			return;
 		}
+		else {
+			response.sendRedirect("../pages/dashboard.jsp");
+		}
 	}
 	else if(type.equals("policy")){
 		int pid = Integer.parseInt(request.getParameter("pid"));
@@ -38,6 +41,15 @@
 				rstring = "?deptid=" + request.getParameter("did");
 			}
 			response.sendRedirect("../pages/user_list.jsp" + rstring);
+			return;
+		}
+	}
+	else if(type.equals("dept")){
+		String deptid = request.getParameter("deptid");
+		user.Department dept = new user.Department(Integer.parseInt(deptid));
+		dept.delete();
+		if(request.getParameter("source").equals("list")){
+			response.sendRedirect("../pages/dept_list.jsp");
 			return;
 		}
 	}

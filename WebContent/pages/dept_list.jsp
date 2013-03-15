@@ -8,6 +8,14 @@
 		$(".view-users").click(function(){
 			window.location = $(this).attr("alt");
 		});
+		
+		$(".edit-dept").click(function(){
+			window.location = $(this).attr("alt");
+		});
+		
+		$(".delete-dept").click(function(){
+			window.location = $(this).attr("alt");
+		});
 	});
 </script>
 <div id = "body-content">
@@ -41,6 +49,8 @@
 		       	%>
 	       	</ul>
 	       	<button class = "btn btn-info view-users" alt = "user_list.jsp?deptid=<%=d.getDeptid() %>"><i class = "icon-white icon-th-list"></i>View Users</button>
+	       	<button class = "btn btn-warning edit-dept" alt = "dept_add.jsp?mode=edit&deptid=<%=d.getDeptid() %>"><i class = "icon-white icon-pencil"></i>Edit</button>
+	       	<button class = "btn btn-danger delete-dept" alt = "../server/delete.jsp?type=dept&source=list&deptid=<%=d.getDeptid() %>"><i class = "icon-white icon-remove"></i>Delete</button>
 	      </div>
 	    </div>
 	  </div>

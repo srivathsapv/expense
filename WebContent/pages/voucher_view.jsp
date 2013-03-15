@@ -10,6 +10,14 @@
 		$(".attach-img").click(function(){
 			$.fancybox.open($("#large-image").html());
 		});
+		
+		$("#edit-voucher").click(function(){
+			window.location = $(this).attr("alt");
+		});
+		
+		$("#delete-voucher").click(function(){
+			window.location = $(this).attr("alt");
+		});
 	});
 </script>
 <style>
@@ -74,7 +82,11 @@
 		}
 	%>
 	<legend>
-		<h2><%= title %></h2>
+		<h2>
+			<%= title %>
+			<button class = "btn btn-warning" id = "edit-voucher" alt = "voucher_add.jsp?mode=edit&vid=<%=vid%>">Edit</button>
+			<button class = "btn btn-danger" id = "delete-voucher" alt = "../server/delete.jsp?type=voucher&vid=<%=vid %>&source=view">Delete</button>
+		</h2>
 		<h4><b>Voucher Amount - </b><span class="add-on rupee" style = "font-size:20px">`</span> <%=amount %></h4>
 		<h4><b>Category</b> - <a href = "vouchertype_list.jsp?vtype=<%= voucher.getVtypeid() %>"><%= type.getTitle() %></a></h4>
 		<i class = "voucher-view icon-calendar"></i><span id = "date">Last update on <%= dt %></span>	
