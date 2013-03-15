@@ -106,14 +106,16 @@
 						<td>
 							<button class = "btn btn-info type-view" id = "t<%=t.getVtypeid()%>">
 								<i class = "icon-search icon-white"></i>
+								View
 							</button>
 						</td>
 						<td>
-							<button class = "btn btn-warning edit-vtype" alt = "vouchertype_add.jsp?mode=edit&vtypeid=<%=t.getVtypeid() %>">Edit</button>
+							<button class = "btn btn-warning edit-vtype" alt = "vouchertype_add.jsp?mode=edit&vtypeid=<%=t.getVtypeid() %>"><i class = "icon-white icon-pencil"></i>Edit</button>
 						</td>
 						<td>
 							<button class = "btn btn-danger del-vtype" alt = "../server/delete.jsp?type=vtype&source=list&vtypeid=<%=t.getVtypeid() %>">
-								x
+								<i class = "icon-white icon-remove"></i>
+								Delete
 							</button>
 						</td>
 					</tr> <%
@@ -121,7 +123,7 @@
 			%>
 		</tbody>
 	</table>
-	<button class = "btn btn-success" id = "new-vtype"><i class = "icon-plus-sign icon-white"></i>Add New</button>
+	<button class = "btn btn-success" id = "new-vtype"><i class = "icon-plus icon-white"></i>Add New</button>
 	<div style = "display:none">
 		<div id = "vtype-info">
 			<legend>

@@ -49,7 +49,7 @@
 				%>
 			</select>
 			<br /> <br />
-			<input type = "submit" class = "btn btn-info" value = "Add Voucher Type">
+			<button type = "submit" class = "btn btn-success"><i class = "icon-white icon-plus"></i>Add Voucher Type</button>
 		</fieldset>
 	</form>
 </div>

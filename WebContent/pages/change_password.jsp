@@ -32,7 +32,7 @@
 			
 			<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi"></i><br><br>
     		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha"><br><br>
-			<input type="submit" class="btn btn-info" value = "Change Password">
+			<button type="submit" class="btn btn-success"><i class = "icon-white icon-edit"></i>Change Password</button>
 		</fieldset>
 	</form>
 </div>

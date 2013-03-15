@@ -23,7 +23,7 @@
    				%>
    			</select><br>
     		<textarea rows = "5" cols = "50" placeholder="Enter description..." name = "description"></textarea><br>
-    		<br><input type="submit" class="btn btn-info" value = "Add Department">
+    		<br><button type="submit" class="btn btn-success"><i class = "icon-white icon-plus"></i>Add Department</button>
     	</fieldset>
 	</form>
 </div>

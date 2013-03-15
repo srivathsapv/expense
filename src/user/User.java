@@ -161,7 +161,6 @@ public class User {
 		
 		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE USERID = '" + userid + "'");
 		rs.next();
-		
 		this.userid = userid;
 		this.socialSecurity = rs.getString("SOCIALSECURITY");
 		this.firstName = rs.getString("FIRSTNAME");

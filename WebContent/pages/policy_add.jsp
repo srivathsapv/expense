@@ -18,7 +18,7 @@
 	<label>Available:</label>
 	<label class="radio"><input type="radio" name="available" value="yes" checked>Yes</label>
 	<label class="radio"><input type="radio" name="available" value="No" >No</label>
-	<br/><input type="submit" class="btn btn-info" value = "Add Policy">	
+	<br/><button type="submit" class="btn btn-success"><i class = "icon-white icon-plus"></i>Add Policy</button>	
 	</fieldset>
 	</form>
 </div>

@@ -70,10 +70,10 @@
 							%>
 						</td>
 						<td>
-							<button class = "btn btn-warning edit-policy" alt = "policy_add.jsp?mode=edit&pid=<%=p.getPolicyid() %>">Edit</button>
+							<button class = "btn btn-warning edit-policy" alt = "policy_add.jsp?mode=edit&pid=<%=p.getPolicyid() %>"><i class = "icon-white icon-pencil"></i>Edit</button>
 						</td>
 						<td>
-							<button class = "delete-policy btn btn-danger" alt = "../server/delete.jsp?type=policy&pid=<%=p.getPolicyid() %>&source=list">Delete</button>
+							<button class = "delete-policy btn btn-danger" alt = "../server/delete.jsp?type=policy&pid=<%=p.getPolicyid() %>&source=list"><i class = "icon-white icon-remove"></i>Delete</button>
 						</td>
 					</tr> 
 					<%
@@ -81,5 +81,5 @@
 			%>
 		</tbody>
 	</table>
-	<button class = "btn btn-success" id = "new-policy">Add New</button>
+	<button class = "btn btn-success" id = "new-policy"><i class = "icon-white icon-plus"></i>Add New</button>
 </div>

@@ -96,9 +96,9 @@
     		</div><p></p>
     		<input class = "span4 required" type="text" id = "email" name = "email" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
     		<label>Upload Photo (jpg, jpeg, png)</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
-    		<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi"></i><br><br>
+    		<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi" title = "Get another captcha"></i><br><br>
     		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha" id = "captcha"><br><br>
-    		<input type="submit" class="btn btn-info" value = "Add User">
+    		<button type="submit" class="btn btn-success"><i class = "icon-white icon-plus"></i>Add User</button>
     	</fieldset>
 	</form>
 </div>

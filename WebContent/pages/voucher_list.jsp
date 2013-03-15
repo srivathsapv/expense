@@ -34,10 +34,10 @@
 					<a href = "voucher_view.jsp?id=<%=v.getVoucherid()%>"><%=v.getTitle() %></a>
 				</td>
 				<td>
-					<button alt = "voucher_add.jsp?mode=edit&vid=<%=v.getVoucherid() %>" class = "btn btn-warning edit-voucher">Edit</button>
+					<button alt = "voucher_add.jsp?mode=edit&vid=<%=v.getVoucherid() %>" class = "btn btn-warning edit-voucher"><i class = "icon-white icon-pencil"></i>Edit</button>
 				</td>
 				<td>
-					<button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger">Delete</button>
+					<button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger"><i class = "icon-white icon-remove"></i>Delete</button>
 				</td>
 			</tr> <%
 		}

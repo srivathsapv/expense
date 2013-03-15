@@ -168,7 +168,7 @@
    		<div id = "button-options" style = "display:<%=option_style%>">
    		   	<button class = "btn btn-info" id = "new-voucher"><i class = "icon-white icon-file"></i>Create a new voucher</button>
    			<h4>OR</h4>
-   			<button class = "btn btn-info" id = "existing-voucher"><i class = "icon-white icon-book"></i>Create from an existing voucher</button><br><br>
+   			<button class = "btn btn-info" id = "existing-voucher"><i class = "icon-white icon-repeat"></i>Create from an existing voucher</button><br><br>
    			<div class = "existing-option" style = "display:none">
    				<select class = "span4" id = "voucher-list">
 	   				<option value = "">Select a voucher</option>
@@ -222,8 +222,8 @@
    			<label>Enter Description</label>
    			<textarea rows="10" cols = "50" id = "description" name = "description"><%=description %></textarea><br>
 			<label>Upload Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment"><br>			
-    		<br><input type="submit" class="btn btn-info" value = "Add Voucher">
-    		<input type="button" id="draft" class = "btn btn-warning" value = "Save Draft">
+    		<br><button type="submit" class="btn btn-success"><i class = "icon-white icon-plus"></i>Add Voucher</button>
+    		<a type="button" id="draft" class = "btn btn-warning"><i class = "icon-white icon-file"></i>Save Draft</a>
     		<%
     			if(mode.equals("drafts")) {
     				%> <button type = "button" id="discard-draft" class = "btn btn-danger"><i class = "icon-white icon-remove"></i>Discard Draft</button> <%

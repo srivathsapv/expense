@@ -9,6 +9,7 @@
 		dept = new Department(Integer.parseInt(deptid));
 	}
 %>
+<title>Vowcher - Users List</title>
 <script>
 	$(document).ready(function(){
 		$(".del-user").click(function(){
@@ -17,6 +18,10 @@
 		
 		$(".edit-user").click(function(){
 			window.location = $(this).attr("alt");
+		});
+		
+		$(".add-user").click(function(){
+			window.location = "user_add.jsp";
 		});
 	});
 </script>
@@ -60,15 +65,15 @@
 					%>
 					<tr>
 						
-						<td><img class = "img-rounded" src = "<%=imgsrc %>" width = 5%>&nbsp;&nbsp;&nbsp;<a href = 'user_view.jsp?userid=<%=u.getUserid()%>'><%= u.getFirstName() + " " + u.getlastName() %></a></td>
+						<td><img class = "img-rounded" src = "<%=imgsrc %>" style="width:32px">&nbsp;&nbsp;&nbsp;<a href = 'user_view.jsp?userid=<%=u.getUserid()%>'><%= u.getFirstName() + " " + u.getlastName() %></a></td>
 						<td><%= d.getDeptname() %></td>
-						<td><button class = "btn btn-warning edit-user" alt = "user_add.jsp?mode=edit&userid=<%=u.getUserid() %>">Edit</button>
-						<td><button class = "btn btn-danger del-user" alt = "../server/delete.jsp?type=user&userid=<%=u.getUserid() %>&source=list&did=<%=d.getDeptid()%>">Delete</button></td>
+						<td><button class = "btn btn-warning edit-user" alt = "user_add.jsp?mode=edit&userid=<%=u.getUserid() %>"><i class = "icon-white icon-pencil"></i>Edit</button>
+						<td><button class = "btn btn-danger del-user" alt = "../server/delete.jsp?type=user&userid=<%=u.getUserid() %>&source=list&did=<%=d.getDeptid()%>"><i class = "icon-white icon-remove"></i>Delete</button></td>
 					</tr>
 					<%
 				}
  			%>
 		</tbody>
 	</table>
-	
+	<button class = "btn btn-success add-user"><i class = "icon-white icon-plus"></i>Add New User</button>
 </div>
