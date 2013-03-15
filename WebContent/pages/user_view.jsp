@@ -24,9 +24,13 @@
 		<h2 class = 'profile-name'><%= user.getFirstName() + " " + user.getlastName() %></h2>
 		<span class = 'designation'><%= user.getDesignation() %> - <%= deptname %> Department</span>
 	</legend>
-	<% if(user.getPhoto() != null) { %>
+	
+	<% if(user.getPhoto() != null) {
+		if(!user.getPhoto().equals("")) {
+		%>
 		<img src = "../server/display_image.jsp?userid=<%= userid %>&mode=profile_picture" class = "profile-image img-rounded img-polaroid" width = 15%>
-	<% } else { %>
+	<% } 
+		} if(user.getPhoto() == null || user.getPhoto().equals("")) { %>
 		<img src = "../img/profile_default.png" class = "profile-image img-rounded img-polaroid" width = 15%>
 	<% } %>
 	<span class = 'profile-info address'>

@@ -574,7 +574,23 @@ public class User {
 		return rs.getInt(1);
 	}
 
-	
+	/**
+	 * Deletes the user
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("BOOKMARK", "USERID",this.userid);
+		db.delete("NOTIFICATION","USERID",this.userid);
+		db.delete("VOUCHER_STATUS","USERID",this.userid);
+		db.delete("REPORT","USERID",this.userid);
+		db.delete("LOGIN","USERID",this.userid);
+		db.delete("USER","USERID",this.userid);
+	}
 
 	
 }

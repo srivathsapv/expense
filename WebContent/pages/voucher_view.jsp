@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import = "utility.Utility,voucher.Voucher,voucher.Type,java.util.Date,java.text.SimpleDateFormat"%>
 <%@ include file = "../include/layout.jsp" %>
-	<!-- Add fancyBox main JS and CSS files -->
+	
 	<script type="text/javascript" src="../js/fancybox/source/jquery.fancybox.js?v=2.1.4"></script>
 	<link rel="stylesheet" type="text/css" href="../js/fancybox/source/jquery.fancybox.css?v=2.1.4" media="screen" />
 
@@ -76,7 +76,7 @@
 	<legend>
 		<h2><%= title %></h2>
 		<h4><b>Voucher Amount - </b><span class="add-on rupee" style = "font-size:20px">`</span> <%=amount %></h4>
-		<h4><b>Category</b> - <a href = "vouchertype_view.jsp?id=<%= voucher.getVtypeid() %>"><%= type.getTitle() %></a></h4>
+		<h4><b>Category</b> - <a href = "vouchertype_list.jsp?vtype=<%= voucher.getVtypeid() %>"><%= type.getTitle() %></a></h4>
 		<i class = "voucher-view icon-calendar"></i><span id = "date">Last update on <%= dt %></span>	
 	</legend>
 	<legend> 

@@ -9,7 +9,8 @@
     							   org.w3c.dom.Element,
     							   java.io.File,
     							   java.text.SimpleDateFormat,
-    							   java.util.Date"%>
+    							   java.util.Date,
+    							   voucher.vouchertype.Department"%>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - Add New Voucher</title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
@@ -99,6 +100,12 @@
 		$("#start-existing").click(function(){
 			window.location = "voucher_add.jsp?mode=from_existing&vid="+$("#voucher-list").val();
 		});
+		
+		$("#new-voucher").click(function(){
+			$("#button-options").attr("style","display:none");
+			$("form").attr("style","display:block");
+		});
+		
 	});
 	
 	
@@ -135,7 +142,6 @@
 			title = exist_voucher.getTitle();
 			amount = Double.toString(exist_voucher.getAmount());
 			type = Integer.toString(exist_voucher.getVtypeid());
-			System.out.println(type);
 			date = exist_voucher.getDate();
 			description = exist_voucher.getDescription();
 			description = description.replace("<","&lt;");
@@ -190,11 +196,15 @@
 				<span class="add-on rupee">`</span>
 			  	<input class="span4 prepend-input required prependedInput" valtype="decimal required" valmsg="Decimal value with precision of 2 is expected" id = "amount" name = "amount" type="text" placeholder="Enter the amount..." value = "<%=amount%>">
 			</div>
-   			<select class = "span4" id = "type" name = "type">
+   			<select class = "span4 required" id = "type" name = "type">
    				<option value = "">Choose Voucher Type</option>
    				<%
-   					Type[] types = Type.list("","");
-   					for(Type t : types) {
+   					
+   					User sUser = (User)session.getAttribute("sessionUser");
+   					Department[] vtypedepts = Department.list("DEPTID",Integer.toString(sUser.getDeptid()));
+   					
+   					for(Department d:vtypedepts) {
+   						Type t = new Type(d.getVtypeid());
    						if((mode.equals("drafts") || mode.equals("from_existing")) && !type.equals("")) {
    							if(t.getVtypeid() == Integer.parseInt(type)){
    								%> <option value = "<%= t.getVtypeid() %>" selected = "true"><%= t.getTitle() %></option> <%

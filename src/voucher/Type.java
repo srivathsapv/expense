@@ -67,12 +67,12 @@ public class Type {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE vtypeid = " + vtypeid);
+		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE VTYPEID = " + vtypeid);
 		rs.next();
 		
 		this.vtypeid = vtypeid;
-		this.setTitle(rs.getString("title"));
-		this.setDescription(rs.getString("description"));
+		this.setTitle(rs.getString("TITLE"));
+		this.setDescription(rs.getString("DESCRIPTION"));
 		
 		db.disconnect();
 	}
@@ -160,6 +160,7 @@ public class Type {
 		else return false;
 	}
 	
+	
 	/**
 	 * Returns a list of voucher types
 	 * 
@@ -202,4 +203,20 @@ public class Type {
 		return list;
 	}
 	
+	/**
+	 * Deletes the voucher type
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("VOUCHERTYPE_DEPT","VTYPEID",Integer.toString(this.vtypeid));
+		db.delete("VOUCHERTYPE_POLICY","VTYPEID",Integer.toString(this.vtypeid));
+		
+		db.delete("VOUCHER_TYPE","VTYPEID",Integer.toString(this.vtypeid));
+		db.disconnect();
+		
+	}
 }

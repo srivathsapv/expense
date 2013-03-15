@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import = "policy.Policy,utility.Utility" %>
+	pageEncoding="UTF-8" import = "policy.Policy,utility.Utility,user.Department" %>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - New Voucher Type</title>
 <script src = "../js/bootstrap-multiselect.js"></script>
@@ -12,6 +12,7 @@
       });
       
       $("#policy").multiselect();
+      $("#dept").multiselect();
     });
     </script>
 
@@ -29,12 +30,21 @@
 				placeholder="Enter the Title ..." name = "title"><br />
 			<textarea rows="5" cols="50" placeholder="Enter a description..." name = "description"></textarea>
 			<br />
-			<label>Policy</label>
+			<label><h4>Policies under which this voucher type can be submitted</h4></label>
 			<select id = "policy" name = "policy" multiple="multiple">
 				<%
 					Policy[] policies = Policy.list("","");
 					for(Policy p : policies) {
 						%> <option value = "<%= p.getPolicyid() %>"><%= p.getTitle() %></option> <%
+					}
+				%>
+			</select>
+			<label><h4>Departments which can use this voucher type</h4></label>
+			<select id = "dept" name = "dept" multiple = "multiple">
+				<%
+					Department[] depts = Department.list("","");
+					for(Department d:depts){
+						%> <option value = "<%= d.getDeptid() %>"><%= d.getDeptname() %></option><%
 					}
 				%>
 			</select>
