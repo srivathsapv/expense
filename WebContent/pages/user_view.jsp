@@ -21,8 +21,13 @@
 	%>
 <script src="../js/custom.js"></script>
 	<legend>
-		<h2 class = 'profile-name'><%= user.getFirstName() + " " + user.getlastName() %></h2>
-		<span class = 'designation'><%= user.getDesignation() %> - <%= deptname %> Department</span>
+		<h2 class = "profile-name">
+			<%= user.getFirstName() + " " + user.getlastName() %>
+			<button class = "btn btn-warning"><i class = "icon-white icon-pencil"></i>Edit</button>
+			<button class = "btn btn-danger"><i class = "icon-white icon-remove	"></i>Delete</button>
+		</h2>
+		<span class = 'designation'><%= user.getDesignation() %> - <%= deptname %> Department</span><br>
+		
 	</legend>
 	
 	<% if(user.getPhoto() != null) {

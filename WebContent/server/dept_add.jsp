@@ -6,26 +6,26 @@
 	String description = Utility.filter(request.getParameter("description"));
 	String userid = Utility.filter(request.getParameter("userid"));
 	
-	Department new_department = new Department();
+	String mode = request.getParameter("mode");
 	
+	Department new_department = null;
+	if(mode.equals("0")){
+		new_department = new Department();
+	}
+	else {
+		new_department = new Department(Integer.parseInt(mode));
+	}
 	new_department.setDeptname(deptname);
 	new_department.setUserid(userid);
 	new_department.setShortname(shortname);
 	new_department.setDescription(description);
 	
 	boolean department_success = new_department.save();
-
-	if(department_success)
-	{
-			response.sendRedirect("../pages/dept_add.jsp?status=" + Utility.MD5("success"));
+	String modestr = "";
+	if(mode.equals("0")) modestr = "added";
+	else modestr = "edited";
+	if(department_success){
+			response.sendRedirect("../pages/dept_list.jsp?status=" + Utility.MD5("success")+"&message=Department " + modestr + " successfully");
 			return;
 	}
-		
-	else 
-	{
-			response.sendRedirect("../pages/dept_add.jsp?status=" + Utility.MD5("error"));
-			return;
-			
-	}
-
 %>

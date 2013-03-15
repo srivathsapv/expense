@@ -10,14 +10,17 @@
 	
 	Policy[] vtype_policies = Policy.list("VTYPEID",Integer.toString(vtypeid));
 	String policystr = "<ul>";
+	
 	for(Policy p:vtype_policies) {
 		policy.Policy pol = new policy.Policy(p.getPolicyid());
-		policystr += "<li class = 'vtinfo'>" + pol.getTitle() + "<i title = '" + pol.getDescription() + "' class = 'icon-info-sign desc-ico poi'></i></li>";
+		if(pol.getAvailable() == 1)
+			policystr += "<li class = 'vtinfo'>" + pol.getTitle() + "<i title = '" + pol.getDescription() + "' class = 'icon-info-sign desc-ico poi'></i></li>";
 	}
 	policystr += "</ul>";
-	
+	if(policystr.equals("<ul></ul>")) policystr = "None found";
 	Department[] vtype_depts = Department.list("VTYPEID",Integer.toString(vtypeid));
 	String deptstr = "<ul>";
+	if(vtype_depts.length == 0) deptstr = "None found";
 	for(Department d:vtype_depts){
 		user.Department dep = new user.Department(d.getDeptid());
 		deptstr += "<li class = 'vtinfo'>" + dep.getDeptname() + "<i title = '" + dep.getDescription() + "' class = 'icon-info-sign desc-ico poi'></i></li>";

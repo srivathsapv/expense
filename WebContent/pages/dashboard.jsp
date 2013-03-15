@@ -2,7 +2,6 @@
     pageEncoding="UTF-8"%>
 <%@ include file = "../include/layout.jsp"%>
 <%@ page import = "user.User" %>
-
 <title>Vowcher - Dashboard</title>
 <div id = "body-content">
 	<%
@@ -15,5 +14,4 @@
 	</legend>
 	
 	<h3><i class = "icon-star notif-icon"></i>Notifications</h3>
-	
 </div>

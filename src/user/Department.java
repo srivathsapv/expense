@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import db.Db;
 
 /**
@@ -287,5 +290,24 @@ public class Department {
 		
 		db.disconnect();
 		
+	}
+	
+	/**
+	 * Converts the object to json object
+	 * 
+	 * @return org.json.JSONObject
+	 * 
+	 * @throws JSONException 
+	 */
+	public JSONObject toJSON() throws JSONException {
+		JSONObject obj = new JSONObject();
+		
+		obj.put("deptid",this.deptid);
+		obj.put("deptname", this.deptname);
+		obj.put("shortname",this.shortname);
+		obj.put("description",this.description);
+		obj.put("userid",this.userid);
+		
+		return obj;
 	}
 }

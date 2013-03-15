@@ -55,6 +55,10 @@
 	.vtinfo {
 		font-size:14px!important;
 	}
+	
+	legend > div {
+		font-size:14px!important;
+	}
 </style>
 <div id = "body-content">
 	<%

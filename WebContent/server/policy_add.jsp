@@ -6,21 +6,35 @@
 	double amountPercent = Double.parseDouble(Utility.filter(request.getParameter("amount")));
 	String available = Utility.filter(request.getParameter("available"));
 	
-	Policy new_policy = new Policy();
+	int pid = Integer.parseInt(request.getParameter("mode"));
+	
+	Policy new_policy;
+	String modestr = "added";
+	
+	
+	if(pid == 0){
+		new_policy = new Policy();
+	}
+	else {
+		new_policy = new Policy(pid);
+		modestr = "edited";
+	}
 	
 	new_policy.setTitle(title);
 	new_policy.setDescription(description);
-	if(available.equals("yes"))
+	
+	if(available.equals("yes") || available.equals("null"))
 		new_policy.setAvailable(1);
 	else 
 		new_policy.setAvailable(0);
+	
 	new_policy.setAmountPercent(amountPercent);
 
 	boolean policy_success = new_policy.save();
-
+	
 	if(policy_success)
 	{
-		response.sendRedirect("../pages/policy_add.jsp?status=" + Utility.MD5("success"));
+		response.sendRedirect("../pages/policy_list.jsp?status=" + Utility.MD5("success")+"&message=Policy " + modestr + " successfully");
 		return;
 	}
 	else  {

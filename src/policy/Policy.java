@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import user.User;
 
 
@@ -262,6 +265,25 @@ public class Policy {
 		db.delete("POLICY", "POLICYID", Integer.toString(this.policyid));
 		
 		db.disconnect();
+	}
+	
+	/**
+	 * Converts the object to json object
+	 * 
+	 * @return org.json.JSONObject
+	 * 
+	 * @throws JSONException 
+	 */
+	public JSONObject toJSON() throws JSONException {
+		JSONObject obj = new JSONObject();
+		
+		obj.put("policyid",this.policyid);
+		obj.put("title", this.title);
+		obj.put("description",this.description);
+		obj.put("amount", this.amountPercent);
+		obj.put("available",this.available);
+		
+		return obj;
 	}
 
 }

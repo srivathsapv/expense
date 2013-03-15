@@ -18,8 +18,23 @@
 		});
 	});
 </script>
+<style>
+	legend {
+		font-size:14px!important;
+	}
+</style>
 <div id = "body-content">
 	<h1>Department List</h1>
+	<%
+		if(request.getParameter("status") != null) {
+			if(request.getParameter("status").equals(Utility.MD5("success"))){
+				%> <div class = "alert alert-success">
+					<button class="close" data-dismiss="alert" type="button">×</button>
+					<%= request.getParameter("message") %>
+				</div> <%
+			}
+		}
+	%>
 	<div class="accordion" id="accordion2">
 	  <%
 	  	Department[] dept = Department.list("","");
@@ -37,6 +52,9 @@
 	      <div class="accordion-inner">
 	       	<legend>
 	       		<h4>CEO - <a href = "user_view.jsp?userid=<%=user.getUserid() %>"><%= user.getFirstName() + " " + user.getlastName() %></a></h4>
+	       	</legend>
+	       	<legend>
+	       		<i class = "icon-question-sign"></i><%= d.getDescription() %>
 	       	</legend>
 	       	<h4>Voucher types allowed</h4>
 	       	<ul>
