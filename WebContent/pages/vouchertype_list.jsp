@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import = "voucher.*,voucher.vouchertype.*"%>
+    pageEncoding="UTF-8" import = "voucher.*,voucher.vouchertype.*,utility.Utility"%>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - Voucher Types</title>
 <script type="text/javascript" src="../js/fancybox/source/jquery.fancybox.js?v=2.1.4"></script>
@@ -67,6 +67,14 @@
 			vtype = Integer.parseInt(request.getParameter("vtype"));
 		}
 		
+		if(request.getParameter("status") != null) {
+			if(request.getParameter("status").equals(Utility.MD5("success"))){
+				%> <div class = "alert alert-success">
+					<button class="close" data-dismiss="alert" type="button">×</button>
+					<%=request.getParameter("message") %>
+				</div> <%
+			}
+		}
 	%>
 	<legend>
 		<h3>Voucher Types</h3>
@@ -94,6 +102,7 @@
 		<tbody>
 			<%
 				Type[] types = Type.list("","");
+				if(types.length == 0) { %> No voucher types found <% }
 				for(Type t:types){
 					String desc = t.getDescription();
 					if(desc.length() > 45){

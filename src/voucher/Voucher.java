@@ -394,9 +394,8 @@ public class Voucher {
 			map.put("VTYPEID",Integer.toString(this.vtypeid));
 			map.put("DATE",this.date.toString());
 			map.put("DESCRIPTION",this.description);
-			map.put("ATTACHMENT",null);
 			map.put("EXTENSION", this.extension);
-			map.put("REJECTREASON",this.rejectReason);
+			map.put("REJECTREASON","");
 			map.put("POLICYID",Integer.toString(this.policyid));
 			
 			n = db.update(t_name, map, "VOUCHERID", Integer.toString(this.voucherid));

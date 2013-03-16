@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import = "policy.Policy,utility.Utility,user.Department" %>
+	pageEncoding="UTF-8" import = "policy.Policy,utility.Utility,user.Department,voucher.Type" %>
 <%@ include file = "../include/layout.jsp" %>
-<title>Vowcher - New Voucher Type</title>
+
 <script src = "../js/bootstrap-multiselect.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
@@ -15,7 +15,34 @@
       $("#dept").multiselect();
     });
     </script>
-
+<%
+	int vtypeid = 0;
+	String title = "Vowcher - Add Voucher Type";
+	if(request.getParameter("mode") != null){
+		vtypeid = Integer.parseInt(request.getParameter("vtypeid"));
+		title = "Vowcher - Edit Voucher Type";
+		Type type = new Type(vtypeid);
+		%>
+		<script>
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"../server/json_api.jsp",
+				data:"type=vtype&vtypeid=<%=vtypeid%>",
+				success:function(msg){
+					$("input[name='title']").val(msg.title);
+					$("textarea").val(msg.description);
+					$("#policy").val(msg.policyids);
+					$("#policy").multiselect("refresh");
+					$("#dept").val(msg.deptids);
+					$("#dept").multiselect("refresh");
+				}
+			});
+		</script> 
+		<%
+	}
+%>
+<title><%= title %></title>
 <div id="body-content">
 	<form method = "POST" action = "../server/vouchertype_add.jsp" class = "validate">
 		<fieldset>
@@ -33,7 +60,7 @@
 			<label><h4>Policies under which this voucher type can be submitted</h4></label>
 			<select id = "policy" name = "policy" multiple="multiple">
 				<%
-					Policy[] policies = Policy.list("","");
+					Policy[] policies = Policy.list("AVAILABLE","1");
 					for(Policy p : policies) {
 						%> <option value = "<%= p.getPolicyid() %>"><%= p.getTitle() %></option> <%
 					}
@@ -48,8 +75,16 @@
 					}
 				%>
 			</select>
-			<br /> <br />
-			<button type = "submit" class = "btn btn-success"><i class = "icon-white icon-plus"></i>Add Voucher Type</button>
+			<input type = "hidden" name = "mode" value = "<%=vtypeid%>">
+			<br><br>
+			<%
+				if(vtypeid == 0) {
+					%> <button type = "submit" class = "btn btn-success"><i class = "icon-white icon-plus"></i>Add Voucher Type</button> <%	
+				}
+				else {
+					%> <button type = "submit" class = "btn btn-info"><i class = "icon-white icon-edit"></i>Save</button> <%
+				}
+			%>
 		</fieldset>
 	</form>
 </div>

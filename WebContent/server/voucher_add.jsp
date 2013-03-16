@@ -4,13 +4,14 @@
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
-<%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="org.apache.commons.fileupload.*,db.Db,java.sql.*,java.io.*" %>
 <%@ include file = "server_authenticate.jsp" %>
 <%
-	String values[] = new String[6];
+	String values[] = new String[7];
 	
 	int i =0;
 	String path = "";
+	String itemName = "";
 	String ext = "";
 	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 	if (!isMultipart) {
@@ -33,12 +34,13 @@
 	        } 
 	        else {
 	        	try {	        		
-		            String itemName = item.getName();
-		            path = config.getServletContext().getRealPath("/")+"uploads/"+itemName;
-		            ext = itemName.substring(itemName.lastIndexOf(".")+1,itemName.length());
-		            File savedFile = new File(path);
-		            item.write(savedFile);
-		            
+		            itemName = item.getName();
+		            if(!itemName.equals("")){
+		            	path = config.getServletContext().getRealPath("/")+"uploads/"+itemName;
+			            ext = itemName.substring(itemName.lastIndexOf(".")+1,itemName.length());
+			            File savedFile = new File(path);
+			            item.write(savedFile);	
+		            }
 	                          
 	            } catch (Exception e) {
 	            	e.printStackTrace();
@@ -46,8 +48,14 @@
 	       	}
 		}
 	}
+	Voucher voucher = null;
+	if(values[6].equals("0")){
+		voucher = new Voucher();	
+	}
+	else {
+		voucher = new Voucher(Integer.parseInt(values[6])); 
+	}
 	
-	Voucher voucher = new Voucher();
 	voucher.setTitle(values[0]);
 	
 	User user = (User)session.getAttribute("sessionUser");
@@ -57,7 +65,7 @@
 	voucher.setVtypeid(Integer.parseInt(values[2]));
 	
 	SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
-	Date d1 = fmt.parse(values[3]);
+	java.util.Date d1 = fmt.parse(values[3]);
 	
 	SimpleDateFormat fmt2 = new SimpleDateFormat("yyyy-MM-dd");
 	String d2 = fmt2.format(d1);
@@ -65,13 +73,46 @@
 	voucher.setDate(d2);
 	
 	voucher.setDescription(values[4]);
+	
+	
+	
+	if(path.equals("")){
+		Db db = new Db();
+		db.connect();
+		String vid = values[6];	
+		ResultSet rs = db.executeQuery("SELECT ATTACHMENT,EXTENSION,TITLE FROM VOUCHER WHERE VOUCHERID = '" + vid + "'");
+		if(rs.next()) {
+			if(!rs.getString(1).equals("")) {
+				Blob image = rs.getBlob(1);
+				
+				String app_type = "";
+				if(rs.getString(2).equals("pdf")){
+					app_type = "pdf";
+				}
+				else if(rs.getString(2).equals("doc") || rs.getString(2).equals("docx")){
+					app_type = "msword";
+				}
+				byte[] imgdata = image.getBytes(1,(int)image.length());
+				
+				String filename = rs.getString(3) + "." +rs.getString(2);
+				path = config.getServletContext().getRealPath("/")+"uploads/"+filename;
+				ext = rs.getString(2);
+				FileOutputStream fout = new FileOutputStream(new File(path));
+				fout.write(imgdata);
+				fout.flush();
+				fout.close();
+				db.disconnect();
+			}
+		}	
+	}
+	
 	voucher.setAttachment(path);
 	voucher.setExtension(ext);
 	
 	boolean voucher_success = voucher.save();
 	
-	
 	//adding notifications, status , etc etc
+	
 	if(voucher_success)
 	{
 		//delete the draft

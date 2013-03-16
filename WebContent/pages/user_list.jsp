@@ -48,11 +48,13 @@
 			<%
 				User[] users = null;
 				if(deptid.equals("")){
-					users = User.list("","");
-					
+					users = User.list("","");	
 				}
 				else {
 					users = User.list("DEPTID",deptid);
+				}
+				if(users.length == 0) {
+					%> No users found <%
 				}
 				for(User u:users){
 					Department d = new Department(u.getDeptid());

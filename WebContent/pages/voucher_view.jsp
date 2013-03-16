@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1" import = "utility.Utility,voucher.Voucher,voucher.Type,java.util.Date,java.text.SimpleDateFormat"%>
-<%@ include file = "../include/layout.jsp" %>
-	
-	<script type="text/javascript" src="../js/fancybox/source/jquery.fancybox.js?v=2.1.4"></script>
-	<link rel="stylesheet" type="text/css" href="../js/fancybox/source/jquery.fancybox.css?v=2.1.4" media="screen" />
+<%@ include file = "../include/layout.jsp" %>	
+<script type="text/javascript" src="../js/fancybox/source/jquery.fancybox.js?v=2.1.4"></script>
+<link rel="stylesheet" type="text/css" href="../js/fancybox/source/jquery.fancybox.css?v=2.1.4" media="screen" />
 
 <script type = "text/javascript">
 	$(document).ready(function(){

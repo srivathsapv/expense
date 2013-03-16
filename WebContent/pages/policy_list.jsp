@@ -57,6 +57,9 @@
 		<tbody>
 			<%
 				Policy[] policies = Policy.list("","");
+				if(policies.length == 0) {
+					%> No policies added <%
+				}
 				for(Policy p : policies){
 					%>
 					<tr>

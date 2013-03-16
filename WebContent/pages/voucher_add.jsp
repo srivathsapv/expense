@@ -12,11 +12,22 @@
     							   java.util.Date,
     							   voucher.vouchertype.Department"%>
 <%@ include file = "../include/layout.jsp" %>
-<title>Vowcher - Add New Voucher</title>
+
 <link rel = "stylesheet" href = "../less/datepicker.css">
 <script src = "../js/bootstrap-datepicker.js"></script>
 <script src = "../js/tiny_mce/tiny_mce.js"></script>
 <script src = "../js/bootstrap-alert.js"></script>
+<script type="text/javascript" src="../js/fancybox/source/jquery.fancybox.js?v=2.1.4"></script>
+<link rel="stylesheet" type="text/css" href="../js/fancybox/source/jquery.fancybox.css?v=2.1.4" media="screen" />
+<style>
+	button,a.btn {
+		margin-right: 5px;
+	}
+	
+	label {
+		font-weight: bold!important;
+	}
+</style>
 <script type = "text/javascript">
 	tinyMCE.init({
 	    // General options
@@ -43,6 +54,10 @@
 	});
 	
 	$(document).ready(function(){
+		$(".attach-img").click(function(){
+			$.fancybox.open($("#large-image").html());
+		});
+		
 		$("#date").datepicker({format: 'dd-mm-yyyy'});
 		
 		$("#draft").click(function(){
@@ -103,14 +118,13 @@
 		});
 		
 	});
-	
-	
 </script>
 <div id = "body-content">
 	<%
 		String mode = "";
 		String title="";String amount="";String type="";String date="";String description="";
 		String filename="";
+		int vid=0;
 		if(request.getParameter("mode") != null){
 			mode = request.getParameter("mode");
 		}
@@ -132,8 +146,8 @@
 			description = description.replace(">","&gt;");
 			description = description.replace("/","&#47");
 		}
-		else if(mode.equals("from_existing")){
-			int vid = Integer.parseInt(request.getParameter("vid"));
+		else if(mode.equals("from_existing") || mode.equals("edit")){
+			vid = Integer.parseInt(request.getParameter("vid"));
 			Voucher exist_voucher = new Voucher(vid);
 			title = exist_voucher.getTitle();
 			amount = Double.toString(exist_voucher.getAmount());
@@ -144,7 +158,25 @@
 			description = description.replace(">","&gt;");
 			description = description.replace("/","&#47");
 		}
+		String pagetitle = "Vowcher - Add New Voucher";
+		String legend = "Add new voucher<p class = 'legend-desc'><i class = 'icon-question-sign'></i>Enter details about your voucher and submit to claim your expenses</p>"; 
+		String attach = "Upload";
+		if(mode.equals("edit")){
+			pagetitle = "Vowcher - Edit Voucher";
+			legend = "Edit voucher";
+			attach = "Change";
+		}
 		
+		String buttonset = "";
+		if(mode.equals("")){
+			buttonset = "<button type='submit' class='btn btn-success'><i class = 'icon-white icon-plus'></i>Add Voucher</button>&nbsp;&nbsp;<a type='button' id='draft' class = 'btn btn-warning'><i class = 'icon-white icon-file'></i>Save Draft</a>";	
+		}
+		else if(mode.equals("drafts")){
+			buttonset = "<button type='submit' class='btn btn-success'><i class = 'icon-white icon-plus'></i>Add Voucher</button>&nbsp;&nbsp;<a type='button' id='draft' class = 'btn btn-warning'><i class = 'icon-white icon-file'></i>Save Draft</a>&nbsp;&nbsp;<button type = 'button' id='discard-draft' class = 'btn btn-danger'><i class = 'icon-white icon-remove'></i>Discard Draft</button>";
+		}
+		else if(mode.equals("edit")){
+			buttonset = "<button type='submit' class='btn btn-info'><i class = 'icon-white icon-edit'></i>Save</button>&nbsp;&nbsp;<a type='button' id='draft' class = 'btn btn-warning'><i class = 'icon-white icon-file'></i>Save Draft</a>";
+		}	
 		if(!date.equals("")){
 			SimpleDateFormat f1 = new SimpleDateFormat("yyyy-mm-dd");
 			Date d = f1.parse(date);
@@ -161,9 +193,9 @@
 			option_style = "none";
 		}
 	%>
+		<title><%=pagetitle %></title>
    		<legend>
-   			Add new voucher
-   			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter details about your voucher and submit to claim your expenses</p>
+   			<%= legend %>
    		</legend>
    		<div id = "button-options" style = "display:<%=option_style%>">
    		   	<button class = "btn btn-info" id = "new-voucher"><i class = "icon-white icon-file"></i>Create a new voucher</button>
@@ -202,7 +234,7 @@
    					for(Department d:vtypedepts) {
    						Type t = new Type(d.getVtypeid());
    						boolean displayed = false;
-   						if((mode.equals("drafts") || mode.equals("from_existing")) && !type.equals("")) {
+   						if((mode.equals("drafts") || mode.equals("from_existing") || mode.equals("edit")) && !type.equals("")) {
    							if(t.getVtypeid() == Integer.parseInt(type)){
    								%> <option value = "<%= t.getVtypeid() %>" selected = "true"><%= t.getTitle() %></option> <%
 								displayed=true;   							
@@ -221,15 +253,41 @@
    			</div>
    			<label>Enter Description</label>
    			<textarea rows="10" cols = "50" id = "description" name = "description"><%=description %></textarea><br>
-			<label>Upload Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment"><br>			
-    		<br><button type="submit" class="btn btn-success"><i class = "icon-white icon-plus"></i>Add Voucher</button>
-    		<a type="button" id="draft" class = "btn btn-warning"><i class = "icon-white icon-file"></i>Save Draft</a>
-    		<%
-    			if(mode.equals("drafts")) {
-    				%> <button type = "button" id="discard-draft" class = "btn btn-danger"><i class = "icon-white icon-remove"></i>Discard Draft</button> <%
-    			}
-    		%>
+   			<%
+   				vid = Integer.parseInt(request.getParameter("vid"));
+				Voucher voucher = new Voucher(vid);
+				String ext = voucher.getExtension().toLowerCase();
+				if(ext.equals("")) attach = "Upload";
+   				if(mode.equals("edit") && !ext.equals("")){
+   					%> <label>Attachment</label> <%
+   					if(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png")){
+   						%>
+   						<img class = "poi attach-img img-rounded img-polaroid" src = "../server/display_image.jsp?mode=attachment_image&vid=<%=vid %>&ext=<%=ext %>" width = 20%> 
+   						<div style="display:none">
+   							<div id = "large-image">
+   								<img src = "../server/display_image.jsp?mode=attachment_image&vid=<%=vid %>&ext=<%=ext %>">
+   							</div>
+   						</div>
+   						<%
+   					}
+   					else {
+   						if(ext.equals("pdf")){
+   							%> <a target = "_blank" href = "../server/view_attachment.jsp?vid=<%=vid %>"><img src = "../img/pdf.png" class = "attach-doc" width = 12%></a> <%
+   						}
+   						else if(ext.equals("doc") || ext.equals("docx")){
+   							%> <a target = "_blank" href = "../server/view_attachment.jsp?vid=<%=vid %>"><img src = "../img/word.png" class = "attach-doc" width = 12%></a> <%
+   						}
+   					}
+   					%> <br><br> <%
+   				}
+   			%>
+			<label><%=attach %> Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment"><br>			
+    		<br>
+    		<div id = "button-set">
+    			<%= buttonset %>
+    		</div>	
     		<input type = "hidden" name = "draft_filename" id = "draft_filename" value = "<%= filename %>">
+    		<input type = "hidden" name ="mode" id = "mode" value = "<%= vid%>">
   		</fieldset>
 	</form>
 </div>

@@ -287,7 +287,7 @@ public class Db {
 		
 		String query = "UPDATE " + tableName + " SET " + col + "  = ? WHERE " + whereCol + " = '" + whereVal + "'";
 		PreparedStatement stmt = con.prepareStatement(query);
-		
+		System.out.println(path);
 		File file = new File(path);
 		int success=0;
 		try {

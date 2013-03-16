@@ -38,6 +38,9 @@
 	<div class="accordion" id="accordion2">
 	  <%
 	  	Department[] dept = Department.list("","");
+	  	if(dept.length == 0) {
+	  		%> No departments added <%
+	  	}
 	  	for(Department d:dept) {
 	  		User user = new User(d.getUserid());
 	  		

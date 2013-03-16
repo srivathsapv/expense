@@ -27,6 +27,7 @@
 		else {
 			vlist = Voucher.list("","",0);
 		}
+		if(vlist.length == 0) %> No vouchers found <%
 		for(Voucher v: vlist){
 			%>
 			<tr>

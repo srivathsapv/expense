@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import user.Department;
 
 import db.Db;
@@ -205,6 +208,7 @@ public class Type {
 	
 	/**
 	 * Deletes the voucher type
+	 * 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
@@ -216,7 +220,42 @@ public class Type {
 		db.delete("VOUCHERTYPE_POLICY","VTYPEID",Integer.toString(this.vtypeid));
 		
 		db.delete("VOUCHER_TYPE","VTYPEID",Integer.toString(this.vtypeid));
-		db.disconnect();
+		db.disconnect();	
+	}
+	
+	/**
+	 * Converts the object to json object
+	 * 
+	 * @return org.json.JSONObject
+	 * 
+	 * @throws JSONException 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public JSONObject toJSON() throws JSONException, ClassNotFoundException, SQLException {
+		JSONObject obj = new JSONObject();
 		
+		obj.put("vtypeid",this.vtypeid);
+		obj.put("title", this.title);
+		obj.put("description",this.description);
+		
+		voucher.vouchertype.Department[] vtypedepts = voucher.vouchertype.Department.list("VTYPEID", Integer.toString(this.vtypeid));
+		int deptids[] = new int[vtypedepts.length];
+		int i=0;
+		for(voucher.vouchertype.Department d:vtypedepts){
+			deptids[i++] = d.getDeptid();
+		}
+		
+		voucher.vouchertype.Policy[] vtypepolicy = voucher.vouchertype.Policy.list("VTYPEID", Integer.toString(this.vtypeid));
+		int policyids[] = new int[vtypepolicy.length];
+		i=0;
+		for(voucher.vouchertype.Policy p:vtypepolicy){
+			policyids[i++] = p.getPolicyid();
+		}
+		
+		obj.put("deptids", deptids);
+		obj.put("policyids", policyids);
+		
+		return obj;
 	}
 }
