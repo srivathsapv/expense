@@ -19,5 +19,10 @@
 		voucher.Type vtype = new voucher.Type(vtypeid);
 		obj = vtype.toJSON();
 	}
+	else if(type.equals("user")){
+		String userid = request.getParameter("userid");
+		user.User user = new user.User(userid);
+		obj = user.toJSON();
+	}
 %>
 <%= obj %>

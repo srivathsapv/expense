@@ -5,7 +5,14 @@ package user;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+
+import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import db.Db;
 
@@ -495,7 +502,6 @@ public class User {
 			map.put("MOBILE",this.mobile);
 			map.put("EMAIL",this.email);			
 			map.put("DOB", this.dob.toString());
-			map.put("PHOTO", null);
 			
 			n = db.update(t_name,map,"USERID",this.userid);
 			
@@ -590,6 +596,46 @@ public class User {
 		db.delete("LOGIN","USERID",this.userid);
 		db.delete("USER","USERID",this.userid);
 	}
-
 	
+	/**
+	 * Converts the object to json object
+	 * 
+	 * @return org.json.JSONObject
+	 * 
+	 * @throws JSONException
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 * @throws ParseException 
+	 */
+	public JSONObject toJSON() throws JSONException, ClassNotFoundException, SQLException, ParseException {
+		JSONObject obj = new JSONObject();
+		
+		auth.Authentication auth = new auth.Authentication(this.userid);
+		
+		
+		
+		SimpleDateFormat f1 = new SimpleDateFormat("yyyy-mm-dd");
+		Date d = f1.parse(this.dob);
+		
+		SimpleDateFormat f2 = new SimpleDateFormat("dd-mm-yyyy");
+		String datestr = f2.format(d);
+		
+		obj.put("userid",this.userid);
+		obj.put("firstname",this.firstName);
+		obj.put("middlename",this.middleName);
+		obj.put("lastname",this.lastName);
+		obj.put("socialsecurity",this.socialSecurity);
+		obj.put("dob",datestr);
+		obj.put("gender",this.gender);
+		obj.put("role",auth.getRole());
+		obj.put("deptid",this.deptid);
+		obj.put("manager",this.manager);
+		obj.put("designation",this.designation);
+		obj.put("address",this.address);
+		obj.put("phone",this.phone);
+		obj.put("mobile",this.mobile);
+		obj.put("email",this.email);
+		
+		return obj;
+	}
 }

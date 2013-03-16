@@ -14,17 +14,28 @@
 			if(request.getParameter("status").equals(Utility.MD5("success"))){
 				%> <div class = "alert alert-success">
 					<button class="close" data-dismiss="alert" type="button">×</button>
-					User added successfully
+					<%= request.getParameter("message") %>
 				</div> <%
 			}
 		}
 	%>
 <script src="../js/custom.js"></script>
+<script>
+	$(document).ready(function(){
+		$(".del-user").click(function(){
+			window.location = $(this).attr("alt");
+		});
+		
+		$(".edit-user").click(function(){
+			window.location = $(this).attr("alt");
+		});
+	});
+</script>
 	<legend>
 		<h2 class = "profile-name">
 			<%= user.getFirstName() + " " + user.getlastName() %>
-			<button class = "btn btn-warning"><i class = "icon-white icon-pencil"></i>Edit</button>
-			<button class = "btn btn-danger"><i class = "icon-white icon-remove	"></i>Delete</button>
+			<button class = "btn btn-warning edit-user" alt = "user_add.jsp?mode=edit&userid=<%=userid %>"><i class = "icon-white icon-pencil"></i>Edit</button>
+			<button class = "btn btn-danger del-user" alt = "user_add.jsp?mode=edit&userid=<%=userid %>"><i class = "icon-white icon-remove"></i>Delete</button>
 		</h2>
 		<span class = 'designation'><%= user.getDesignation() %> - <%= deptname %> Department</span><br>
 		

@@ -7,7 +7,7 @@
 <%@ page import="org.apache.commons.fileupload.*" %>
 <%@ include file = "server_authenticate.jsp" %>
 <%
-	String values[] = new String[17];
+	String values[] = new String[18];
 	int i =0;
 	String path = "";
 	boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -43,7 +43,13 @@
   	}
 	
 	//create new login
-	Authentication new_login = new Authentication();
+	Authentication new_login = null;
+	if(values[16].equals("")) {
+		 new_login = new Authentication();
+	}
+	else {
+		new_login = new Authentication(values[16]);
+	}
 	
 	new_login.setUserid(values[0]);
 	new_login.setPassword("asdf"); //later change it to random
@@ -53,9 +59,17 @@
 	
 	boolean login_success = new_login.save();
 	
+	String modestr = "added";
 	
 	//create new user
-	User user = new User();
+	User user = null;
+	if(values[16].equals("")){
+		user = new User();	
+	}
+	else {
+		modestr = "edited";
+		user = new User(values[16]);
+	}
 	
 	user.setUserid(values[0]);
 	user.setFirstName(values[1]);
@@ -79,12 +93,13 @@
 	user.setPhone(values[12]);
 	user.setMobile(values[13]);
 	user.setEmail(values[14]);
-	user.setPhoto(path);
+	if(!path.equals(""))
+		user.setPhoto(path);
 	
 	boolean user_success = user.save();
 	
 	if(user_success && login_success){
-		response.sendRedirect("../pages/user_view.jsp?status=" + Utility.MD5("success") + "&userid="+values[0]);
+		response.sendRedirect("../pages/user_view.jsp?status=" + Utility.MD5("success") + "&userid="+values[0] + "&message=User " + modestr + " successfully");
 		return;
 	}
 	else {

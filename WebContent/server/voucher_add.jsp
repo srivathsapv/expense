@@ -49,11 +49,13 @@
 		}
 	}
 	Voucher voucher = null;
+	String modestr = "added";
 	if(values[6].equals("0")){
-		voucher = new Voucher();	
+		voucher = new Voucher();
 	}
 	else {
-		voucher = new Voucher(Integer.parseInt(values[6])); 
+		voucher = new Voucher(Integer.parseInt(values[6]));
+		modestr = "edited";
 	}
 	
 	voucher.setTitle(values[0]);
@@ -120,11 +122,7 @@
 			File draft_file = new File(config.getServletContext().getRealPath("/")+"drafts/"+values[5]);
 			draft_file.delete();
 		}
-		response.sendRedirect("../pages/voucher_view.jsp?status=" + Utility.MD5("success")+"&id="+voucher.getVoucherid());
-		return;
-	}
-	else {
-		response.sendRedirect("../pages/voucher_add.jsp?status=" + Utility.MD5("error"));
+		response.sendRedirect("../pages/voucher_view.jsp?status=" + Utility.MD5("success")+"&id="+voucher.getVoucherid() + "&message=Voucher " + modestr + " successfully");
 		return;
 	}
 %>

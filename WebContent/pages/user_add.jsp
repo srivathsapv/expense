@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
-    pageEncoding="UTF-8" import = "user.Department,utility.Utility"%>
+    pageEncoding="UTF-8" import = "user.User,utility.Utility,user.Department"%>
 <%@ include file ="../include/layout.jsp" %>
-<title>Vowcher - Add New User</title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
 <script src = "../js/bootstrap-datepicker.js"></script>
 <script type = "text/javascript">
@@ -10,6 +9,7 @@
 		$(".refresh").click(function(){
 			$("img[src='../captchaImg']").attr("src","../captchaImg");
 		});
+		
 		$("#deptid").change(function(){
 			$.ajax({
 				type : "POST",
@@ -34,14 +34,78 @@
 		
 	});
 </script>
+<style>
+	input[type='file']{
+		margin-left: 10px!important;
+	}
+</style>
+<%
+	String userid = "";
+	String title = "Vowcher - Department Edit";
+	if(request.getParameter("mode") != null){
+		userid = request.getParameter("userid");
+		title = "Vowcher - Edit User";
+		User dept = new User(userid);
+		%>
+		<script>
+			$.ajax({
+				type:"POST",
+				dataType:"json",
+				url:"../server/json_api.jsp",
+				data:"type=user&userid=<%=userid%>",
+				success:function(msg){
+					$("#userid").val(msg.userid);
+					$("#firstName").val(msg.firstname);
+					$("#middleName").val(msg.middlename);
+					$("#lastName").val(msg.lastname);
+					$("#socialSecurity").val(msg.socialsecurity);
+					$("#dob").val(msg.dob);
+					if(msg.gender == "M"){
+						$("input[alt='male']").attr("checked","checked");
+					}
+					else {
+						$("input[alt='female']").attr("checked","checked");
+					}
+					$("#role").val(msg.role);
+					$("#deptid").val(msg.deptid);
+					$("#designation").val(msg.designation);
+					$("textarea").text(msg.address);
+					$("#phone").val(msg.phone);
+					$("input[name='mobile']").val(msg.mobile);
+					$("#email").val(msg.email);	
+					
+					$.ajax({
+						type : "POST",
+						data : "mode=managers&deptid="+msg.deptid,
+						url : "../server/fetch_data.jsp",
+						success:function(msg2){
+							$("#manager").html(msg2);
+							$("#manager").val(msg.manager);
+						}
+					});
+				}
+			});
+		</script> 
+		<%
+	}
+%>
+<title><%=title %></title>
 <div id = "body-content">
 	<form method = "POST" class = "validate" action = "../server/user_add.jsp" enctype="multipart/form-data">
   		<fieldset>
     		<legend>
-    			New User
-    			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p>
+    			<%
+    				if(!userid.equals("")){
+    					%> Edit User <%
+    				}
+    				else {
+    					%>
+    					New User
+    			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p> <%
+    				}
+    			%>
     		</legend><br>
-    		<input class = "span4 required" type = "text" valtype = "required alphanumeric unique_username" valmsg = "Username should be alphanumeric" id = "userid" name = "userid" placeholder = "Choose a login ID ..."><br/>
+    		<input class = "span4 required" type = "text" valtype = "required alphanumeric <% if(userid.equals("")) { %>unique_username<%} %>" valmsg = "Username should be alphanumeric" id = "userid" name = "userid" placeholder = "Choose a login ID ..."><br/>
     		<input class = "span4 required" valtype = "required alpha" valmsg="First name should contain only alphabets" type="text" id = "firstName" name = "firstName" placeholder="First name..."><br/>
     		<input class = "span4" type="text" valtype = "alpha" valmsg="Middle name should contain only alphabets" id = "middleName" name = "middleName" placeholder="Middle name..."><br>
     		<input class = "span4" type="text" valtype = "alpha" valmsg="Last name should contain only alphabets" id = "lastName" name = "lastName" placeholder="Last Name..."><br>
@@ -54,11 +118,11 @@
    			</div>
    			<label>Gender</label>
    			<label class = "radio">
-   				<input type = "radio" id = "gender" name = "gender" value = "M" checked>
+   				<input type = "radio" alt = "male" id = "gender" name = "gender" value = "M" <% if(userid.equals("")) { %>checked <% }	 %>>
    				Male
    			</label>
    			<label class = "radio">
-   				<input type = "radio" id = "gender" name = "gender" value = "F">
+   				<input type = "radio" alt = "female" id = "gender" name = "gender" value = "F">
    				Female
    			</label>
    			<select class = "span4 required" valtype = "required" id = "role" name = "role">
@@ -95,10 +159,31 @@
     		</span>
     		</div><p></p>
     		<input class = "span4 required" type="text" id = "email" name = "email" valtype = "email required" valmsg="Invalid e-mail id" placeholder="Email..."><br>
-    		<label>Upload Photo (jpg, jpeg, png)</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
-    		<img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi" title = "Get another captcha"></i><br><br>
+    		
+    		<%
+    			String attach = "Upload";
+    			if(!userid.equals("")) {
+    				User user = new User(userid);
+    				attach = "Change";
+    				if(!user.getPhoto().equals("")) {
+    					%> <div><img src = "../server/display_image.jsp?userid=<%= userid %>&mode=profile_picture" class = "profile-image img-rounded img-polaroid" width = 15%></div> <%
+    				}
+    			}
+    				
+    		%>
+    		
+    		<br><label>&nbsp;&nbsp;&nbsp;&nbsp;Change Photo (jpg, jpeg)</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
+    		<br><img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi" title = "Get another captcha"></i><br><br>
     		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha" id = "captcha"><br><br>
+    		<input type = "hidden" name = "mode" id = "mode" value = "<%=userid %>">
+    		
+    		<%
+    			if(!userid.equals("")) {
+    			%> <button type="submit" class="btn btn-info"><i class = "icon-white icon-edit"></i>Save</button> <%
+    			} else {
+    		%>
     		<button type="submit" class="btn btn-success"><i class = "icon-white icon-plus"></i>Add User</button>
+    		<% } %>
     	</fieldset>
 	</form>
 </div>
