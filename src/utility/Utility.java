@@ -23,8 +23,13 @@ public class Utility {
         BigInteger output = new BigInteger(1, MD5.digest());
         
         String hashedinput = output.toString(16);
+        String outp = hashedinput;
         
-        return hashedinput;
+        while(outp.length() < 32) {
+        	outp = "0" + outp;
+        }
+        
+        return outp;
 	}
 	
 	/**

@@ -329,10 +329,11 @@ public class Authentication {
 	 */
 	public static String publicEncrypt(String password,String username) throws NoSuchAlgorithmException {
         String hasheduserid = Utility.MD5(username);
+        //System.out.println(hasheduserid);
         String salt = password + "{" + hasheduserid + "}";
-        
+        //System.out.println(salt);
         String output = Utility.MD5(salt);
+        //System.out.println(output);
         return output;
 	}
-	
 }

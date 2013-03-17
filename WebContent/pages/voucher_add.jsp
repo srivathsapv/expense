@@ -205,7 +205,8 @@
    				<select class = "span4" id = "voucher-list">
 	   				<option value = "">Select a voucher</option>
 	   				<%
-	   					Voucher[] existing_vouchers = Voucher.list("userid","sriv",0);
+	   					User vuser = (User)session.getAttribute("sessionUser");
+	   					Voucher[] existing_vouchers = Voucher.list("USERID",vuser.getUserid(),0);
 	   					if(vouchers.length > 0){
 	   						for(Voucher v:existing_vouchers){
 	   							%><option value = "<%=v.getVoucherid()%>"><%=v.getTitle() %></option> <%
@@ -254,31 +255,33 @@
    			<label>Enter Description</label>
    			<textarea rows="10" cols = "50" id = "description" name = "description"><%=description %></textarea><br>
    			<%
-   				vid = Integer.parseInt(request.getParameter("vid"));
-				Voucher voucher = new Voucher(vid);
-				String ext = voucher.getExtension().toLowerCase();
-				if(ext.equals("")) attach = "Upload";
-   				if(mode.equals("edit") && !ext.equals("")){
-   					%> <label>Attachment</label> <%
-   					if(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png")){
-   						%>
-   						<img class = "poi attach-img img-rounded img-polaroid" src = "../server/display_image.jsp?mode=attachment_image&vid=<%=vid %>&ext=<%=ext %>" width = 20%> 
-   						<div style="display:none">
-   							<div id = "large-image">
-   								<img src = "../server/display_image.jsp?mode=attachment_image&vid=<%=vid %>&ext=<%=ext %>">
-   							</div>
-   						</div>
-   						<%
-   					}
-   					else {
-   						if(ext.equals("pdf")){
-   							%> <a target = "_blank" href = "../server/view_attachment.jsp?vid=<%=vid %>"><img src = "../img/pdf.png" class = "attach-doc" width = 12%></a> <%
-   						}
-   						else if(ext.equals("doc") || ext.equals("docx")){
-   							%> <a target = "_blank" href = "../server/view_attachment.jsp?vid=<%=vid %>"><img src = "../img/word.png" class = "attach-doc" width = 12%></a> <%
-   						}
-   					}
-   					%> <br><br> <%
+   				if(request.getParameter("vid") != null) {
+   					vid = Integer.parseInt(request.getParameter("vid"));
+   					Voucher voucher = new Voucher(vid);
+   					String ext = voucher.getExtension().toLowerCase();
+   					if(ext.equals("")) attach = "Upload";
+   	   				if(mode.equals("edit") && !ext.equals("")){
+   	   					%> <label>Attachment</label> <%
+   	   					if(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png")){
+   	   						%>
+   	   						<img class = "poi attach-img img-rounded img-polaroid" src = "../server/display_image.jsp?mode=attachment_image&vid=<%=vid %>&ext=<%=ext %>" width = 20%> 
+   	   						<div style="display:none">
+   	   							<div id = "large-image">
+   	   								<img src = "../server/display_image.jsp?mode=attachment_image&vid=<%=vid %>&ext=<%=ext %>">
+   	   							</div>
+   	   						</div>
+   	   						<%
+   	   					}
+   	   					else {
+   	   						if(ext.equals("pdf")){
+   	   							%> <a target = "_blank" href = "../server/view_attachment.jsp?vid=<%=vid %>"><img src = "../img/pdf.png" class = "attach-doc" width = 12%></a> <%
+   	   						}
+   	   						else if(ext.equals("doc") || ext.equals("docx")){
+   	   							%> <a target = "_blank" href = "../server/view_attachment.jsp?vid=<%=vid %>"><img src = "../img/word.png" class = "attach-doc" width = 12%></a> <%
+   	   						}
+   	   					}
+   	   					%> <br><br> <%
+   	   				}	
    				}
    			%>
 			<label><%=attach %> Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment"><br>			

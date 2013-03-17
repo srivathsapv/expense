@@ -127,10 +127,11 @@ public class Db {
 		
 		stmt = con.prepareStatement(query);
 		
-		
 		if(whereVals.length > 0) {
-			for(int i=0;i<whereVals.length;i++)
-				stmt.setString(i+1, whereVals[i]);	
+			for(int i=0;i<whereVals.length;i++) {
+				stmt.setString(i+1, whereVals[i]);
+			}
+				
 		}
 			
 		ResultSet rs = stmt.executeQuery();
@@ -287,7 +288,7 @@ public class Db {
 		
 		String query = "UPDATE " + tableName + " SET " + col + "  = ? WHERE " + whereCol + " = '" + whereVal + "'";
 		PreparedStatement stmt = con.prepareStatement(query);
-		System.out.println(path);
+		
 		File file = new File(path);
 		int success=0;
 		try {

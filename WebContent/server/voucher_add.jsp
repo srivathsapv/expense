@@ -113,7 +113,16 @@
 	
 	boolean voucher_success = voucher.save();
 	
-	//adding notifications, status , etc etc
+	//set status of voucher to pending
+	
+	if(modestr.equals("added")){
+		voucher.Status status = new voucher.Status();
+		status.setStatus("pending");
+		status.setVoucherid(voucher.getVoucherid());
+		status.setUserid(user.getManager());
+		status.setTime();
+		status.save();
+	}
 	
 	if(voucher_success)
 	{

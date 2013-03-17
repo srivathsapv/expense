@@ -50,6 +50,7 @@
 			 // Writing the user object to the session
 			User sessionUser = new User(username);
 			session.setAttribute("sessionUser",sessionUser);
+			session.setAttribute("sessionUsername",username);
 			
 			// Writing the last login timestamp to the session
 			Authentication auth = new Authentication(username);

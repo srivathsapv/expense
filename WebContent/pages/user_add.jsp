@@ -13,12 +13,30 @@
 		$("#deptid").change(function(){
 			$.ajax({
 				type : "POST",
-				data : "mode=managers&deptid="+$(this).val(),
+				data : "mode=managers&deptid="+$(this).val()+"&role="+$("#role").val(),
 				url : "../server/fetch_data.jsp",
 				success:function(msg){
 					$("#manager").html(msg);
 				}
 			});
+		});
+		
+		$("#role").change(function(){
+			$.ajax({
+				type : "POST",
+				data : "mode=managers&deptid="+$("#deptid").val()+"&role="+$(this).val(),
+				url : "../server/fetch_data.jsp",
+				success:function(msg){
+					$("#manager").html(msg);
+				}
+			});
+			
+			if($(this).val() == "md" || $(this).val() == "admin" || $(this).val() == "bckadmin"){
+				$("#manager").attr("valtype","");
+			}
+			else {
+				$("#manager").attr("valtype","required");
+			}
 		});
 		
 		$("#photo").change(function(){
@@ -45,7 +63,6 @@
 	if(request.getParameter("mode") != null){
 		userid = request.getParameter("userid");
 		title = "Vowcher - Edit User";
-		User dept = new User(userid);
 		%>
 		<script>
 			$.ajax({
@@ -67,6 +84,9 @@
 						$("input[alt='female']").attr("checked","checked");
 					}
 					$("#role").val(msg.role);
+					if(msg.role == "md" || msg.role == "admin" || msg.role == "bckadmin"){
+						$("#manager").attr("valtype","");
+					}
 					$("#deptid").val(msg.deptid);
 					$("#designation").val(msg.designation);
 					$("textarea").text(msg.address);
@@ -76,7 +96,7 @@
 					
 					$.ajax({
 						type : "POST",
-						data : "mode=managers&deptid="+msg.deptid,
+						data : "mode=managers&deptid="+msg.deptid+"&role="+$("#role").val(),
 						url : "../server/fetch_data.jsp",
 						success:function(msg2){
 							$("#manager").html(msg2);
@@ -131,6 +151,9 @@
    				<option value = "manager">Manager</option>
    				<option value = "ceo">Chief Executive Officer</option>
    				<option value = "md">Managing Director</option>
+   				<option value = "finance">Finance</option>
+   				<option value = "admin">System Administrator</option>
+   				<option value = "bckadmin">Backup Administrator</option>
    			</select><br>
     		<select class = "span4 required" valtype = "required" id = "deptid" name = "deptid">
     			<option value = "">Choose Department</option>
@@ -164,15 +187,18 @@
     			String attach = "Upload";
     			if(!userid.equals("")) {
     				User user = new User(userid);
-    				attach = "Change";
-    				if(!user.getPhoto().equals("")) {
-    					%> <div><img src = "../server/display_image.jsp?userid=<%= userid %>&mode=profile_picture" class = "profile-image img-rounded img-polaroid" width = 15%></div> <%
+    				
+    				
+    				if(user.getPhoto() != null) {
+    					if(!user.getPhoto().equals("")){
+    						attach = "Change";
+    						%> <div><img src = "../server/display_image.jsp?userid=<%= userid %>&mode=profile_picture" class = "profile-image img-rounded img-polaroid" width = 15%></div> <%
+    					}
     				}
     			}
-    				
     		%>
     		
-    		<br><label>&nbsp;&nbsp;&nbsp;&nbsp;Change Photo (jpg, jpeg)</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
+    		<br><label>&nbsp;&nbsp;&nbsp;&nbsp;<%=attach %> Photo (jpg, jpeg)</label><input id = "photo" name = "photo" class = "span4" type="file"><br><br>
     		<br><img src = "../captchaImg" class = "img-polaroid"><i class = "refresh icon-refresh poi" title = "Get another captcha"></i><br><br>
     		<input type = "text" class = "span4 required" valtype = "required" placeholder = "Enter the code shown above..." valmsg = "Code entered is incorrect" name = "captcha" id = "captcha"><br><br>
     		<input type = "hidden" name = "mode" id = "mode" value = "<%=userid %>">
