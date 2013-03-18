@@ -168,7 +168,7 @@
 		}
 		
 		String buttonset = "";
-		if(mode.equals("")){
+		if(mode.equals("") || mode.equals("from_existing")){
 			buttonset = "<button type='submit' class='btn btn-success'><i class = 'icon-white icon-plus'></i>Add Voucher</button>&nbsp;&nbsp;<a type='button' id='draft' class = 'btn btn-warning'><i class = 'icon-white icon-file'></i>Save Draft</a>";	
 		}
 		else if(mode.equals("drafts")){

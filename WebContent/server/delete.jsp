@@ -53,4 +53,13 @@
 			return;
 		}
 	}
+	else if(type.equals("aconfig")) {
+		int configid = Integer.parseInt(request.getParameter("configid"));
+		voucher.AmountConfig aconfig = new voucher.AmountConfig(configid);
+		aconfig.delete();
+		if(request.getParameter("source").equals("list")){
+			response.sendRedirect("../pages/amount_config.jsp");
+			return;
+		}
+	}
 %>

@@ -130,6 +130,7 @@
 	                  		<li><a tabindex="-1" href="voucher_add.jsp"><i class = "icon-plus-sign"></i>New Voucher</a></li>
 	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp?userid=<%=l_username%>"><i class = "icon-list-alt"></i>My Vouchers</a></li>
 	                  		<li><a tabindex="-1" href="vouchertype_list.jsp"><i class = "icon-list"></i>Voucher Types</a></li>
+	                  		<li><a tabindex="-1" href = "amount_config.jsp"><i class = "icon-cog"></i>Amount Configuration</a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
@@ -144,6 +145,7 @@
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
 	                  		<li><a tabindex="-1" href="user_add.jsp"><i class = "icon-plus-sign"></i>Add New</a></li>
 	                  		<li><a tabindex="-1" href="user_list.jsp"><i class = "icon-list-alt"></i>List</a></li>
+	                  		<li><a tabindex="-1" href="role_config.jsp"><i class = "icon-pencil"></i>Role Configuration</a>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">

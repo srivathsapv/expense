@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.eclipse.jdt.internal.compiler.ast.ThisReference;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 

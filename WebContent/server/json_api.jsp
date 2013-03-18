@@ -24,5 +24,10 @@
 		user.User user = new user.User(userid);
 		obj = user.toJSON();
 	}
+	else if(type.equals("aconfig")){
+		String configid = request.getParameter("configid");
+		voucher.AmountConfig aconfig = new voucher.AmountConfig(Integer.parseInt(configid));
+		obj = aconfig.toJSON();
+	}
 %>
 <%= obj %>
