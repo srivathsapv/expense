@@ -62,4 +62,13 @@
 			return;
 		}
 	}
+	else if(type.equals("rconfig")) {
+		int configid = Integer.parseInt(request.getParameter("configid"));
+		user.RoleConfig rconfig = new user.RoleConfig(configid);
+		rconfig.delete();
+		if(request.getParameter("source").equals("list")){
+			response.sendRedirect("../pages/role_config.jsp");
+			return;
+		}
+	}
 %>

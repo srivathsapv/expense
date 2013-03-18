@@ -29,5 +29,10 @@
 		voucher.AmountConfig aconfig = new voucher.AmountConfig(Integer.parseInt(configid));
 		obj = aconfig.toJSON();
 	}
+	else if(type.equals("rconfig")){
+		String configid = request.getParameter("configid");
+		user.RoleConfig rconfig = new user.RoleConfig(Integer.parseInt(configid));
+		obj = rconfig.toJSON();
+	}
 %>
 <%= obj %>

@@ -7,6 +7,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import voucher.AmountConfig;
+
 import db.Db;
 
 /**
@@ -181,12 +186,12 @@ public class RoleConfig {
 	}
 	
 	/**
-	 * Returns a list of bookmark objects
+	 * Returns a list of config objects
 	 * 
 	 * @param String - Column name as the filter parameter
 	 * @param String - Value
 	 * 
-	 * @return Array[user.Bookmark]
+	 * @return Array[voucher.AmountConfiguration]
 	 * 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
@@ -195,14 +200,26 @@ public class RoleConfig {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'");
+		String cnt_query = "";
+		String query = "";
+		if(column.equals("")){
+			query = "SELECT * FROM " + t_name;
+			cnt_query = "SELECT COUNT(*) FROM " + t_name;
+			
+		}
+		else {
+			query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+			cnt_query = "SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+		}
+		
+		ResultSet rs = db.executeQuery(cnt_query);
 		rs.next();
 		
 		RoleConfig[] list = new RoleConfig[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'");
+		rs = db.executeQuery(query);
 		
-		int i=0;
+		int i = 0;
 		while(rs.next()) {
 			list[i++] = new RoleConfig(rs.getInt("ID"));
 		}
@@ -229,5 +246,36 @@ public class RoleConfig {
 		rs.next();
 		
 		return rs.getInt(1);
+	}
+	
+	/**
+	 * Converts the object to json object
+	 * 
+	 * @return org.json.JSONObject
+	 * 
+	 * @throws JSONException 
+	 */
+	public JSONObject toJSON() throws JSONException {
+		JSONObject obj = new JSONObject();
+		
+		obj.put("id",this.id);
+		obj.put("role", this.role);
+		obj.put("claimlimit",this.claimLimit);
+		obj.put("acceptlimit", this.acceptLimit);
+		
+		return obj;
+	}
+	
+	/**
+	 * Deletes the amount configuration
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		db.delete(t_name,"ID",Integer.toString(this.id));
+		db.disconnect();
 	}
 }

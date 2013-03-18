@@ -186,12 +186,12 @@ public class AmountConfig {
 	}
 	
 	/**
-	 * Returns a list of bookmark objects
+	 * Returns a list of config objects
 	 * 
 	 * @param String - Column name as the filter parameter
 	 * @param String - Value
 	 * 
-	 * @return Array[user.Bookmark]
+	 * @return Array[voucher.AmountConfiguration]
 	 * 
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
