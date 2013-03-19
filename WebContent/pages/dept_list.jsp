@@ -65,7 +65,7 @@
 		       		voucher.vouchertype.Department[] vtypedepts = voucher.vouchertype.Department.list("DEPTID",Integer.toString(d.getDeptid()));
 		       		for(voucher.vouchertype.Department vtypedept: vtypedepts){
 		       			voucher.Type vtype = new voucher.Type(vtypedept.getVtypeid());
-		       			%> <li><a href = "vouchertype_list.jsp?vtype=<%=vtype.getVtypeid() %>"><%= vtype.getTitle() %></a></li><%	
+		       			%> <li><a href = "vouchertype_list.jsp?vtype=<%=vtype.getVtypeid() %>#vtype<%=vtype.getVtypeid()%>"><%= vtype.getTitle() %></a></li><%	
 		       		}
 		       	%>
 	       	</ul>

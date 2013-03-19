@@ -48,6 +48,38 @@
 	       	}
 		}
 	}
+	User user = (User)session.getAttribute("sessionUser");
+	
+	Authentication auth = new Authentication(session.getAttribute("sessionUsername").toString());
+	//check claim limit before proceeding
+	Calendar cal = Calendar.getInstance();
+	int month = cal.get(Calendar.MONTH)+1;
+	String year = Integer.toString(cal.get(Calendar.YEAR));
+	String mstr = "";
+	
+	if(month < 10) 
+		mstr = "0" + Integer.toString(month);
+	else
+		mstr = Integer.toString(month);
+	
+	Db db = new Db();
+	db.connect();
+	
+	ResultSet rs = db.executeQuery("SELECT SUM(AMOUNT) FROM VOUCHER WHERE USERID = '" + user.getUserid() + "' AND DATE LIKE '" + year + "-" + mstr + "-__'");
+	rs.next();
+	
+	ResultSet rs2 = db.executeQuery("SELECT CLAIM_LIMIT FROM ROLECONFIG WHERE ROLE = '" + auth.getRole() + "'");
+	rs2.next();
+	
+	if(rs.getInt(1) + Integer.parseInt(values[1]) > rs2.getInt(1)){
+		response.sendRedirect("../pages/voucher_add.jsp?message=overlimit");
+		return;
+	}
+	//claim limit check ends
+	
+	
+	
+	
 	Voucher voucher = null;
 	String modestr = "added";
 	if(values[6].equals("0")){
@@ -60,7 +92,7 @@
 	
 	voucher.setTitle(values[0]);
 	
-	User user = (User)session.getAttribute("sessionUser");
+	
 	voucher.setUserid(user.getUserid());
 	
 	voucher.setAmount(Float.parseFloat(values[1]));
@@ -79,10 +111,9 @@
 	
 	
 	if(path.equals("")){
-		Db db = new Db();
 		db.connect();
 		String vid = values[6];	
-		ResultSet rs = db.executeQuery("SELECT ATTACHMENT,EXTENSION,TITLE FROM VOUCHER WHERE VOUCHERID = '" + vid + "'");
+		rs = db.executeQuery("SELECT ATTACHMENT,EXTENSION,TITLE FROM VOUCHER WHERE VOUCHERID = '" + vid + "'");
 		if(rs.next()) {
 			if(!rs.getString(1).equals("")) {
 				Blob image = rs.getBlob(1);

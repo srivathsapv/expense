@@ -113,7 +113,7 @@
 						tclass = "info";
 					}
 					%> 
-					<tr class = "<%=tclass%>">
+					<tr class = "<%=tclass%>" id = "vtype<%=t.getVtypeid()%>">
 						<td><%= t.getTitle() %></td>
 						<td><%= desc%> </td>
 						<td>

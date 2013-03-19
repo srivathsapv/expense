@@ -121,6 +121,17 @@
 </script>
 <div id = "body-content">
 	<%
+		if(request.getParameter("message") != null) {
+			if(request.getParameter("message").equals("overlimit")){
+				%> 
+				<div class = "alert alert-error">
+					<button class="close" data-dismiss="alert" type="button">×</button>
+					Could not add voucher. Claim limit exceeded
+				</div> <%
+			}
+		}
+	%>
+	<%
 		String mode = "";
 		String title="";String amount="";String type="";String date="";String description="";
 		String filename="";

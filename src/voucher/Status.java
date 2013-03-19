@@ -199,7 +199,7 @@ public class Status{
 		
 		Status[] list = new Status[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM "+ t_name +" WHERE " + column + " = '" + value + "'");
+		rs = db.executeQuery("SELECT * FROM "+ t_name +" WHERE " + column + " = '" + value + "' ORDER BY TIME DESC");
 		
 		int i=0;
 		while(rs.next()) {

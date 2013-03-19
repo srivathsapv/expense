@@ -17,6 +17,11 @@
 		});
 	});
 </script>
+<style>
+	#sub-vouch-list > li {
+		font-size: 18px!important;
+	}
+</style>
 <div id = "body-content">
 	<legend>
 		<h1>My Vouchers</h1>
@@ -52,7 +57,7 @@
 		}
 	%>
 	</table>
-	<button class = "btn btn-success" id = "add-voucher"><i class = "icon-white icon-plus"></i>Add New</button><br>
+	<button class = "btn btn-success" id = "add-voucher"><i class = "icon-white icon-plus"></i>Add New</button><br><br>
 	<% if(!userid.equals("")) {
 		Authentication sub_user = new Authentication(userid);
 		String role = sub_user.getRole();
@@ -61,18 +66,22 @@
 			<legend>
 				<h1>Vouchers submitted to me</h1>
 			</legend>
-			<ul>
+			<ul id = "sub-vouch-list">
 				<%
 					User[] sub_users = User.list("MANAGER",userid);
 					Voucher[] sub_vouchers = null;
-					for(User u:sub_users){
-						Voucher[] v = Voucher.list("USERID",u.getUserid(),0);
-						sub_vouchers = ArrayUtils.addAll(sub_vouchers,v);
+					if(sub_users != null) {
+						for(User u:sub_users){
+							Voucher[] v = Voucher.list("USERID",u.getUserid(),0);
+							sub_vouchers = ArrayUtils.addAll(sub_vouchers,v);
+						}
+						
+						for(Voucher v:sub_vouchers){
+							User vouch_user = new User(v.getUserid());
+							%> <li><a href = "voucher_view.jsp?id=<%=v.getVoucherid() %>"><%=v.getTitle() %></a> <span class = "font-italic">submitted by</span> <a href = "user_view.jsp?userid=<%=vouch_user.getUserid() %>"><%= vouch_user.getFirstName() + " " + vouch_user.getlastName() %></a></li> <%
+						}	
 					}
 					
-					for(Voucher v:sub_vouchers){
-						%> <li><a href = "voucher_view.jsp?id=<%=v.getVoucherid() %>"><%=v.getTitle() %></a></li> <%
-					}
 				%>
 			</ul> 
 	<%			

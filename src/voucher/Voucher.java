@@ -395,14 +395,19 @@ public class Voucher {
 			map.put("DATE",this.date.toString());
 			map.put("DESCRIPTION",this.description);
 			map.put("EXTENSION", this.extension);
-			map.put("REJECTREASON","");
+			if(this.rejectReason == null)
+				map.put("REJECTREASON","");
+			else
+				map.put("REJECTREASON",this.rejectReason);
 			map.put("POLICYID",Integer.toString(this.policyid));
 			
 			n = db.update(t_name, map, "VOUCHERID", Integer.toString(this.voucherid));
 			
 			//update attachment
-			if(!this.attachment.equals(""))
-				db.updateBlob(t_name,"ATTACHMENT","VOUCHERID",Integer.toString(this.voucherid),this.attachment);
+			if(this.attachment != null) {
+				if(!this.attachment.equals(""))
+					db.updateBlob(t_name,"ATTACHMENT","VOUCHERID",Integer.toString(this.voucherid),this.attachment);
+			}
 		}
 		
 		db.disconnect();
@@ -433,7 +438,10 @@ public class Voucher {
 		
 		String query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
 		
-		if(limit != 0) query += " ORDER BY DATE FETCH FIRST " + Integer.toString(limit) + " ROWS ONLY";
+		if(limit != 0) {
+			query += " ORDER BY DATE FETCH FIRST " + Integer.toString(limit) + " ROWS ONLY";
+			list = new Voucher[limit];
+		}
 		
 		rs = db.executeQuery(query);
 		

@@ -20,6 +20,20 @@
 		$("#reject").click(function(){
 			$("#rejectdiv").attr("style","display:block");
 		});
+		
+		$(".option-button").click(function(){
+			if($(this).attr("id") == "continue") {
+				if($("#rejectreason").val() == "") {
+					alert("State a reason for your rejection");
+				}
+				else {
+					window.location = $(this).attr("alt") + "&reason=" + $("#rejectreason").val();	
+				}
+			}
+			else {
+				window.location = $(this).attr("alt");
+			}
+		});
 	});
 </script>
 <style>
@@ -77,10 +91,10 @@
 	<%
 		if(request.getParameter("status") != null) {
 			if(request.getParameter("status").equals(Utility.MD5("success"))){
-				%> <div class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Voucher added successfully</div> <%
+				%> <div class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button><%=request.getParameter("message") %></div> <%
 			}
 			else if(request.getParameter("status").equals(Utility.MD5("error"))) {
-				%> <div class = "alert alert-error">Error while adding voucher</div> <%	
+				%> <div class = "alert alert-error"><button class="close" data-dismiss="alert" type="button">×</button><%=request.getParameter("message") %></div> <%	
 			}	
 		}
 	%>
@@ -147,6 +161,7 @@
 			String disp_class = "";
 			String disp_msg = "";
 			String disp_time = "";
+			
 			if(vstatus.equals("pending") || vstatus.equals("under consideration") || vstatus.equals("passed on")){
 				disp_class = "warning";
 				
@@ -187,11 +202,23 @@
 			updateTime = f2.format(udate);
 			updateTime = updateTime.replace("-","at");
 			
+			User statusUser = new User(stat.getUserid());
+			String by_username = statusUser.getFirstName() + " " + statusUser.getlastName();
+			
 		%>
 		<div class = "alert alert-<%=disp_class %>">
 			<%=disp_msg %><br>
-			<span class = "font-italic"><small>Last update on <%= updateTime%></small></span>
+			<span class = "font-italic"><small>Last update on <%= updateTime%> by <a href = "user_view.jsp?userid=<%=stat.getUserid()%>"><%= by_username%></a></small></span>
 		</div>
+		<%
+			if(status.length > 1){
+				%><small><a href = "#">Status History <i style = "margin-top:3px" class = "icon-chevron-down"></i></a></small>
+				
+				 
+			<%
+				
+			}
+		%>
 	</legend>
 	<% } %>
 	<%
@@ -202,21 +229,15 @@
 				%>
 				<legend>
 					<h4><i class = "icon-wrench"></i>Options</h4>
-					<button class = "btn btn-success" id = "accept"><i class = "icon-white icon-ok"></i>Accept</button>
-					<%
-						if(!mgr.getRole().equals("md")) {
-							%> <button class = "btn btn-warning" id = "passon"><i class = "icon-white icon-chevron-right"></i>Pass On</button> <%
-						}
-					%>
-					<button class = "btn btn-info" id = "consider"><i class = "icon-white icon-exclamation-sign"></i>Consider</button>
+					<button class = "btn btn-success option-button" alt = "../server/voucher_status.jsp?vid=<%=vid %>&status=accept" id = "accept"><i class = "icon-white icon-ok"></i>Accept</button>
+					<button class = "btn btn-warning option-button" alt = "../server/voucher_status.jsp?vid=<%=vid %>&status=consider" id = "consider"><i class = "icon-white icon-exclamation-sign"></i>Consider</button>
 					<button class = "btn btn-danger" id = "reject"><i class = "icon-white icon-minus"></i>Reject</button><br><br>
 					<div id = "rejectdiv" style = "display:none">
 						<button class="close" data-dismiss="alert" type="button">×</button>
 						<input class = "span4" type="text" id = "rejectreason" placeholder="Enter a reason for rejection"><br>
-						<button class = "btn btn-info" id = "continue"><i class = "icon-white icon-arrow-right"></i>Continue</button><br>
+						<button class = "btn btn-info option-button" id = "continue" alt = "../server/voucher_status.jsp?vid=<%=vid %>&status=reject" ><i class = "icon-white icon-arrow-right"></i>Continue</button><br>
 					</div>
 				</legend>
-				
 				<%
 			}
 		}

@@ -44,7 +44,7 @@
 			<select class = "span4 required" valtype = "required" name = "role">
    				<option value = "">User Role</option>
    				<option value = "employee">Employee</option>
-   				<option value = "manager">Manager</option>
+   				<option value = "mgr">Manager</option>
    				<option value = "ceo">Chief Executive Officer</option>
    				<option value = "md">Managing Director</option>
    			</select><br>
