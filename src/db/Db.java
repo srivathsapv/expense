@@ -79,6 +79,15 @@ public class Db {
 	}
 	
 	/**
+	 * returns the established connection
+	 * 
+	 * @return Connection
+	 */
+	public Connection getConnection(){
+		return con;
+	}
+	
+	/**
 	 * Disconnects the connection
 	 * 
 	 * @throws SQLException 
