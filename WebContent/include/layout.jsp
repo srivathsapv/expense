@@ -197,6 +197,7 @@
 										int i=0;
 										
 										for(Voucher v:vouchers){
+											if(v == null) continue;
 											String title = v.getTitle();
 											if(title.length() > 15){
 												title = title.substring(0,15) + "...";
