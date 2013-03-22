@@ -56,13 +56,22 @@
 		</thead>
 		<tbody>
 			<%
+				int pid = 0;
+				if(request.getParameter("pid") != null) {
+					pid = Integer.parseInt(request.getParameter("pid"));
+				}
 				Policy[] policies = Policy.list("","");
 				if(policies.length == 0) {
 					%> No policies added <%
 				}
 				for(Policy p : policies){
+					if(pid == p.getPolicyid()) {
+						%> <tr class = "info" id = "p<%=p.getPolicyid()%>"> <%
+					}
+					else {
 					%>
-					<tr>
+					<tr id = "p<%=p.getPolicyid()%>">
+					<% } %>
 						<td>
 							<%=p.getTitle() %>
 						</td>

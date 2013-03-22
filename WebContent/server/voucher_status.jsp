@@ -1,12 +1,13 @@
-<%@ page import = "auth.Authentication,java.util.Calendar,java.sql.ResultSet,db.Db,voucher.Status,voucher.AmountConfig,user.RoleConfig,voucher.Voucher,utility.Utility" %>
+<%@ page import = "user.*,auth.Authentication,java.util.Calendar,java.sql.ResultSet,db.Db,voucher.Status,voucher.AmountConfig,user.RoleConfig,voucher.Voucher,utility.Utility" %>
 <%
 	String stat = request.getParameter("status");
 	int vid = Integer.parseInt(request.getParameter("vid"));
 	
 	String status = "";
+	Voucher vouch = new Voucher(vid);
+	String voucher_level = "middle";
 	if(stat.equals("accept")) {
 		//accept limit check
-		Voucher vouch = new Voucher(vid);
 		double amount = vouch.getAmount();
 		Authentication auth = new Authentication(session.getAttribute("sessionUsername").toString());
 		Db db = new Db();
@@ -27,15 +28,11 @@
 		else
 			mstr = Integer.toString(month);
 		
-		System.out.println("count from status - " + rs.getInt(1));
-		System.out.println("maxcount from amt-config - " + rs2.getInt(1));
-		
 		if(rs2.getInt(1) - rs.getInt(1) == 1) {
 			String query = "SELECT SUM(AMOUNT) FROM VOUCHER WHERE VOUCHERID IN(" +
 					"SELECT VOUCHERID FROM VOUCHER_STATUS WHERE STATUS = 'accepted'" + 
 					" AND USERID = '" + session.getAttribute("sessionUsername").toString() + "' " +
 					" AND DATE LIKE '" + year + "-" + mstr + "-__')";
-			System.out.println(query);
 			ResultSet rs3 = db.executeQuery(query);
 			rs3.next();
 			
@@ -47,31 +44,116 @@
 			if((rs3.getInt(1) + amount) > rs4.getInt(1)){
 				response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("error") + "&message=Sorry. You cannot accept this voucher as your acceptance limit is over");
 				return;
-			}								
+			}
+			voucher_level = "terminal";
+			
 		}
 		//accept limit check
 		
-		
 		status = "accepted";
+		
+		if(request.getParameter("policyid") != null) {
+			vouch.setPolicyid(Integer.parseInt(request.getParameter("policyid")));
+			vouch.save();
+		}
+		
 	}
 	else if(stat.equals("consider")){
 		status = "under consideration";
 	}
 	else if(stat.equals("reject")){
 		status = "rejected";
-		Voucher vouch = new Voucher(vid);
+		
 		vouch.setRejectReason(request.getParameter("reason"));
 		vouch.save();
+		
+		Db db = new Db();
+		db.connect();
+		ResultSet rs = db.executeQuery("SELECT * FROM VOUCHER_STATUS WHERE STATUS IN ('accepted','under consideration') AND VOUCHERID = '" + Integer.toString(vid) + "'");
+		while(rs.next()){
+			Status s = new Status(rs.getInt("STATUSID"));
+			
+			ResultSet rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE USERID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
+			
+			if(rs2.next()) {
+				Notification n = new Notification(rs2.getInt(1));
+				n.setCategory("rejected");
+				n.save();
+			}
+			s.delete();
+		}
+	}
+	else if(stat.equals("sanction")){
+		status = "sanctioned";
 	}
 	
-	Status vstatus = new Status();
+	Status vstatus = null;
+	if(request.getParameter("mode") != null) {
+		if(request.getParameter("mode").equals("edit")) {
+			Db db = new Db();
+			db.connect();
+			ResultSet rs = db.executeQuery("SELECT * FROM VOUCHER_STATUS WHERE USERID = '" + session.getAttribute("sessionUsername").toString() + "' AND VOUCHERID = " + Integer.toString(vid) + " ORDER BY TIME DESC");
+			rs.next();
+			vstatus = new Status(rs.getInt("STATUSID"));
+			
+			db.disconnect();
+		}	
+	}
+	else {
+		vstatus = new Status();
+	}
+	
 	vstatus.setStatus(status);
 	vstatus.setTime();
 	vstatus.setVoucherid(vid);
 	vstatus.setUserid(session.getAttribute("sessionUsername").toString());
+	vstatus.save();
 	
-	if(vstatus.save()) {
-		response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("success") + "&message=Status updated successfully");
-		return;
+	User authority_user = (User)session.getAttribute("sessionUser");
+	
+	Notification notif = new Notification();
+	notif.setCategoryid(Integer.toString(vid));
+	notif.setTimeupdate();	
+	if(status.equals("accepted")){
+		if(voucher_level.equals("terminal") || session.getAttribute("sessionUserRole").toString().equals("md")){
+			Authentication[] finance_officers = Authentication.list("ROLE","finance");
+			for(Authentication a:finance_officers){
+				Notification n = new Notification();
+				n.setCategory("sanction");
+				n.setCategoryid(Integer.toString(vid));
+				n.setTimeupdate();
+				n.setUserid(a.getUserid());
+				n.save();
+			}
+		}
+		else {
+			notif.setCategory("voucher");
+			notif.setUserid(authority_user.getManager());
+		}
 	}
+	else if(status.equals("sanctioned")){
+		Db db = new Db();
+		db.connect();
+		ResultSet rs = db.executeQuery("SELECT USERID FROM VOUCHER_STATUS WHERE VOUCHERID = " + Integer.toString(vid) + " AND STATUS = 'accepted'");
+		while(rs.next()){
+			Notification n = new Notification();
+			n.setCategory("voucher sanction");
+			n.setCategoryid(Integer.toString(vid));
+			n.setTimeupdate();
+			n.setUserid(rs.getString(1));
+			n.save();
+		}
+	}
+	if(notif.getCategory() != null)
+		notif.save();
+	
+	Notification user_notif = new Notification();
+	user_notif.setCategory("voucher status change");
+	user_notif.setCategoryid(Integer.toString(vstatus.getStatusid()));
+	user_notif.setUserid(vouch.getUserid());
+	user_notif.setTimeupdate();
+	user_notif.save();
+	
+	response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("success") + "&message=Status updated successfully");
+	return;
 %>

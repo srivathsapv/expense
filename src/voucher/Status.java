@@ -258,12 +258,28 @@ public class Status{
 			map.put("USERID",this.userid);
 			map.put("TIME", this.time.toString());
 			
+			n = db.update(t_name, map, "STATUSID", Integer.toString(this.statusid));
 		}
 		
 		db.disconnect();
 		
 		if(n > 0) return true;
 		else return false;
+	}
+	
+	/**
+	 * Deletes the voucher
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException{
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("VOUCHER_STATUS", "STATUSID", Integer.toString(this.statusid));
+				
+		db.disconnect();
 	}
 
 }

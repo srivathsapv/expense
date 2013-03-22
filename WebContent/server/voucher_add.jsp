@@ -1,7 +1,7 @@
-<%@ page import="utility.Utility,voucher.Voucher,voucher.Type,user.User,auth.Authentication,java.text.*,java.util.*" %>
+<%@ page import="user.Notification,utility.Utility,voucher.Voucher,voucher.Status,voucher.Type,user.User,auth.Authentication,java.text.*,java.util.*" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
-<%@ page import="java.io.File" %>
+<%@ page import="java.io.File,user.Notification" %>
 <%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
 <%@ page import="org.apache.commons.fileupload.*,db.Db,java.sql.*,java.io.*" %>
@@ -71,14 +71,11 @@
 	ResultSet rs2 = db.executeQuery("SELECT CLAIM_LIMIT FROM ROLECONFIG WHERE ROLE = '" + auth.getRole() + "'");
 	rs2.next();
 	
-	if(rs.getInt(1) + Integer.parseInt(values[1]) > rs2.getInt(1)){
+	if(rs.getInt(1) + Double.parseDouble(values[1]) > rs2.getInt(1) && values[6].equals("0")){
 		response.sendRedirect("../pages/voucher_add.jsp?message=overlimit");
 		return;
 	}
 	//claim limit check ends
-	
-	
-	
 	
 	Voucher voucher = null;
 	String modestr = "added";
@@ -143,9 +140,30 @@
 	voucher.setExtension(ext);
 	
 	boolean voucher_success = voucher.save();
+	if(modestr.equals("edited")){
+		Status[] stats = Status.list("VOUCHERID",values[6]);
+		if(stats.length > 0) {
+			Status latest_stat = stats[0];
+			if(latest_stat.getStatus().equals("rejected")) {
+				Status edited_stat = new Status();
+				edited_stat.setStatus("edited");
+				edited_stat.setTime();
+				edited_stat.setUserid(user.getUserid());
+				edited_stat.setVoucherid(Integer.parseInt(values[6]));
+				edited_stat.save();
+				
+				Notification edited_notif = new Notification();
+				edited_notif.setCategory("voucher edited");
+				edited_notif.setCategoryid(values[6]);
+				edited_notif.setTimeupdate();
+				edited_notif.setUserid(user.getManager());
+				edited_notif.save();
+			}
+		}
+		
+	}
 	
 	//set status of voucher to pending
-	
 	if(modestr.equals("added")){
 		voucher.Status status = new voucher.Status();
 		status.setStatus("pending");
@@ -153,6 +171,13 @@
 		status.setUserid(user.getManager());
 		status.setTime();
 		status.save();
+		
+		Notification notif = new Notification();
+		notif.setCategory("voucher");
+		notif.setCategoryid(Integer.toString(voucher.getVoucherid()));
+		notif.setUserid(user.getManager());
+		notif.setTimeupdate();
+		notif.save();
 	}
 	
 	if(voucher_success)

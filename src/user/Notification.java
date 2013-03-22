@@ -3,6 +3,8 @@
  */
 package user;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.sql.Timestamp;
@@ -166,12 +168,19 @@ public class Notification {
 	}
 	
 	/**
-	 * Sets the timeupdate of the notification 
+	 * Sets the timeupdate of the notification
+	 *  
+	 * @throws ParseException 
 	 */
-	public void setTimeupdate() {
+	public void setTimeupdate() throws ParseException {
 		Date d = new Date();
-		Timestamp t = new Timestamp(d.getTime());
-		this.timeupdate = t.toString();
+		
+		SimpleDateFormat f0 = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+		Date d0 = f0.parse(d.toString());
+		
+		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
+		this.timeupdate = f.format(d0);
+
 	}
 	
 	/**
@@ -231,12 +240,12 @@ public class Notification {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'");
 		rs.next();
 		
 		Notification[] list = new Notification[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value);
+		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'");
 		
 		int i=0;
 		while(rs.next()) {
@@ -265,5 +274,20 @@ public class Notification {
 		rs.next();
 		
 		return rs.getInt(1);
+	}
+	
+	/**
+	 * Deletes the voucher
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException{
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("NOTIFICATION", "ID", Integer.toString(this.id));
+				
+		db.disconnect();
 	}
 }

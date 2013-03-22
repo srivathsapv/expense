@@ -128,7 +128,7 @@
 	                	<a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-file icon-white"></i>Voucher <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
 	                  		<li><a tabindex="-1" href="voucher_add.jsp"><i class = "icon-plus-sign"></i>New Voucher</a></li>
-	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp?userid=<%=l_username%>"><i class = "icon-list-alt"></i>My Vouchers</a></li>
+	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp"><i class = "icon-list-alt"></i>My Vouchers</a></li>
 	                  		<li><a tabindex="-1" href="vouchertype_list.jsp"><i class = "icon-list"></i>Voucher Types</a></li>
 	                  		<li><a tabindex="-1" href = "amount_config.jsp"><i class = "icon-cog"></i>Amount Configuration</a></li>
 	                	</ul>
@@ -197,6 +197,7 @@
 										int i=0;
 										
 										for(Voucher v:vouchers){
+											if(v==null) continue;
 											String title = v.getTitle();
 											if(title.length() > 15){
 												title = title.substring(0,15) + "...";

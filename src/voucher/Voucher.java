@@ -115,6 +115,14 @@ public class Voucher {
 	/**
 	 * Creates an empty object
 	 */
+	
+	/**
+	 * Internal variable to keep track whether attachment has been set
+	 * 
+	 * @var Boolean
+	 */
+	private boolean attached = false;
+	
 	public Voucher(){}
 	
 	/**
@@ -279,6 +287,7 @@ public class Voucher {
 	 */
 	public void setAttachment(String attachment) {
 		this.attachment = attachment;
+		this.attached = true;
 	}
 	
 	/**
@@ -380,7 +389,7 @@ public class Voucher {
 			this.voucherid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
 			
 			//insert attachment
-			if(!this.attachment.equals(""))
+			if(this.attached)
 				db.updateBlob(t_name,"ATTACHMENT","VOUCHERID",Integer.toString(this.voucherid),this.attachment);
 			
 			n = 1;
@@ -404,7 +413,7 @@ public class Voucher {
 			n = db.update(t_name, map, "VOUCHERID", Integer.toString(this.voucherid));
 			
 			//update attachment
-			if(this.attachment != null) {
+			if(this.attached) {
 				if(!this.attachment.equals(""))
 					db.updateBlob(t_name,"ATTACHMENT","VOUCHERID",Integer.toString(this.voucherid),this.attachment);
 			}
@@ -486,6 +495,12 @@ public class Voucher {
 		
 		db.delete("VOUCHER_STATUS", "VOUCHERID", Integer.toString(this.voucherid));
 		db.delete("VOUCHER", "VOUCHERID", Integer.toString(this.voucherid));
+		
+		ResultSet rs = db.executeQuery("SELECT * FROM WHERE CATEGORY IN('voucher','voucher status change','sanctioned') AND CATEGORYID = " + Integer.toString(this.voucherid));
+		while(rs.next()){
+			user.Notification n = new user.Notification(rs.getInt(1));
+			n.delete();
+		}
 		
 		db.disconnect();
 	}
