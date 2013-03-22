@@ -90,11 +90,56 @@
 									}
 								%>
 							</div>
-						</div>
+						</div>	
 						<br /> <br />
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="center_content">
+		<div class="login_page_container">
+			<div class="login_page_title">Reports</div>
+			<div class="login_img">
+				<img src="../img/reports_logo.png" alt="" border="0"/>
+			</div>
+			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+		</div>
+		<div class="login_page_container">
+			<div class="login_page_title">Search</div>	
+			<div class="login_img">
+				<img src="../img/search_logo.png" alt="" border="0"/>
+			</div>
+			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+		</div>
+		<div class="login_page_container" >
+			<div class="login_page_title">Notification</div>
+			<div class="login_img">
+				<img src="../img/notification_logo.png" alt="" border="0"/>
+			</div>
+			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+		</div>
+		<div class="login_page_container" style="margin-top: 25px;">
+			<div class="login_page_title">Mobile App</div>
+			<div class="login_img">
+				<img src="../img/mobileapp_logo.png" alt="" border="0"/>
+			</div>
+			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+		</div>
+		<div class="login_page_container" style="margin-top: 25px;">
+			<div class="login_page_title">Localization</div>
+			<div class="login_img">
+				<img src="../img/localization_logo.png" alt="" border="0"/>
+			</div>
+			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+		</div>
+	
+		<div class="login_page_container" style="margin-top: 25px;">
+			<div class="login_page_title">User Friendly GUI</div>
+			<div class="login_img">
+				<img src="../img/userfriendlygui_logo.png" alt="" border="0"/>
+			</div>
+			<p>Some text goes here Some text goes here  Some text goes here Some text goes here</p> 
+		</div>
+	</div>
 </body>
 </html>
