@@ -66,22 +66,6 @@
 		
 		vouch.setRejectReason(request.getParameter("reason"));
 		vouch.save();
-		
-		Db db = new Db();
-		db.connect();
-		ResultSet rs = db.executeQuery("SELECT * FROM VOUCHER_STATUS WHERE STATUS IN ('accepted','under consideration') AND VOUCHERID = '" + Integer.toString(vid) + "'");
-		while(rs.next()){
-			Status s = new Status(rs.getInt("STATUSID"));
-			
-			ResultSet rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE USERID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
-			
-			if(rs2.next()) {
-				Notification n = new Notification(rs2.getInt(1));
-				n.setCategory("rejected");
-				n.save();
-			}
-			s.delete();
-		}
 	}
 	else if(stat.equals("sanction")){
 		status = "sanctioned";
@@ -142,6 +126,24 @@
 			n.setTimeupdate();
 			n.setUserid(rs.getString(1));
 			n.save();
+		}
+	}
+	else if(status.equals("rejected")){
+		Db db = new Db();
+		db.connect();
+		ResultSet rs = db.executeQuery("SELECT * FROM VOUCHER_STATUS WHERE STATUS IN ('accepted','under consideration') AND VOUCHERID = '" + Integer.toString(vid) + "'");
+		while(rs.next()){
+			Status s = new Status(rs.getInt("STATUSID"));
+			
+			ResultSet rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE USERID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
+			
+			if(rs2.next()) {
+				Notification n = new Notification(rs2.getInt(1));
+				n.setCategory("rejected");
+				n.setCategoryid(Integer.toString(vstatus.getStatusid()));
+				n.save();
+			}
+			s.delete();
 		}
 	}
 	if(notif.getCategory() != null)

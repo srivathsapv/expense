@@ -38,6 +38,11 @@
 			window.location = "dashboard.jsp?username="+username+"&redirect_to=<%=redirect%>";
 		}
 	</script>
+	<style>
+		.login_page_container > p {
+			font-size:17px!important;
+		}
+	</style>
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="row-fluid">
@@ -102,35 +107,35 @@
 			<div class="login_img">
 				<img src="../img/reports_logo.png" alt="" border="0"/>
 			</div>
-			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+			<p>Data reports with graphical representation exportable in PDF format</p> 
 		</div>
 		<div class="login_page_container">
 			<div class="login_page_title">Search</div>	
 			<div class="login_img">
 				<img src="../img/search_logo.png" alt="" border="0"/>
 			</div>
-			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+			<p>Quickly access users and vouchers using the search feature</p> 
 		</div>
 		<div class="login_page_container" >
 			<div class="login_page_title">Notification</div>
 			<div class="login_img">
 				<img src="../img/notification_logo.png" alt="" border="0"/>
 			</div>
-			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+			<p>Get dashboard as well as mail notifications to keep updated of whats happening</p> 
 		</div>
 		<div class="login_page_container" style="margin-top: 25px;">
 			<div class="login_page_title">Mobile App</div>
 			<div class="login_img">
 				<img src="../img/mobileapp_logo.png" alt="" border="0"/>
 			</div>
-			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+			<p>Use our Vowcher Mobile App to upload vouchers from mobile</p> 
 		</div>
 		<div class="login_page_container" style="margin-top: 25px;">
 			<div class="login_page_title">Localization</div>
 			<div class="login_img">
 				<img src="../img/localization_logo.png" alt="" border="0"/>
 			</div>
-			<p>Some text goes here Some text goes here Some text goes here Some text goes here</p> 
+			<p>GUI provided both in English and Hindi for greater reach</p> 
 		</div>
 	
 		<div class="login_page_container" style="margin-top: 25px;">
@@ -138,7 +143,7 @@
 			<div class="login_img">
 				<img src="../img/userfriendlygui_logo.png" alt="" border="0"/>
 			</div>
-			<p>Some text goes here Some text goes here  Some text goes here Some text goes here</p> 
+			<p>Intuitive menu driven and easy to understand GUI for greater user experience</p> 
 		</div>
 	</div>
 </body>
