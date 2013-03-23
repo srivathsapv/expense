@@ -3,4 +3,4 @@ src/utility/LocalValues.java
 .classpath
 .project
 build/
-WebContent/test/
+WebContent/tests/
