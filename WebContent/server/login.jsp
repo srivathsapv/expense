@@ -52,9 +52,11 @@
 			session.setAttribute("sessionUser",sessionUser);
 			session.setAttribute("sessionUsername",username);
 			
+			
 			// Writing the last login timestamp to the session
 			Authentication auth = new Authentication(username);
 			String lastLogin = auth.getLastlogin();
+			session.setAttribute("sessionUserRole",auth.getRole());
 			
 			SimpleDateFormat f1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date d = f1.parse(lastLogin);

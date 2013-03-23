@@ -29,14 +29,10 @@
 	<table class = "table table-striped table-bordered">
 	<%
 		Voucher[] vlist;
-		String userid = "";
-		if(request.getParameter("userid") != null){
-			userid = request.getParameter("userid");
-			vlist = Voucher.list("USERID",userid,0);
-		}
-		else {
-			vlist = Voucher.list("","",0);
-		}
+		
+		String userid = session.getAttribute("sessionUsername").toString();
+		vlist = Voucher.list("USERID",userid,0);
+		
 		if(vlist.length == 0) %> No vouchers found <%
 		for(Voucher v: vlist){
 			%>
@@ -57,35 +53,5 @@
 		}
 	%>
 	</table>
-	<button class = "btn btn-success" id = "add-voucher"><i class = "icon-white icon-plus"></i>Add New</button><br><br>
-	<% if(!userid.equals("")) {
-		Authentication sub_user = new Authentication(userid);
-		String role = sub_user.getRole();
-		if(!(role.equals("employee") || role.equals("admin") || role.equals("bckadmin"))){
-			%> 
-			<legend>
-				<h1>Vouchers submitted to me</h1>
-			</legend>
-			<ul id = "sub-vouch-list">
-				<%
-					User[] sub_users = User.list("MANAGER",userid);
-					Voucher[] sub_vouchers = null;
-					if(sub_users != null) {
-						for(User u:sub_users){
-							Voucher[] v = Voucher.list("USERID",u.getUserid(),0);
-							sub_vouchers = ArrayUtils.addAll(sub_vouchers,v);
-						}
-						
-						for(Voucher v:sub_vouchers){
-							User vouch_user = new User(v.getUserid());
-							%> <li><a href = "voucher_view.jsp?id=<%=v.getVoucherid() %>"><%=v.getTitle() %></a> <span class = "font-italic">submitted by</span> <a href = "user_view.jsp?userid=<%=vouch_user.getUserid() %>"><%= vouch_user.getFirstName() + " " + vouch_user.getlastName() %></a></li> <%
-						}	
-					}
-					
-				%>
-			</ul> 
-	<%			
-		}
-	}
-	%>
+	<button class = "btn btn-success" id = "add-voucher"><i class = "icon-white icon-plus"></i>Add New</button>
 </div>
