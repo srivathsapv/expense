@@ -445,10 +445,10 @@ public class Voucher {
 		
 		Voucher[] list = new Voucher[rs.getInt(1)];
 		
-		String query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
+		String query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "' ORDER BY DATE DESC";
 		
 		if(limit != 0) {
-			query += " ORDER BY DATE FETCH FIRST " + Integer.toString(limit) + " ROWS ONLY";
+			query += " FETCH FIRST " + Integer.toString(limit) + " ROWS ONLY";
 			list = new Voucher[limit];
 		}
 		
