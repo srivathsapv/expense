@@ -1,10 +1,13 @@
-<%@ page import="utility.Utility,user.User,auth.Authentication,java.text.*,java.util.*,java.sql.Timestamp" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Iterator" %>
+<%@ page import="utility.Utility,user.User,auth.Authentication,java.text.*,java.sql.Timestamp" %>
 <%@ page import="java.io.File" %>
 <%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
 <%@ page import="org.apache.commons.fileupload.*" %>
+<%@ page import="java.util.*"
+		import="javax.mail.*"
+		import="javax.mail.internet.*" 
+		import="email.Email" %>
+
 <%@ include file = "server_authenticate.jsp" %>
 <%
 	String values[] = new String[18];
@@ -51,8 +54,10 @@
 		new_login = new Authentication(values[16]);
 	}
 	
+	String randomstr = Utility.randomstr(8);
+	
 	new_login.setUserid(values[0]);
-	new_login.setPassword("asdf"); //later change it to random
+	new_login.setPassword(randomstr);
 	new_login.setRole(values[7]);
 	new_login.setLastlogin();
 	new_login.setSecureId(""); //OAuth ID is initially null
@@ -97,6 +102,55 @@
 		user.setPhoto(path);
 	
 	boolean user_success = user.save();
+	
+	final String username = "admn.vowcher@gmail.com";
+	final String pwd = "asdfasdfasdf";
+
+	Properties props = new Properties();
+	props.put("mail.smtp.auth", "true");
+	props.put("mail.smtp.starttls.enable", "true");
+	props.put("mail.smtp.host", "smtp.gmail.com");
+	props.put("mail.smtp.port", "587");
+
+	Session session1 = Session.getInstance(props,
+	  new javax.mail.Authenticator() {
+		protected PasswordAuthentication getPasswordAuthentication() {
+			return new PasswordAuthentication(username, pwd);
+		}
+	  });
+
+	try {
+		Email email = new Email();
+		email.setImg("http://i1307.photobucket.com/albums/s589/sasipraveen/logo_zpsc6b0c2d1.png");
+		email.setTitle("Welcome to Vowcher");
+		email.setContent("<p>Hello " + user.getFirstName() + ",</p><br>"
+						 +"Vowcher is an online expense management system that takes care of your entire expense claim process."
+						 + "Its meticulously designed voucher flow hierarchical system takes care the needs of your reimbursement process."
+						 + "Some of Vowcher's exciting features are <br><br>"
+						 + "<ul>"
+						 + "<li>Graphical reports exportable in PDF Format</li>"
+						 + "<li>Quick access to users and vouchers through search</li>"
+						 + "<li>Notifications in dashboard and also through email</li>"
+						 + "<li>Mobile Application to upload vouchers from mobile</li>"
+						 + "<li>GUI provided both in English and Hindi</li>"
+						 + "<li>Intuitive menu driven and easy to understand GUI for greater user experience</li><br><br>"
+						 + "Want to get the real taste of Vowcher? Login <a href = 'http://localhost:8080/expense/pages/login.jsp'>here</a> using the following credentials <br><br>"
+						 + "<b>Username:</b>" + user.getUserid() + "<br><br>"
+						 + "<b>Password:</b>" + randomstr +"<br><br>"
+						 + "You can later change the password <a href = 'http://localhost:8080/expense/pages/change_password.jsp'>here</a>");
+		
+		Message message = new MimeMessage(session1);
+		message.setFrom(new InternetAddress("admn.vowcher@gmail.com"));
+		message.setRecipients(Message.RecipientType.TO,
+			InternetAddress.parse(user.getEmail()));
+		message.setSubject("Welcome to Vowcher");
+		message.setContent(email.generateEmail(),"text/html");
+
+		Transport.send(message);
+		
+	} catch (MessagingException e) {
+		throw new RuntimeException(e);
+	}
 	
 	if(user_success && login_success){
 		response.sendRedirect("../pages/user_view.jsp?status=" + Utility.MD5("success") + "&userid="+values[0] + "&message=User " + modestr + " successfully");

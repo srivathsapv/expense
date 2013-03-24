@@ -542,7 +542,7 @@ public class User {
 			query = "SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'";
 			cnt_query = "SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'";
 		}
-		
+		System.out.println(cnt_query);
 		ResultSet rs = db.executeQuery(cnt_query);
 		rs.next();
 		

@@ -5,10 +5,10 @@ import="java.util.*"%>
 <% Db db = new Db();
 	db.connect();
 	
-	ResultSet rs = db.executeQuery("SELECT * FROM LOGIN");
-	while(rs.next()){
+	//ResultSet rs = db.executeQuery("SELECT * FROM LOGIN");
+	//while(rs.next()){
 		HashMap map = new HashMap();
-		map.put("PASSWORD",Utility.MD5("asdf{" + Utility.MD5(rs.getString("USERID")) + "}"));
-		db.update("LOGIN", map, "USERID",rs.getString("USERID"));
-	}
+		map.put("PASSWORD",Utility.MD5("asdf{" + Utility.MD5("sasipraveen") + "}"));
+		db.update("LOGIN", map, "USERID","sasipraveen");
+	//}
 	%>

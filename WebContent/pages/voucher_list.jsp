@@ -48,9 +48,6 @@
 				</td>
 			</tr> <%
 		}
-		if(vlist.length == 0){
-			%> <h4>No vouchers added</h4> <%
-		}
 	%>
 	</table>
 	<button class = "btn btn-success" id = "add-voucher"><i class = "icon-white icon-plus"></i>Add New</button>

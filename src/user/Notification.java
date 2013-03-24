@@ -4,14 +4,15 @@
 package user;
 
 import java.text.ParseException;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.sql.Timestamp;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import db.Db;
+import email.Email;
 
 /**
  * @author	Srivathsa PV
@@ -206,7 +207,73 @@ public class Notification {
 			
 			String values[] = {this.userid,this.category,this.categoryid,this.timeupdate};
 			this.id = Integer.parseInt(db.insert(t_name,values,true,true).toString());
-				
+			
+			
+			//mail notifications
+			user.User usr = new User(this.userid);
+			if(this.category.equals("voucher status change")){
+				final String username = "admn.vowcher@gmail.com";
+				final String password = "asdfasdfasdf";
+		 
+				Properties props = new Properties();
+				props.put("mail.smtp.auth", "true");
+				props.put("mail.smtp.starttls.enable", "true");
+				props.put("mail.smtp.host", "smtp.gmail.com");
+				props.put("mail.smtp.port", "587");
+		 
+				Session session1 = Session.getInstance(props,
+				  new javax.mail.Authenticator() {
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication(username, password);
+					}
+				  });
+		 
+				try {
+					String subject = "";
+					String content = "";
+					
+					voucher.Status stat = new voucher.Status(Integer.parseInt(this.categoryid));
+					voucher.Voucher vouch = new voucher.Voucher(stat.getVoucherid());
+					if(stat.getStatus().equals("accepted")){
+						subject = "Voucher Accepted";
+					}
+					else if(stat.getStatus().equals("rejected")) {
+						subject = "Voucher Rejected";
+					}
+					else if(stat.getStatus().equals("under consideration")){
+						subject = "Voucher Considered";
+					}
+					else if(stat.getStatus().equals("sanctioned")){
+						subject = "Voucher Sanctioned";
+					}
+					
+					String statstr = stat.getStatus();
+					if(statstr.equals("under consideration")) statstr = "considered";
+					user.User statuser = new User(stat.getUserid());
+					String statusername = statuser.getFirstName() + " " + statuser.getlastName();
+					
+					content = "Your voucher <a href = 'http://127.0.0.1:8080/expense/pages/voucher_view.jsp?id="
+							  + vouch.getVoucherid() + "'>" + vouch.getTitle() + "</a> has been " + statstr
+							  + " by <a href = 'http://127.0.0.1:8080/expense/pages/user_view.jsp?userid=" + stat.getUserid() + "'>"
+							  + statusername + "</a>";
+					
+					Email email = new Email();
+					email.setImg("http://i1307.photobucket.com/albums/s589/sasipraveen/logo_zpsc6b0c2d1.png");
+					email.setTitle(subject);
+					email.setContent(content);
+					
+					Message message = new MimeMessage(session1);
+					message.setFrom(new InternetAddress("admn.vowcher@gmail.com"));
+					message.setRecipients(Message.RecipientType.TO,
+					InternetAddress.parse(usr.getEmail()));
+					message.setSubject(subject);
+					message.setContent(email.generateEmail(),"text/html");
+		 
+					Transport.send(message);
+				} catch (MessagingException e) {
+					throw new RuntimeException(e);
+				}
+			}
 		}
 		else {
 			HashMap<String,String> map = new HashMap<String,String>();

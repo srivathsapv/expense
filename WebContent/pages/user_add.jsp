@@ -22,6 +22,7 @@
 		});
 		
 		$("#role").change(function(){
+			if($("#deptid").val() == '') return;
 			$.ajax({
 				type : "POST",
 				data : "mode=managers&deptid="+$("#deptid").val()+"&role="+$(this).val(),
@@ -59,7 +60,7 @@
 </style>
 <%
 	String userid = "";
-	String title = "Vowcher - Department Edit";
+	String title = "Vowcher - Add new User";
 	if(request.getParameter("mode") != null){
 		userid = request.getParameter("userid");
 		title = "Vowcher - Edit User";

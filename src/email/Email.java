@@ -141,7 +141,7 @@ public class Email {
 				"<table width=\"100%\" style=\"color:#ffffff;padding:0px 5px 0px\">" +
 				"<tr>"+		
 				"<td><small>This is an auto generated mail. Do not reply</small></td>" +
-						"<td style=\"text-align:right;\"><small>copyrights reserved 2013</small></td>" +
+						"<td style=\"text-align:right;\"><small>Copyrights Reserved 2013</small></td>" +
 						"</tr>" +
 						"</table>"
 				+"</div>";

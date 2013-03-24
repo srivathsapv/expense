@@ -301,6 +301,11 @@
     			<%= buttonset %>
     		</div>	
     		<input type = "hidden" name = "draft_filename" id = "draft_filename" value = "<%= filename %>">
+    		<%
+    			if(mode.equals("from_existing")){
+    				vid = 0;
+    			}
+    		%>
     		<input type = "hidden" name ="mode" id = "mode" value = "<%= vid%>">
   		</fieldset>
 	</form>

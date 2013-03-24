@@ -496,7 +496,7 @@ public class Voucher {
 		db.delete("VOUCHER_STATUS", "VOUCHERID", Integer.toString(this.voucherid));
 		db.delete("VOUCHER", "VOUCHERID", Integer.toString(this.voucherid));
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM WHERE CATEGORY IN('voucher','voucher status change','sanctioned') AND CATEGORYID = " + Integer.toString(this.voucherid));
+		ResultSet rs = db.executeQuery("SELECT * FROM NOTIFICATION WHERE CATEGORY IN('voucher','voucher status change','sanctioned') AND CATEGORYID = " + Integer.toString(this.voucherid));
 		while(rs.next()){
 			user.Notification n = new user.Notification(rs.getInt(1));
 			n.delete();

@@ -5,7 +5,6 @@
 <%@ page import="org.apache.commons.fileupload.servlet.ServletFileUpload" %>
 <%@ page import="org.apache.commons.fileupload.disk.DiskFileItemFactory" %>
 <%@ page import="org.apache.commons.fileupload.*,db.Db,java.sql.*,java.io.*" %>
-<%@ include file = "server_authenticate.jsp" %>
 <%
 	String values[] = new String[7];
 	
@@ -112,7 +111,7 @@
 		String vid = values[6];	
 		rs = db.executeQuery("SELECT ATTACHMENT,EXTENSION,TITLE FROM VOUCHER WHERE VOUCHERID = '" + vid + "'");
 		if(rs.next()) {
-			if(!rs.getString(1).equals("")) {
+			if(rs.getString(1) != null) {
 				Blob image = rs.getBlob(1);
 				
 				String app_type = "";
@@ -122,6 +121,7 @@
 				else if(rs.getString(2).equals("doc") || rs.getString(2).equals("docx")){
 					app_type = "msword";
 				}
+				
 				byte[] imgdata = image.getBytes(1,(int)image.length());
 				
 				String filename = rs.getString(3) + "." +rs.getString(2);

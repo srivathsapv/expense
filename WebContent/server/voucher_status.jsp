@@ -80,6 +80,10 @@
 			rs.next();
 			vstatus = new Status(rs.getInt("STATUSID"));
 			
+			if(vstatus.getStatus().equals("under consideration") && status.equals("accepted")) {
+				vstatus = new Status();
+			}
+			
 			db.disconnect();
 		}	
 	}
@@ -132,10 +136,17 @@
 		Db db = new Db();
 		db.connect();
 		ResultSet rs = db.executeQuery("SELECT * FROM VOUCHER_STATUS WHERE STATUS IN ('accepted','under consideration') AND VOUCHERID = '" + Integer.toString(vid) + "'");
+		
+		ResultSet rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE CATEGORY = 'voucher status change' AND CATEGORYID IN (SELECT STATUSID FROM VOUCHER_STATUS WHERE VOUCHERID = '" + Integer.toString(vid) + "')");
+		while(rs2.next()){
+			Notification n = new Notification(rs2.getInt(1));
+			n.delete();
+		}
+		
 		while(rs.next()){
 			Status s = new Status(rs.getInt("STATUSID"));
 			
-			ResultSet rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE USERID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
+			rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE USERID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
 			
 			if(rs2.next()) {
 				Notification n = new Notification(rs2.getInt(1));
@@ -144,6 +155,9 @@
 				n.save();
 			}
 			s.delete();
+			
+			
+			
 		}
 	}
 	if(notif.getCategory() != null)

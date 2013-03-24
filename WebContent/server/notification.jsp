@@ -91,14 +91,14 @@
 			img_url = "../img/warning.png";
 		}
 		else if(notif.getCategory().equals("voucher sanction")){
-			notif_msg = "Voucher <a href = 'voucher_view.jsp?id =" + vouch.getVoucherid() + "'>"
+			notif_msg = "Voucher <a href = 'voucher_view.jsp?id=" + vouch.getVoucherid() + "'>"
 					 	+ vouch.getTitle() + "</a> submitted by <a href = 'user_view.jsp?userid="
 						+ user.getUserid() + "'>" + fullname + "</a> has been sanctioned";
 			notif_class = "success";
 			img_url = "../img/success.gif";
 		}
 		else if(notif.getCategory().equals("sanction")){
-			notif_msg = "Voucher <a href = 'voucher_view.jsp?id =" + vouch.getVoucherid() + "'>"
+			notif_msg = "Voucher <a href = 'voucher_view.jsp?id=" + vouch.getVoucherid() + "'>"
 				 	+ vouch.getTitle() + "</a> submitted by <a href = 'user_view.jsp?userid="
 					+ user.getUserid() + "'>" + fullname + "</a> is waiting to be sanctioned";
 			notif_class = "success";
@@ -115,11 +115,11 @@
 		Date d = f0.parse(timeupdate);
 		
 		PrettyTime timeago = new PrettyTime();
-		timeupdate = timeago.format(d);
+		String smarttime = timeago.format(d);
 		%> 
 		<div class = "note-leaf alert alert-<%=notif_class%>">
-			<small style = "float:right">
-				<%= timeupdate %>
+			<small style = "float:right" title = "<%=timeupdate%>">
+				<%= smarttime %>
 			</small><br>
 			<img src = "<%=img_url%>" style = "<%=style%>">
 			<%= notif_msg %>
