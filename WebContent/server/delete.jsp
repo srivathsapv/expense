@@ -9,6 +9,23 @@
 			return;
 		}
 	}
+	else if(type.equals("bookmark")){
+		String link = request.getParameter("link");
+		db.Db db = new db.Db();
+		db.connect();
+		String query = "SELECT ID FROM BOOKMARK WHERE LINK = '" + link + "' AND USERID = '" + session.getAttribute("sessionUsername").toString() + "'";
+		
+		java.sql.ResultSet rs = db.executeQuery(query);
+		rs.next();
+		
+		user.Bookmark bm = new user.Bookmark(rs.getInt(1));
+		bm.delete();
+		%> OK <%
+		if(request.getParameter("source").equals("userlist")){
+			response.sendRedirect("../pages/bookmark_list.jsp?userid="+session.getAttribute("sessionUsername").toString());
+			return;
+		}
+	}
 	else if(type.equals("voucher")){
 		int vid = Integer.parseInt(request.getParameter("vid"));
 		voucher.Voucher voucher = new voucher.Voucher(vid);

@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import = "auth.Authentication,user.User,java.util.Map,java.io.File,voucher.Voucher" %>
+<%@ page import = "java.util.Arrays,java.util.Vector,db.Db,auth.Authentication,user.User,java.util.Map,java.io.File,voucher.Voucher" %>
 <html>
 	<head>
 		<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
@@ -68,6 +68,37 @@
 				
 				$("button[type='button']").click(function(){
 					$(this).parent().attr("style","display:none");
+				});
+				
+				$("#add-bookmark").click(function(){
+					var title = window.prompt("Give a title to your bookmark","untitled");
+					var link = $(this).attr("alt");
+					if(title != null) {
+						$.ajax({
+							url:"../server/bookmark_add.jsp",
+							type: "POST",
+							data:"title="+title+"&link="+link,
+							success:function(msg){
+								$("#add-bookmark").css("display","none");
+								$("#remove-bookmark").css("display","block");
+								$("#bm-list").append("<li><a href = '../pages/" + link + "'>" + title + "</a></li>");
+								$("#no-bms").remove();
+							}
+						});	
+					}
+				});
+				
+				$("#remove-bookmark").click(function(){
+					var link = $(this).attr("alt");
+					$.ajax({
+						url:"../server/delete.jsp",
+						type:"POST",
+						data:"type=bookmark&link="+link,
+						success:function(msg){
+							$("#add-bookmark").css("display","block");
+							$("#remove-bookmark").css("display","none");
+						}
+					});
 				});
 			});
 			
@@ -171,7 +202,46 @@
 	                  		<li><a onclick="logout()" class = "poi"><i class = "icon-off"></i>Signout</a></li>
 	                	</ul>
 	              	</li>
-			    </ul>		        
+			    </ul>	
+			    <%
+					String url = request.getRequestURL().toString();
+					String pagename = url.substring(url.lastIndexOf("/")+1,url.length());
+					String querystr = request.getQueryString() + "&";
+					
+					String[] paramarry = querystr.split("&");
+					Vector<String> params = new Vector<String>(Arrays.asList(paramarry));
+					String paramstr = "";
+					for(int i=0;i<params.size();i++){
+						
+						if(params.get(i).toString().indexOf("message") >= 0 || params.get(i).toString().indexOf("status") >= 0){
+							continue;	
+						}
+						else {
+							paramstr += params.get(i) + "&";
+						}
+					}
+					paramstr = paramstr.substring(0,paramstr.length()-1);
+					
+					pagename += "?" + paramstr;
+					
+					if(pagename.indexOf("dashboard.jsp") == -1){
+						Db db = new Db();
+						db.connect();
+						String username = session.getAttribute("sessionUsername").toString();
+						java.sql.ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM BOOKMARK WHERE USERID = '" + username + "' AND LINK = '" + pagename + "'");
+						rs.next();
+						if(rs.getInt(1) > 0) {
+							%> <img id = "remove-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-active.png" style = "width:3%;margin-top:15px" title = "Remove bookmark"> 
+								<img id = "add-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-inactive.png" style = "display:none;width:3%;margin-top:15px" title = "Bookmark this page">	
+						<%									
+						}
+						else {
+							%> <img id = "add-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-inactive.png" style = "width:3%;margin-top:15px" title = "Bookmark this page">
+							<img id = "remove-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-active.png" style = "display:none;width:3%;margin-top:15px" title = "Remove bookmark">
+				<%	
+						}
+					}
+			  	%>	        
 			  </div>
 			</div>
 			<div class = "container-fluid">
@@ -220,13 +290,23 @@
 						<div class = "sidebar bookmarks">
 							<h5 class = "sidebar-title"><i class = "icon-bookmark icon-white"></i>Bookmarks</h5>
 							<div class = "sidebar-content">
-								<ul>
-									<li>First voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
-									<li>Second voucher</li>
+								<ul id="bm-list">
+									<%
+										user.Bookmark[] bms = user.Bookmark.list("USERID",session.getAttribute("sessionUsername").toString());
+										for(user.Bookmark b:bms){
+											%><li><a href = "<%=b.getLink() %>"><%=b.getTitle() %></a></li> <%
+										}
+										
+									%>
 								</ul>
+								<%
+									if(bms.length == 0){
+										%> <center id = "no-bms">No bookmarks added</center> <%
+									}
+									else {
+										%> <center><i class = "icon-th-list icon-white"></i><a href = "../pages/bookmark_list.jsp?userid=<%=l_username %>">View all</a></center> <%
+									}
+								%>
 							</div>
 						</div>
 						
