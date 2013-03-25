@@ -132,6 +132,7 @@
 		}
 	%>
 	<%
+		
 		String mode = "";
 		String title="";String amount="";String type="";String date="";String description="";
 		String filename="";
@@ -203,6 +204,8 @@
 			form_style = "block";
 			option_style = "none";
 		}
+		
+		
 	%>
 		<title><%=pagetitle %></title>
    		<legend>
@@ -233,7 +236,7 @@
     		<input class = "span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" type="text" id = "title" name = "title" placeholder="Enter a title..." value = "<%=title%>">
     		
     		<div class="input-prepend">
-				<span class="add-on rupee">`</span>
+				<span class="add-on rupee"><img class = "currency-change-img" src = "../img/<%=session.getAttribute("currency").toString()%>.png"></span>
 			  	<input class="span4 prepend-input required prependedInput" valtype="decimal required" valmsg="Decimal value with precision of 2 is expected" id = "amount" name = "amount" type="text" placeholder="Enter the amount..." value = "<%=amount%>">
 			</div>
    			<select class = "span4 required" id = "type" name = "type">

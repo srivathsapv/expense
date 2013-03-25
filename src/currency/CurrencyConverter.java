@@ -99,16 +99,18 @@ public class CurrencyConverter {
 	 * @throws JSONException
 	 */
 	public void fetchExchangeRateFromServer() throws IOException, JSONException{
-		String requestURL = " http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
-		 URL wikiRequest = new URL(requestURL);
-		 Scanner scanner = new Scanner(wikiRequest.openStream());
-		 String response ="";
-		 while(scanner.hasNext()){
-			 response = response + scanner.next();
-		 }
-		 scanner.close();
-		 JSONObject jo = new JSONObject(response);
-		 this.conversionRate = Double.parseDouble(jo.get("rate").toString());
+		this.from = this.from.substring(0,3);
+		this.to = this.to.substring(0,3);
+		String requestURL = "http://rate-exchange.appspot.com/currency?from="+from+"&to="+to;
+		URL wikiRequest = new URL(requestURL);
+		Scanner scanner = new Scanner(wikiRequest.openStream());
+		String response ="";
+		while(scanner.hasNext()){
+			response = response + scanner.next();
+		}
+		scanner.close();
+		JSONObject jo = new JSONObject(response);
+		this.conversionRate = Double.parseDouble(jo.get("rate").toString());
 	}
 	
 	/**
@@ -117,7 +119,7 @@ public class CurrencyConverter {
 	 * @param amount
 	 * @return double
 	 */
-	public double getCovertedAmount(double amount){
+	public double getConvertedAmount(double amount){
 		this.amount = amount;
 		double finalAmount = 0;
 		finalAmount = Math.round(this.amount * this.conversionRate *100.0)/100.0;

@@ -51,7 +51,9 @@
 			User sessionUser = new User(username);
 			session.setAttribute("sessionUser",sessionUser);
 			session.setAttribute("sessionUsername",username);
-			
+			session.setAttribute("currency","rupees");
+			session.setAttribute("currencyText","Indian Rupees");
+			session.setAttribute("currencyISO","INR");
 			
 			// Writing the last login timestamp to the session
 			Authentication auth = new Authentication(username);

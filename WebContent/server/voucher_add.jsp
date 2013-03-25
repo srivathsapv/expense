@@ -91,7 +91,17 @@
 	
 	voucher.setUserid(user.getUserid());
 	
-	voucher.setAmount(Float.parseFloat(values[1]));
+	
+	double amount = Double.parseDouble(values[1]);
+	
+	if(!session.getAttribute("currencyISO").toString().equals("INR")){
+		currency.CurrencyConverter conv = new currency.CurrencyConverter();
+		conv.setFrom(session.getAttribute("currencyISO").toString());
+		conv.setTo("INR");	
+		conv.fetchExchangeRateFromServer();
+		amount = conv.getConvertedAmount(amount);
+	}
+	voucher.setAmount(amount);
 	voucher.setVtypeid(Integer.parseInt(values[2]));
 	
 	SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
@@ -103,8 +113,6 @@
 	voucher.setDate(d2);
 	
 	voucher.setDescription(values[4]);
-	
-	
 	
 	if(path.equals("")){
 		db.connect();

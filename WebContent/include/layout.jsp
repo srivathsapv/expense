@@ -50,13 +50,10 @@
 			
 		</style>
 		<script type = "text/javascript">
-		
 			function logout() {
 				localStorage.removeItem("vowcher_username");
 				window.location = "../server/logout.jsp";
 			}
-			
-			
 			
 			$(document).ready(function(){
 				$("#drop1").tooltip();
@@ -69,6 +66,31 @@
 				$("button[type='button']").click(function(){
 					$(this).parent().attr("style","display:none");
 				});
+				<%
+					String currency = session.getAttribute("currency").toString();
+					String currencyText = session.getAttribute("currencyText").toString();
+					String currencyISO = session.getAttribute("currencyISO").toString();
+				%>
+				
+				$("#main-button").html('<img class = "currency-white" src = "../img/<%=currency%>-white.png"><%=currencyText%> <span class = "custom-caret">&#9660;</span>');
+				$(".currency-change-img").attr("src","../img/<%=currency%>.png");
+				<%
+					if(!currency.equals("rupees")) {
+				%>
+						$(".currency-change-amount").each(function(){
+							var e = $(this);
+							$.ajax({
+								url:"../server/change_currency.jsp",
+								data:"mode=convert&amount="+e.html()+"&from=INR&to=<%=currencyISO%>",
+								type:"POST",
+								success:function(msg){
+									e.html(msg);
+								}
+							});
+						});
+				<%
+					}
+				%>
 				
 				$("#add-bookmark").click(function(){
 					var title = window.prompt("Give a title to your bookmark","untitled");
@@ -100,6 +122,87 @@
 						}
 					});
 				});
+				
+				$("#inr").click(function(){
+					$("#main-button").html('<img class = "currency-white" src = "../img/rupees-white.png">Indian Rupees <span class = "custom-caret">&#9660;</span>');
+					var fromISO = "";
+					$.ajax({
+						url:"../server/change_currency.jsp",
+						type:"POST",
+						data:"mode=session&currency=rupees",
+						success:function(msg){
+							fromISO = msg;
+							changeCurrency(fromISO,"rupees");
+						}
+					});
+					
+				});
+				
+				$("#usd").click(function(){
+					$("#main-button").html('<img class = "currency-white" src = "../img/dollar-white.png">US Dollars <span class = "custom-caret">&#9660;</span>');
+					var fromISO = "";
+					$.ajax({
+						url:"../server/change_currency.jsp",
+						type:"POST",
+						data:"mode=session&currency=dollar",
+						success:function(msg){
+							fromISO = msg;
+							changeCurrency(fromISO,"dollar");
+						}
+					});
+					
+				});
+				
+				$("#gbp").click(function(){
+					$("#main-button").html('<img class = "currency-white" src = "../img/pound-white.png">British Pound <span class = "custom-caret">&#9660;</span>');
+					var fromISO = "";
+					$.ajax({
+						url:"../server/change_currency.jsp",
+						type:"POST",
+						data:"mode=session&currency=pound",
+						success:function(msg){
+							fromISO = msg;
+							changeCurrency(fromISO,"pound");
+						}
+					});
+					
+				});
+				
+				$("#jpy").click(function(){
+					$("#main-button").html('<img class = "currency-white" src = "../img/yen-white.png">Yen <span class = "custom-caret">&#9660;</span>');
+					var fromISO = "";
+					$.ajax({
+						url:"../server/change_currency.jsp",
+						type:"POST",
+						data:"mode=session&currency=yen",
+						success:function(msg){
+							fromISO = msg;
+							changeCurrency(fromISO,"yen");
+						}
+					});
+					
+				});
+				
+				function changeCurrency(fromISO,currency) {
+					$(".currency-change-img").attr("src","../img/"+currency+".png");
+					var curISO = "";
+					if(currency == "rupees") curISO = "INR";
+					else if(currency == "dollar") curISO = "USD";
+					else if(currency == "yen") curISO = "JPY";
+					else if(currency == "pound") curISO = "GBP";
+					$(".currency-change-img").attr("src","../img/" + currency + ".png");
+					$(".currency-change-amount").each(function(){
+						var e = $(this);
+						$.ajax({
+							url:"../server/change_currency.jsp",
+							data:"mode=convert&amount="+e.html()+"&from=" +fromISO + "&to=" + curISO,
+							type:"POST",
+							success:function(msg2){
+								e.html(msg2);
+							}
+						});
+					});
+				}
 			});
 			
 			if(localStorage.vowcher_username != undefined) {
@@ -220,9 +323,12 @@
 							paramstr += params.get(i) + "&";
 						}
 					}
-					paramstr = paramstr.substring(0,paramstr.length()-1);
+					if(paramstr.length() > 0) {
+						paramstr = paramstr.substring(0,paramstr.length()-1);
+						paramstr = "?" + paramstr;
+					}
 					
-					pagename += "?" + paramstr;
+					pagename += paramstr;
 					
 					if(pagename.indexOf("dashboard.jsp") == -1){
 						Db db = new Db();
@@ -249,13 +355,14 @@
 					<div class = "span2">
 						<!-- Sidebar -->
 						<div class="btn-group">
-						    <a class="btn btn-info dropdown-toggle currency-change" data-toggle="dropdown" href="#">
-						    	<img class = "currency-white" src = "../img/rupees-white.png">Rupees <span class = "custom-caret">&#9660;</span>
+						    <a id = "main-button" class="btn btn-info dropdown-toggle currency-change" data-toggle="dropdown" href="#">
+						    	<img class = "currency-white" src = "../img/rupees-white.png">Indian Rupees <span class = "custom-caret">&#9660;</span>
 						    </a>
 						    <ul class="dropdown-menu currency-change-menu">
-						    	<li><a><img class = "currency" src = "../img/dollar.png">American Dollars</a></li>
-						    	<li><a><img class = "currency" src = "../img/pound.png">Pounds</a></li>
-						    	<li><a><img class = "currency" src = "../img/yen.png">Yen</a></li>
+						    	<li id = "inr"><a><img class = "currency" src = "../img/rupees.png">Indian Rupees</a></li>
+						    	<li id = "usd"><a><img class = "currency" src = "../img/dollar.png">US Dollars</a></li>
+						    	<li id = "gbp"><a><img class = "currency" src = "../img/pound.png">British Pounds</a></li>
+						    	<li id = "jpy"><a><img class = "currency" src = "../img/yen.png">Yen</a></li>
 						    </ul>
 					    </div>
 						<div class = "sidebar recent-vouchers">

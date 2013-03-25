@@ -139,7 +139,7 @@
 				%> <h4><b>Submitted by <a href = "user_view.jsp?userid=<%=vouch_user.getUserid() %>"><%= vouch_username %></a></b></h4> <%
 			}
 		%>
-		<h4><b>Voucher Amount - </b><span class="add-on rupee" style = "font-size:20px">`</span> <%=amount %></h4>
+		<h4><b>Voucher Amount - </b><span><img class = "currency-change-img" src = "../img/rupees.png"><span class = "currency-change-amount"><%=amount %></span></h4>
 		<h4><b>Category</b> - <a href = "vouchertype_list.jsp?vtype=<%= voucher.getVtypeid() %>"><%= type.getTitle() %></a></h4>
 		<i class = "voucher-view icon-calendar"></i><span id = "date">Last update on <%= dt %></span>	
 	</legend>
@@ -245,7 +245,7 @@
 					double pcent = accept_policy.getAmountPercent();
 					double ramnt = voucher.getAmount();
 					double sanctioned = ramnt * (pcent/100);
-					disp_msg  = "Sanctioned <span class = 'add-on rupee'>`</span>" + sanctioned;
+					disp_msg  = "Sanctioned <img src = '../img/rupee.png' class = 'currency-change-img'><span class = 'currency-change-amount'>" + sanctioned + "</span>";
 				}
 				
 				String time = stat.getTime();
