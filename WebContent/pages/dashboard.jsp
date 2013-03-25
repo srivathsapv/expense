@@ -38,6 +38,14 @@
 		<span class = "to-hindi" id = "welcome-text">Welcome</span> <%= name %><br>
 		<div id = "lastlogin" class = "font-italic">Your last login was on <%= session.getAttribute("lastlogin").toString() %></div>
 	</legend>
+	<div class = "alert alert-warning">
+		<center><h4>Money Management Tip</h4><br>
+			<img src = "../img/tip.png" style = "width:5%">
+			<%
+				out.println(utility.Utility.getRandomTip());
+			%>
+		</center>
+	</div>
 	
 	<h3><i class = "icon-star notif-icon"></i><span class = "to-hindi">Notifications</span></h3>
 	<div id = "notifications">

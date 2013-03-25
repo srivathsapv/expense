@@ -67,11 +67,15 @@
 					$(this).parent().attr("style","display:none");
 				});
 				<%
-					String currency = session.getAttribute("currency").toString();
-					String currencyText = session.getAttribute("currencyText").toString();
-					String currencyISO = session.getAttribute("currencyISO").toString();
+					String currency = "";
+					String currencyText = "";
+					String currencyISO = "";
+					if(session.getAttribute("currency") != null) {
+						currency = session.getAttribute("currency").toString();
+						currencyText = session.getAttribute("currencyText").toString();
+						currencyISO = session.getAttribute("currencyISO").toString();	
+					}
 				%>
-				
 				$("#main-button").html('<img class = "currency-white" src = "../img/<%=currency%>-white.png"><%=currencyText%> <span class = "custom-caret">&#9660;</span>');
 				$(".currency-change-img").attr("src","../img/<%=currency%>.png");
 				<%
@@ -204,26 +208,27 @@
 					});
 				}
 				<%
-					if(session.getAttribute("lang").equals("hin")) {
-						%>
-						$(".to-hindi").each(function(){
-							var e = $(this);
-							$.ajax({
-								url:"../server/convert_language.jsp",
-								data:"word="+e.html(),
-								type:"GET",
-								success:function(msg){
-									e.html(msg);
-									e.css("font-size","17px");
-									$("#welcome-text").css("font-size","24px");
-									e.css("font-spacing","1px");
-									
-								}
+					if(session.getAttribute("lang") != null) {
+						if(session.getAttribute("lang").equals("hin")) {
+							%>
+							$(".to-hindi").each(function(){
+								var e = $(this);
+								$.ajax({
+									url:"../server/convert_language.jsp",
+									data:"word="+e.html(),
+									type:"GET",
+									success:function(msg){
+										e.html(msg);
+										e.css("font-size","17px");
+										$("#welcome-text").css("font-size","24px");
+										e.css("font-spacing","1px");
+										
+									}
+								});
 							});
-						});
-						<%
+							<%
+						}	
 					}
-					
 				%>
 				
 			});
