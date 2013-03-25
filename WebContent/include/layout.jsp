@@ -231,6 +231,14 @@
 					}
 				%>
 				
+				$("#search-box").keypress(function(event){
+					if(event.which == 13){
+						if($(this).val() != '') {
+							window.location = "search_results.jsp?query="+$(this).val();	
+						}
+					}
+				});
+				
 			});
 			
 			if(localStorage.vowcher_username != undefined) {
@@ -382,6 +390,7 @@
 				<div class = "row-fluid">
 					<div class = "span2">
 						<!-- Sidebar -->
+						
 						<div class="btn-group">
 						    <a id = "main-button" class="btn btn-info dropdown-toggle currency-change" data-toggle="dropdown" href="#">
 						    	<img class = "currency-white" src = "../img/rupees-white.png">Indian Rupees <span class = "custom-caret">&#9660;</span>
@@ -392,7 +401,12 @@
 						    	<li id = "gbp"><a><img class = "currency" src = "../img/pound.png">British Pounds</a></li>
 						    	<li id = "jpy"><a><img class = "currency" src = "../img/yen.png">Yen</a></li>
 						    </ul>
+					    </div><br><br>
+					    <div class = "search input-prepend">
+					    	<span class = "add-on"><i class = "icon-search"></i></span>
+					    	<input type = "text" class = "span10" placeholder = "Search ..." id = "search-box">
 					    </div>
+					    
 						<div class = "sidebar recent-vouchers">
 							<h5 class = "sidebar-title"><i class = "icon-file icon-white"></i><span class = "to-hindi">Recent Vouchers</span></h5>
 							<div class = "sidebar-content">
