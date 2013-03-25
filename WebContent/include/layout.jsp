@@ -203,6 +203,29 @@
 						});
 					});
 				}
+				<%
+					if(session.getAttribute("lang").equals("hin")) {
+						%>
+						$(".to-hindi").each(function(){
+							var e = $(this);
+							$.ajax({
+								url:"../server/convert_language.jsp",
+								data:"word="+e.html(),
+								type:"GET",
+								success:function(msg){
+									e.html(msg);
+									e.css("font-size","17px");
+									$("#welcome-text").css("font-size","24px");
+									e.css("font-spacing","1px");
+									
+								}
+							});
+						});
+						<%
+					}
+					
+				%>
+				
 			});
 			
 			if(localStorage.vowcher_username != undefined) {
@@ -256,53 +279,53 @@
 			    </a>
 			    <ul class="nav">
 			    	<li>
-			    		<a href = "dashboard.jsp"><i class = "icon-home icon-white"></i>Home</a>
+			    		<a href = "dashboard.jsp"><i class = "icon-home icon-white"></i><span class = "to-hindi">Home</span></a>
 			    	</li>
 	      			<li class="dropdown">
-	                	<a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-file icon-white"></i>Voucher <b class="caret"></b></a>
+	                	<a id="drop1" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-file icon-white"></i><span class = "to-hindi">Voucher</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
-	                  		<li><a tabindex="-1" href="voucher_add.jsp"><i class = "icon-plus-sign"></i>New Voucher</a></li>
-	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp"><i class = "icon-list-alt"></i>My Vouchers</a></li>
-	                  		<li><a tabindex="-1" href="vouchertype_list.jsp"><i class = "icon-list"></i>Voucher Types</a></li>
-	                  		<li><a tabindex="-1" href = "amount_config.jsp"><i class = "icon-cog"></i>Amount Configuration</a></li>
+	                  		<li><a tabindex="-1" href="voucher_add.jsp"><i class = "icon-plus-sign"></i><span class = "to-hindi">New Voucher</span></a></li>
+	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">My Vouchers</span></a></li>
+	                  		<li><a tabindex="-1" href="vouchertype_list.jsp"><i class = "icon-list"></i><span class = "to-hindi">Voucher Types</span></a></li>
+	                  		<li><a tabindex="-1" href = "amount_config.jsp"><i class = "icon-cog"></i><span class = "to-hindi">Amount Configuration</span></a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
-	                	<a id="drop2" title = "Employee's Exclusive Expense Statistical Reports" data-placement = "bottom" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i><img class = "excess" src = "../img/excess.png">Reports <b class="caret"></b></a>
+	                	<a id="drop2" title = "Employee's Exclusive Expense Statistical Reports" data-placement = "bottom" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i><img class = "excess" src = "../img/excess.png"><span class = "to-hindi">Reports</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-file"></i>Generate New</a></li>
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i>My Reports</a></li>
+	                  		<li><a tabindex="-1" href="#"><i class = "icon-file"></i><span class = "to-hindi">Generate New</span></a></li>
+	                  		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i><span class = "to-hindi">My Reports</span></a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
-	                	<a id="drop3" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-user icon-white"></i>Users <b class="caret"></b></a>
+	                	<a id="drop3" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-user icon-white"></i><span class = "to-hindi">Users</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
-	                  		<li><a tabindex="-1" href="user_add.jsp"><i class = "icon-plus-sign"></i>Add New</a></li>
-	                  		<li><a tabindex="-1" href="user_list.jsp"><i class = "icon-list-alt"></i>List</a></li>
-	                  		<li><a tabindex="-1" href="role_config.jsp"><i class = "icon-pencil"></i>Role Configuration</a>
+	                  		<li><a tabindex="-1" href="user_add.jsp"><i class = "icon-plus-sign"></i><span class = "to-hindi">Add New</span></a></li>
+	                  		<li><a tabindex="-1" href="user_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">List</span></a></li>
+	                  		<li><a tabindex="-1" href="role_config.jsp"><i class = "icon-pencil"></i><span class = "to-hindi">Role Configuration</span></a>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
-	                	<a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-flag icon-white"></i>Policy<b class="caret"></b></a>
+	                	<a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-flag icon-white"></i><span class = "to-hindi">Policy</span><b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop4">
-	                  		<li><a tabindex="-1" href="policy_add.jsp"><i class = "icon-plus-sign"></i>Add New</a></li>
-	                  		<li><a tabindex="-1" href="policy_list.jsp"><i class = "icon-list-alt"></i>View</a></li>
+	                  		<li><a tabindex="-1" href="policy_add.jsp"><i class = "icon-plus-sign"></i><span class = "to-hindi">Add New</span></a></li>
+	                  		<li><a tabindex="-1" href="policy_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">View</span></a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
-	                	<a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-briefcase icon-white"></i>Departments <b class="caret"></b></a>
+	                	<a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-briefcase icon-white"></i><span class = "to-hindi">Departments</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop5">
-	                  		<li><a tabindex="-1" href="dept_add.jsp"><i class = "icon-plus-sign"></i>Add New</a></li>
-	                  		<li><a tabindex="-1" href="dept_list.jsp"><i class = "icon-list-alt"></i>View</a></li>
+	                  		<li><a tabindex="-1" href="dept_add.jsp"><i class = "icon-plus-sign"></i><span class = "to-hindi">Add New</span></a></li>
+	                  		<li><a tabindex="-1" href="dept_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">View</span></a></li>
 	                	</ul>
 	              	</li>
 	              	<li class="dropdown">
-	                	<a id="drop6" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-wrench icon-white"></i>My Account<b class="caret"></b></a>
+	                	<a id="drop6" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-wrench icon-white"></i><span class = "to-hindi">My Account</span><b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop6">
 	                		
-	                  		<li><a tabindex="-1" href="../pages/user_view.jsp?userid=<%=l_username%>"><i class = "icon-user"></i>Personal Details</a></li>
-	                  		<li><a tabindex="-1" href="change_password.jsp"><i class = "icon-pencil"></i>Change Password</a></li>
-	                  		<li><a onclick="logout()" class = "poi"><i class = "icon-off"></i>Signout</a></li>
+	                  		<li><a tabindex="-1" href="../pages/user_view.jsp?userid=<%=l_username%>"><i class = "icon-user"></i><span class = "to-hindi">Personal Details</span></a></li>
+	                  		<li><a tabindex="-1" href="change_password.jsp"><i class = "icon-pencil"></i><span class = "to-hindi">Change Password</span></a></li>
+	                  		<li><a onclick="logout()" class = "poi"><i class = "icon-off"></i><span class = "to-hindi">Signout</span></a></li>
 	                	</ul>
 	              	</li>
 			    </ul>	
@@ -366,7 +389,7 @@
 						    </ul>
 					    </div>
 						<div class = "sidebar recent-vouchers">
-							<h5 class = "sidebar-title"><i class = "icon-file icon-white"></i>Recent Vouchers</h5>
+							<h5 class = "sidebar-title"><i class = "icon-file icon-white"></i><span class = "to-hindi">Recent Vouchers</span></h5>
 							<div class = "sidebar-content">
 								<ul>
 									<%
@@ -395,7 +418,7 @@
 						</div>
 						
 						<div class = "sidebar bookmarks">
-							<h5 class = "sidebar-title"><i class = "icon-bookmark icon-white"></i>Bookmarks</h5>
+							<h5 class = "sidebar-title"><i class = "icon-bookmark icon-white"></i><span class = "to-hindi">Bookmarks</span></h5>
 							<div class = "sidebar-content">
 								<ul id="bm-list">
 									<%
@@ -418,7 +441,7 @@
 						</div>
 						
 						<div class = "sidebar drafts">
-							<h5 class = "sidebar-title"><i class = "icon-envelope icon-white"></i>Drafts</h5>
+							<h5 class = "sidebar-title"><i class = "icon-envelope icon-white"></i><span class = "to-hindi">Drafts</span></h5>
 							<div class = "sidebar-content">
 								<ul>
 									<%

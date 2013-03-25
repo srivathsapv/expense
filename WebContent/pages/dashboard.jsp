@@ -35,11 +35,11 @@
 		String name = user.getFirstName() + " " + user.getlastName();
 	%>
 	<legend>
-		Welcome <%= name %><br>
+		<span class = "to-hindi" id = "welcome-text">Welcome</span> <%= name %><br>
 		<div id = "lastlogin" class = "font-italic">Your last login was on <%= session.getAttribute("lastlogin").toString() %></div>
 	</legend>
 	
-	<h3><i class = "icon-star notif-icon"></i>Notifications</h3>
+	<h3><i class = "icon-star notif-icon"></i><span class = "to-hindi">Notifications</span></h3>
 	<div id = "notifications">
 		<h4><img src = "../img/loading.gif" style = "width:4%;margin-top:-4px;margin-right:3px">Fetching notifications...</h4>
 	</div>
