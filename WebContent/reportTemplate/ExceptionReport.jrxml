@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExceptionReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a51d638-c3b7-4aa7-b7d8-8d4f681899e4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<queryString language="SQL">
+		<![CDATA[select count(*) as Number_of_vouchers, case month(timestamp_iso(TIME))
+		when 1 then 'January'
+        when 2 then 'February'
+        when 3 then 'March'
+        when 4 then 'April'
+        when 5 then 'May'
+        when 6 then 'Jun'
+        when 7 then 'July'
+        when 8 then 'August'
+        when 9 then 'September'
+        when 10 then 'October'
+        when 11 then 'November'
+        when 12 then 'December'
+    end as Month
+, year(timestamp_iso(TIME)) as Year from DB2INST1.VOUCHER_STATUS where STATUS ='pending' or STATUS = 'under consideration' or STATUS = 'passed on'
+group by year(timestamp_iso(TIME)),month(timestamp_iso(TIME))
+order by year(timestamp_iso(TIME)),month(timestamp_iso(TIME))]]>
+	</queryString>
+	<field name="NUMBER_OF_VOUCHERS" class="java.lang.Integer"/>
+	<field name="MONTH" class="java.lang.String"/>
+	<field name="YEAR" class="java.lang.Integer"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="28" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="0a0892cc-41aa-4471-8076-19dd44fe7b76" x="169" y="0" width="227" height="28"/>
+				<textElement>
+					<font fontName="Serif" size="24"/>
+				</textElement>
+				<text><![CDATA[Exception Reports
+]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="462" splitType="Stretch">
+			<lineChart>
+				<chart>
+					<reportElement uuid="0749ca8e-ec75-4bbe-b7b1-019013bc0ea7" x="0" y="73" width="555" height="285"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Voucher awaiting acceptance"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{YEAR}+" "+$F{MONTH}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{NUMBER_OF_VOUCHERS}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+				</linePlot>
+			</lineChart>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="3a8b6923-2410-4beb-8432-9531bf055449" x="541" y="2" width="14" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy h.mm a">
+				<reportElement uuid="4846a78b-80ac-4d25-98d0-20bb1671a27a" x="0" y="2" width="128" height="19"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="49" splitType="Stretch"/>
+	</summary>
+</jasperReport>

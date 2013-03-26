@@ -306,7 +306,7 @@
 	              	<li class="dropdown">
 	                	<a id="drop2" title = "Employee's Exclusive Expense Statistical Reports" data-placement = "bottom" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i><img class = "excess" src = "../img/excess.png"><span class = "to-hindi">Reports</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
-	                  		<li><a tabindex="-1" href="#"><i class = "icon-file"></i><span class = "to-hindi">Generate New</span></a></li>
+	                  		<li><a tabindex="-1" href="report_generate.jsp"><i class = "icon-file"></i><span class = "to-hindi">Generate New</span></a></li>
 	                  		<li><a tabindex="-1" href="#"><i class = "icon-list-alt"></i><span class = "to-hindi">My Reports</span></a></li>
 	                	</ul>
 	              	</li>

@@ -25,6 +25,7 @@ String target_path = config.getServletContext().getRealPath("/")+"temp/";
 Eg; if report contains query "select name from DB2INST1.USER"
 You can change it "select name from DB2INST1.USER where id=1 orderby someting"
 But you cannot change it to "select id from DB2INST1.USER" */
+
 JasperDesign jd = JRXmlLoader.load(directory_path+"test_report.jrxml");
 //static query in report "select * from user"
 String sql = "select * from user where  FIRSTNAME = 'Sasi' order by LASTNAME";
@@ -33,19 +34,56 @@ query.setText(sql);
 jd.setQuery(query);
 JasperReport jasperReport1 = JasperCompileManager.compileReport(jd);
 JasperPrint jasperPrint1 = JasperFillManager.fillReport(jasperReport1,jasperParameter, con);
-JasperExportManager.exportReportToPdfFile(jasperPrint1, target_path + "test.pdf");
+JasperExportManager.exportReportToPdfFile(jasperPrint1, /*target_path +*/ "test.pdf");
 
-out.println("DONE DATA");
+out.println("DONE DATA \n");
 
 
 
 //method 2 to run with static query
 JasperReport jasperReport2 = JasperCompileManager.compileReport(directory_path+"report2.jrxml");
 JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2,jasperParameter, con);
-JasperExportManager.exportReportToPdfFile(jasperPrint2,target_path + "test2.pdf");
+JasperExportManager.exportReportToPdfFile(jasperPrint2,/*target_path +*/ "test2.pdf");
 
 
-out.println("DONE CHART");
+out.println("DONE CHART \n");
+
+//using subreports and modifying queries of subreport
+
+JasperDesign SubReportDesign = JRXmlLoader.load(directory_path+"mainreport_subreport1.jrxml");
+//original "select * from voucher"
+String SubReportsql = "select * from voucher where VOUCHERID > 10";
+JRDesignQuery SubReportquery = new JRDesignQuery();
+SubReportquery.setText(SubReportsql);
+SubReportDesign.setQuery(SubReportquery);
+
+JasperReport SubReport = JasperCompileManager.compileReport(SubReportDesign);
+
+HashMap MainReportParameter = new HashMap();
+MainReportParameter.put("SUBREPORT", SubReport);
+
+JasperReport MainReport = JasperCompileManager.compileReport(directory_path+"mainreport.jrxml");
+JasperPrint MainReportPrint = JasperFillManager.fillReport(MainReport,MainReportParameter, con);
+JasperExportManager.exportReportToPdfFile(MainReportPrint,"mainreport.pdf");
+
+
+out.println("DONE subreports \n");
+
+//using subreports
+
+JasperReport SubReport_Dept_Users = JasperCompileManager.compileReport(directory_path+"Departments_Users.jrxml");
+JasperReport SubReport_Dept_VoucherTypes = JasperCompileManager.compileReport(directory_path+"Departments_VoucherTypes.jrxml");
+
+HashMap MainReport_Dept_Parameter = new HashMap();
+MainReport_Dept_Parameter.put("subReport_Departments_Users", SubReport_Dept_Users);
+MainReport_Dept_Parameter.put("subReport_Departments_VoucherTypes", SubReport_Dept_VoucherTypes);
+
+JasperReport MainReport_Dept = JasperCompileManager.compileReport(directory_path+"Departments.jrxml");
+JasperPrint MainReport_Dept_Print = JasperFillManager.fillReport(MainReport_Dept,MainReport_Dept_Parameter, con);
+JasperExportManager.exportReportToPdfFile(MainReport_Dept_Print,"mainreport_dept.pdf");
+
+
+out.println("DONE");
 
 %>
 

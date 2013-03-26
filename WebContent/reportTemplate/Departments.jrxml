@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Departments" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="30b0e598-3dac-469c-b4f8-e14c4c69d597">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/sasipraveen/Downloads/reunionofcruelcodersibmgreatmindchallenge (1)/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="subReport_Departments_Users" class="java.lang.Object"/>
+	<parameter name="subReport_Departments_VoucherTypes" class="java.lang.Object"/>
+	<queryString>
+		<![CDATA[SELECT D.DEPTID,D.DEPTNAME,D.SHORTNAME,D.DESCRIPTION,U.FIRSTNAME,U.LASTNAME
+FROM DEPARTMENT D,USER U
+WHERE D.USERID = U.USERID]]>
+	</queryString>
+	<field name="DEPTID" class="java.lang.Integer"/>
+	<field name="DEPTNAME" class="java.lang.String"/>
+	<field name="SHORTNAME" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<field name="FIRSTNAME" class="java.lang.String"/>
+	<field name="LASTNAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="56" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e0e6733b-3c6f-49ab-8635-6b9c09e63bc2" x="187" y="0" width="181" height="32"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Departments]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="146" splitType="Stretch">
+			<textField>
+				<reportElement uuid="57439c04-9c4c-4600-8a87-b63427f64a3c" x="328" y="0" width="150" height="20"/>
+				<textElement>
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPTNAME} + "(" + $F{SHORTNAME} + ")"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="3e6766cd-be97-4bf9-8d7f-f36b5e213f9d" x="0" y="38" width="301" height="36"/>
+				<textElement textAlignment="Justified">
+					<font size="12" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="10823b55-be7a-412b-84c3-b587e8261af8" x="301" y="38" width="254" height="36"/>
+				<textElement textAlignment="Justified">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Headed by " + $F{FIRSTNAME} + " " + $F{LASTNAME}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="597c7487-5d2a-4b54-817b-03309349dbc8" x="135" y="0" width="149" height="24"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bc74e740-06e2-455f-9502-17a4a12842fb" x="0" y="87" width="226" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Voucher Types :]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="9c895dec-d848-4115-b268-3e64e16ed926" x="0" y="107" width="368" height="18"/>
+				<subreportParameter name="DEPTID">
+					<subreportParameterExpression><![CDATA[$F{DEPTID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subReport_Departments_VoucherTypes}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="50">
+			<staticText>
+				<reportElement uuid="77927ebd-7bbd-42fb-857a-7065113c5274" x="0" y="0" width="226" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Users :]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="77f7e240-81da-481b-8d77-e11fbf7a4577" x="0" y="20" width="368" height="16"/>
+				<subreportParameter name="DEPTID">
+					<subreportParameterExpression><![CDATA[$F{DEPTID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{subReport_Departments_Users}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>
