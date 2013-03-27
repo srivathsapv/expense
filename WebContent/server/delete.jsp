@@ -48,6 +48,15 @@
 			return;
 		}
 	}
+	else if(type.equals("report")){
+		int rid = Integer.parseInt(request.getParameter("id"));
+		report.Report report = new report.Report(rid);
+		report.delete();
+		if(request.getParameter("source").equals("userlist")){
+			response.sendRedirect("../pages/report_list.jsp");
+			return;
+		}
+	}
 	else if(type.equals("user")){
 		String userid = request.getParameter("userid");
 		user.User user = new user.User(userid);

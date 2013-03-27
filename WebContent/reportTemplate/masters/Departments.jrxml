@@ -4,10 +4,9 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["/home/sasipraveen/Downloads/reunionofcruelcodersibmgreatmindchallenge (1)/"]]></defaultValueExpression>
+		<defaultValueExpression><![CDATA["/home/srivathsa/Documents/IBM/reports/"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="subReport_Departments_Users" class="java.lang.Object"/>
-	<parameter name="subReport_Departments_VoucherTypes" class="java.lang.Object"/>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT D.DEPTID,D.DEPTNAME,D.SHORTNAME,D.DESCRIPTION,U.FIRSTNAME,U.LASTNAME
 FROM DEPARTMENT D,USER U
@@ -31,6 +30,10 @@ WHERE D.USERID = U.USERID]]>
 				</textElement>
 				<text><![CDATA[Departments]]></text>
 			</staticText>
+			<image>
+				<reportElement uuid="f766e97c-3f11-4244-8996-52e66a74ca33" x="19" y="-8" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
 		</band>
 	</title>
 	<detail>
@@ -76,7 +79,7 @@ WHERE D.USERID = U.USERID]]>
 					<subreportParameterExpression><![CDATA[$F{DEPTID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{subReport_Departments_VoucherTypes}]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Departments_VoucherTypes.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 		<band height="50">
@@ -93,7 +96,7 @@ WHERE D.USERID = U.USERID]]>
 					<subreportParameterExpression><![CDATA[$F{DEPTID}]]></subreportParameterExpression>
 				</subreportParameter>
 				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-				<subreportExpression><![CDATA[$P{subReport_Departments_Users}]]></subreportExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Departments_Users.jasper"]]></subreportExpression>
 			</subreport>
 		</band>
 	</detail>

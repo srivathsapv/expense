@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Vouchers" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a148ed6a-37bd-466a-9994-c8755a3ae378">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/srivathsa/Documents/IBM/reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT V.VOUCHERID,V.TITLE,VT.TITLE AS VT_TITLE,V.AMOUNT,VARCHAR_FORMAT(V.DATE,'DD-MM-YYYY') AS DATE,VTU.FIRSTNAME,VTU.LASTNAME
+FROM VOUCHER V,VOUCHER_TYPE VT,USER VTU
+WHERE V.VTYPEID = VT.VTYPEID AND V.USERID = VTU.USERID]]>
+	</queryString>
+	<field name="VOUCHERID" class="java.lang.Integer"/>
+	<field name="TITLE" class="java.lang.String"/>
+	<field name="VT_TITLE" class="java.lang.String"/>
+	<field name="AMOUNT" class="java.lang.Double"/>
+	<field name="DATE" class="java.lang.String"/>
+	<field name="FIRSTNAME" class="java.lang.String"/>
+	<field name="LASTNAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<pageHeader>
+		<band height="57">
+			<staticText>
+				<reportElement uuid="620dfa7a-c260-4b6d-a3b8-15869161aa51" x="210" y="0" width="149" height="31"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Vouchers]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="e718819a-a717-4463-ab6f-cc711aa64570" x="33" y="0" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="194" splitType="Stretch">
+			<textField>
+				<reportElement uuid="6ddfbeda-0b62-46ab-9162-7cd5a89f02a6" x="210" y="98" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FIRSTNAME} + " " + $F{LASTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e63f0dbe-259a-4ba2-a140-0b863a4fb119" x="210" y="38" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VT_TITLE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="2100cf88-a5cb-4355-bf53-661fda20131c" x="77" y="18" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Title:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fba92e10-9455-4a17-a65d-543d8051eba2" x="77" y="78" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date :]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7649f91a-82a4-4a3c-90bd-385fbe156f21" x="210" y="58" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs." + $F{AMOUNT}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="ce42a7ff-b902-4569-b570-5bf958a4936f" x="77" y="98" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Submitted By :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="5cb97cce-ff07-4ce3-9dc4-1fc34dfa7a2f" x="77" y="58" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="a5ace23e-57d8-473c-acab-b93f529e5f5c" x="210" y="78" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ecbf611e-5c08-4349-9c01-0a3609522b22" x="210" y="18" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLE}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="a0b32040-0df9-427b-86a7-3683a0abaf29" x="77" y="38" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Voucher Type:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="fd1f16f9-78eb-444f-9672-60a91b606940" x="16" y="128" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status History :]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="cb1e1ed2-379e-4f2a-ad6e-676ab2760bc5" x="16" y="158" width="525" height="23"/>
+				<subreportParameter name="VOUCHERID">
+					<subreportParameterExpression><![CDATA[$F{VOUCHERID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Vouchers_Status.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="15">
+			<line>
+				<reportElement uuid="caa845e8-34a7-44bf-b61e-8eef4136c2fa" x="-16" y="5" width="596" height="1"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

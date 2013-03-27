@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="company_policy_chart_report_policylist" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="8cbce7a0-2658-460d-a3dc-433af3cdb91d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT POLICYID,TITLE FROM POLICY]]>
+	</queryString>
+	<field name="POLICYID" class="java.lang.Integer"/>
+	<field name="TITLE" class="java.lang.String"/>
+	<columnHeader>
+		<band height="21">
+			<staticText>
+				<reportElement uuid="70a00626-7d11-478c-9e4d-bc11c824a1f6" x="0" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy ID]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="30cd1892-82f8-4254-917c-d535151c7c87" x="100" y="0" width="262" height="20"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Name]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="13" splitType="Stretch">
+			<textField>
+				<reportElement uuid="fd160c83-917e-4044-b396-fabdc7503da2" x="0" y="0" width="100" height="13"/>
+				<box>
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{POLICYID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="de34710c-2a28-4ad6-81d8-245bfca76d58" x="100" y="0" width="262" height="13"/>
+				<box topPadding="0" leftPadding="0" bottomPadding="0" rightPadding="0">
+					<pen lineWidth="0.0"/>
+					<topPen lineWidth="0.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="0.0"/>
+					<rightPen lineWidth="0.0"/>
+				</box>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

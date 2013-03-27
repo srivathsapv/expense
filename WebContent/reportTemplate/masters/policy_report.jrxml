@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="policy_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3d346263-ee23-45bb-9fda-03379a23be8d">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[select * from POLICY]]>
+	</queryString>
+	<field name="POLICYID" class="java.lang.Integer"/>
+	<field name="TITLE" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<field name="AMOUNTPERCENT" class="java.lang.Integer"/>
+	<field name="AVAILABLE" class="java.lang.Integer"/>
+	<group name="POLICYID">
+		<groupExpression><![CDATA[$F{POLICYID}]]></groupExpression>
+	</group>
+	<group name="TITLE">
+		<groupExpression><![CDATA[$F{TITLE}]]></groupExpression>
+	</group>
+	<group name="AVAILABLE">
+		<groupExpression><![CDATA[$F{AVAILABLE}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="bc112d3c-4e7b-41e0-935b-a8739bcbb123" x="139" y="14" width="348" height="45"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policies]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="940fb434-d897-4977-86ef-7479eece2844" x="6" y="14" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="177" splitType="Stretch">
+			<textField>
+				<reportElement uuid="451867ae-3cf5-4904-9aa5-2891eedb09d2" x="230" y="31" width="314" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2ae58e1a-c712-4424-a3eb-b30bb3ffc09f" x="230" y="63" width="314" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f61da218-c0c9-493a-8b4a-4afdc0019cf0" x="230" y="95" width="314" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{AMOUNTPERCENT}+"%"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="97f803a6-c5e0-4bc0-aeff-6bbe4f633d06" x="230" y="129" width="314" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[($F{AVAILABLE}.equals(1)? "Available" : "Not Available")]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="82cd2da2-105a-4cf9-a812-10a9053b8551" x="10" y="31" width="220" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Name: ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e2c0c372-5b55-4702-bd98-9e90ec59984a" x="10" y="63" width="220" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="b547799a-cc71-48fc-ac59-01520ed8e14e" x="10" y="95" width="220" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Percentage of Amount Sanctionable:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1fe001be-5a6c-4dfe-93e0-9adab468b84c" x="10" y="129" width="220" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Available / Not Available :]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="c12a4af9-53ef-4da5-afa2-59a6876b6a7c" x="0" y="176" width="555" height="1"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

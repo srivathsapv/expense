@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Users" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3ad24b9a-5b63-4ce4-9e26-a046139a8f4f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/srivathsa/Documents/IBM/reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+U.USERID,U.FIRSTNAME,U.LASTNAME,U.SOCIALSECURITY,
+CASE(U.GENDER)
+WHEN 'M' THEN 'MALE'
+WHEN 'F' THEN 'FEMALE'
+END
+AS GENDER,
+D.DEPTNAME,U.DESIGNATION,
+M.FIRSTNAME AS MGR_FIRSTNAME,
+M.LASTNAME AS MGR_LASTNAME,
+U.ADDRESS,U.PHONE,U.MOBILE,U.EMAIL
+FROM
+USER U,USER M,DEPARTMENT D
+WHERE U.DEPTID = D.DEPTID AND U.MANAGER = M.USERID]]>
+	</queryString>
+	<field name="USERID" class="java.lang.String"/>
+	<field name="FIRSTNAME" class="java.lang.String"/>
+	<field name="LASTNAME" class="java.lang.String"/>
+	<field name="SOCIALSECURITY" class="java.lang.String"/>
+	<field name="GENDER" class="java.lang.String"/>
+	<field name="DEPTNAME" class="java.lang.String"/>
+	<field name="DESIGNATION" class="java.lang.String"/>
+	<field name="MGR_FIRSTNAME" class="java.lang.String"/>
+	<field name="MGR_LASTNAME" class="java.lang.String"/>
+	<field name="ADDRESS" class="java.lang.String"/>
+	<field name="PHONE" class="java.lang.String"/>
+	<field name="MOBILE" class="java.lang.String"/>
+	<field name="EMAIL" class="java.lang.String"/>
+	<title>
+		<band height="59" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="eb7d2c6a-7887-4cff-94ca-c639a33cb52d" x="236" y="14" width="81" height="29"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Users]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="0f781b65-5b32-41fc-92b7-7b878981c6bf" x="22" y="3" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="218" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="b567e8fc-0b6c-494c-b5cc-5138ef46aa9a" x="22" y="10" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Name :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ddb0ac5c-2308-4e5a-a9f1-46db1fa32c3c" x="22" y="30" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Social Security :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e240a1d2-2ba7-434d-98db-7e153611aaa2" x="22" y="50" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Gender :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c97b0db6-2ed0-4e02-8af3-b98ea525d5be" x="22" y="70" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Department :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="67b7e041-bc1d-4d9f-b80a-3cab6479a2ca" x="22" y="90" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Designation :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="002e8639-fc76-4494-8a79-c1092e5420cb" x="22" y="110" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Manager :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="8faea3d6-3985-4c08-8f1a-03a8028c749a" x="22" y="130" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Address :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2f50bbb8-a655-4513-b12d-6d6fbe5062a2" x="22" y="150" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Phone :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="2bab6da2-5450-4c28-8a84-1e5ccae5b109" x="22" y="170" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Mobile:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="44f6ba47-ccb0-47fa-bbad-bb9140b08ebd" x="22" y="190" width="133" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Email:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="f07ab96e-aa42-4669-887d-ee7a10faa01b" x="155" y="10" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FIRSTNAME} + " " + $F{LASTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ada4d0ff-f1db-401d-a9c9-6a8b13d45a91" x="155" y="50" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{GENDER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d5680885-ca4d-40ca-957e-3e01aeb786f7" x="155" y="30" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{SOCIALSECURITY}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="85152db4-df62-44f1-8d04-b44b89b19950" x="155" y="70" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="dfcf38fc-4b83-4c06-ba48-59b074da6e4e" x="155" y="90" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESIGNATION}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="ed59c3fe-5879-44c5-9b4d-f7a4a0022d42" x="155" y="110" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MGR_FIRSTNAME} + " " + $F{MGR_LASTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a192d9a1-749c-45bc-9639-71a566a2f23c" x="155" y="130" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ADDRESS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="4d232daf-caf6-4d4c-8440-2b0052e80d2f" x="155" y="150" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{PHONE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="7aba5307-6588-495a-91f2-758457a717b6" x="155" y="170" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{MOBILE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="05b36d1b-188b-4e78-aeb2-b170873dfc48" x="155" y="190" width="264" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{EMAIL}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="82">
+			<staticText>
+				<reportElement uuid="29035ee0-396c-49de-8ea3-06af53162be7" x="22" y="11" width="150" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Recent Vouchers :]]></text>
+			</staticText>
+			<subreport>
+				<reportElement uuid="7be1b94f-cd61-4468-b12f-4987d5d505ee" x="22" y="45" width="495" height="25"/>
+				<subreportParameter name="USERID">
+					<subreportParameterExpression><![CDATA[$F{USERID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "Users_Vouchers.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="28">
+			<line>
+				<reportElement uuid="ab4b07ae-7727-4223-9c5b-fe8ca4bfda33" x="-20" y="14" width="595" height="1"/>
+			</line>
+		</band>
+	</detail>
+</jasperReport>

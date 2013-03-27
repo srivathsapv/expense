@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VoucherTypeReport_ClaimCount" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="e43c8955-a00f-456d-a904-8db6b777f316">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VTYPEID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT COUNT(*) AS CNT FROM VOUCHER WHERE VTYPEID = $P{VTYPEID} AND
+VOUCHERID IN (SELECT VOUCHERID FROM VOUCHER_STATUS WHERE STATUS != 'rejected')]]>
+	</queryString>
+	<field name="CNT" class="java.lang.Integer"/>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<textField>
+				<reportElement uuid="54e14544-72a3-42cd-bfc1-c2dbec5c0cc2" x="0" y="0" width="154" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{CNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

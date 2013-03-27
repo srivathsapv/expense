@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VoucherTypes_Policies" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="6ae30526-8c63-4ec9-914b-504f2f9d8bbd">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VTYPEID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT P.TITLE,P.AMOUNTPERCENT FROM POLICY P,VOUCHERTYPE_POLICY VTP WHERE
+P.POLICYID = VTP.POLICYID AND VTP.VTYPEID = $P{VTYPEID}]]>
+	</queryString>
+	<field name="TITLE" class="java.lang.String"/>
+	<field name="AMOUNTPERCENT" class="java.lang.Integer"/>
+	<columnHeader>
+		<band height="28">
+			<staticText>
+				<reportElement uuid="7cec6c5e-3e31-4a9d-93ae-5ec7e8ce4f52" x="35" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Policy Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="80e0ac25-5e8a-467b-94ae-64ee173c8117" x="199" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount Percent]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="56b54c78-6cf7-4f42-a40f-06a71d2cbab7" x="35" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e072d181-6fda-4119-9e1d-46e1ee72c2a5" x="199" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{AMOUNTPERCENT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

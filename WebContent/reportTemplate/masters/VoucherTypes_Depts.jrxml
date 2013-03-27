@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VoucherTypes_Depts" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b2b78590-5cca-4f3b-869b-b3b9f39896f6">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VTYPEID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT D.DEPTNAME FROM DEPARTMENT D,VOUCHERTYPE_DEPT VTD WHERE D.DEPTID = VTD.DEPTID AND VTD.VTYPEID = $P{VTYPEID}]]>
+	</queryString>
+	<field name="DEPTNAME" class="java.lang.String"/>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="f4c0678a-73e2-4e1f-9d18-d49b674b31a6" x="20" y="0" width="224" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DEPTNAME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
