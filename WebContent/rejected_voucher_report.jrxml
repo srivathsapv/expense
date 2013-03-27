@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="rejected_voucher_report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="91a5d666-f49c-4ce2-b848-16c9aace97ad">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[SELECT
+     VOUCHER.VOUCHERID AS VOUCHER_VOUCHERID,
+     VOUCHER.USERID AS VOUCHER_USERID,
+     VOUCHER.AMOUNT AS VOUCHER_AMOUNT,
+     VOUCHER.REJECTREASON AS VOUCHER_REJECTREASON,
+     VOUCHER_STATUS.VOUCHERID AS VOUCHER_STATUS_VOUCHERID,
+     VOUCHER_STATUS.STATUS AS VOUCHER_STATUS_STATUS,
+     VOUCHER_STATUS.USERID AS VOUCHER_STATUS_USERID,
+     VOUCHER_STATUS.STATUSID AS VOUCHER_STATUS_STATUSID,
+     VOUCHER.DESCRIPTION AS VOUCHER_DESCRIPTION,
+     VOUCHER.TITLE AS VOUCHER_TITLE
+FROM
+     VOUCHER_STATUS VOUCHER_STATUS inner JOIN VOUCHER VOUCHER ON VOUCHER_STATUS.VOUCHERID = VOUCHER.VOUCHERID]]>
+	</queryString>
+	<field name="VOUCHER_VOUCHERID" class="java.lang.Integer"/>
+	<field name="VOUCHER_USERID" class="java.lang.String"/>
+	<field name="VOUCHER_AMOUNT" class="java.lang.Double"/>
+	<field name="VOUCHER_REJECTREASON" class="java.lang.String"/>
+	<field name="VOUCHER_STATUS_VOUCHERID" class="java.lang.Integer"/>
+	<field name="VOUCHER_STATUS_STATUS" class="java.lang.String"/>
+	<field name="VOUCHER_STATUS_USERID" class="java.lang.String"/>
+	<field name="VOUCHER_STATUS_STATUSID" class="java.lang.Integer"/>
+	<field name="VOUCHER_DESCRIPTION" class="java.lang.String"/>
+	<field name="VOUCHER_TITLE" class="java.lang.String"/>
+	<group name="VOUCHER_VOUCHERID">
+		<groupExpression><![CDATA[$F{VOUCHER_VOUCHERID}]]></groupExpression>
+	</group>
+	<group name="VOUCHER_USERID">
+		<groupExpression><![CDATA[$F{VOUCHER_USERID}]]></groupExpression>
+	</group>
+	<group name="VOUCHER_STATUS_USERID">
+		<groupExpression><![CDATA[$F{VOUCHER_STATUS_USERID}]]></groupExpression>
+	</group>
+	<group name="VOUCHER_AMOUNT">
+		<groupExpression><![CDATA[$F{VOUCHER_AMOUNT}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="14e42ecb-3149-4a6b-9376-8ab96cc56f31" x="133" y="16" width="399" height="42"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rejected Voucher Report]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="83dc349e-cbbf-42d7-a871-d8014a401015" x="0" y="16" width="133" height="56"/>
+				<imageExpression><![CDATA["/home/srivathsa/Documents/IBM/reports/logo.png"]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<textField>
+				<reportElement uuid="90a275bf-0cd6-48bd-a46b-1540dec6c63c" x="34" y="14" width="492" height="34"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{VOUCHER_TITLE}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="297" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7ab0862f-2cb8-4cb7-a415-480f5fbc4a10" x="242" y="114" width="226" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_USERID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="86e57f3c-2c01-4c09-8cd3-ed0b363fb835" x="242" y="149" width="226" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_STATUS_USERID}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fd27830a-408b-4cda-ba71-4ce281968662" x="242" y="188" width="226" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="19c46cd9-0d39-4bc3-b4df-e0a535783a63" x="242" y="225" width="226" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_REJECTREASON}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="d6eaea45-a144-452d-ad0b-23bde446c473" x="115" y="114" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Submitted By:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="bd194af3-2514-466a-a22e-e6b3e407e225" x="115" y="149" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Rejected By:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="9164bf0b-2964-4f1d-9967-ad83ff25a0b6" x="115" y="188" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="71c9b3c6-b4f2-47b1-b056-c2430b0b5a36" x="115" y="225" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Reason:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="db3af44c-ef5b-4be4-85f1-f471f505f5ef" x="115" y="17" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="6121e4a0-8fdd-42b6-a3e6-be633798fe23" x="0" y="264" width="555" height="1"/>
+			</line>
+			<textField>
+				<reportElement uuid="44505564-bd36-4abc-a1c2-adfd03f2d3ea" x="242" y="17" width="226" height="84"/>
+				<textElement markup="html"/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_DESCRIPTION}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

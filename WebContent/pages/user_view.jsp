@@ -170,15 +170,12 @@
 			%>
 			<img src = "../img/up.png" style = "width:5%"><br><br>	<%
 					for(User u:subordinates){
-						%> <a class = "alert alert-success" href = "user_view.jsp?userid=<%=u.getUserid() %>"><%= u.getFirstName() + " " + u.getlastName() %></a>(<%=u.getDesignation() %>)<br><br> <%
+						%> <a class = "alert alert-success" href = "user_view.jsp?userid=<%=u.getUserid() %>"><%= u.getFirstName() + " " + u.getlastName() %> (<%=u.getDesignation() %>)</a><br><br> <%
 					}
 				%>
 			
 			<%
 		}
 	%>
-	
-	
-	
 	</center>
 </div>

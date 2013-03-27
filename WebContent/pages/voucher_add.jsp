@@ -27,6 +27,12 @@
 	label {
 		font-weight: bold!important;
 	}
+	
+	
+	#description_path_row {
+		display:none!important;
+	}
+	
 </style>
 <script type = "text/javascript">
 	tinyMCE.init({
@@ -36,7 +42,7 @@
 	    plugins : "autolink,lists,spellchecker,pagebreak,style,layer,table,save,advhr,advimage,advlink,emotions,iespell,inlinepopups,insertdatetime,preview,media,searchreplace,print,contextmenu,paste,directionality,fullscreen,noneditable,visualchars,nonbreaking,xhtmlxtras,template",
 		
 	    // Theme options
-	    theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontselect,fontsizeselect,|,bullist,numlist",
+	    theme_advanced_buttons1 : "bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,formatselect,fontsizeselect,|,bullist,numlist",
 	    theme_advanced_buttons2 : "link,unlink,image,|,forecolor,backcolor",
 	    theme_advanced_toolbar_location : "top",
 	    theme_advanced_toolbar_align : "left",

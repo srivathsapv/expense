@@ -43,11 +43,17 @@
 			#copyright {
 				margin-left:5px;
 			}
-			
+						
 			.currency-change-menu {
 				width:180px!important;
 			}
 			
+			.bm-img {
+				top:2.5%;
+				position:absolute;
+				left:86%;
+				
+			}
 		</style>
 		<script type = "text/javascript">
 			function logout() {
@@ -373,13 +379,13 @@
 						java.sql.ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM BOOKMARK WHERE USERID = '" + username + "' AND LINK = '" + pagename + "'");
 						rs.next();
 						if(rs.getInt(1) > 0) {
-							%> <img id = "remove-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-active.png" style = "width:3%;margin-top:15px" title = "Remove bookmark"> 
-								<img id = "add-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-inactive.png" style = "display:none;width:3%;margin-top:15px" title = "Bookmark this page">	
+							%> <img id = "remove-bookmark" alt = "<%=pagename %>" class = "bm-img poi" src = "../img/bookmark-active.png" style = "width:2%;" title = "Remove bookmark"> 
+								<img id = "add-bookmark" alt = "<%=pagename %>" class = "bm-img poi" src = "../img/bookmark-inactive.png" style = "display:none;width:2%;" title = "Bookmark this page">	
 						<%									
 						}
 						else {
-							%> <img id = "add-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-inactive.png" style = "width:3%;margin-top:15px" title = "Bookmark this page">
-							<img id = "remove-bookmark" alt = "<%=pagename %>" class = "poi" src = "../img/bookmark-active.png" style = "display:none;width:3%;margin-top:15px" title = "Remove bookmark">
+							%> <img id = "add-bookmark" alt = "<%=pagename %>" class = "bm-img poi" src = "../img/bookmark-inactive.png" style = "width:2%;" title = "Bookmark this page">
+							<img id = "remove-bookmark" alt = "<%=pagename %>" class = "bm-img poi" src = "../img/bookmark-active.png" style = "display:none;width:2%;" title = "Remove bookmark">
 				<%	
 						}
 					}
