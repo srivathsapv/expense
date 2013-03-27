@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="mis_chart_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="bd4e72bf-603c-4c24-9080-ec2e89135929">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     VOUCHER_STATUS."STATUSID" AS VOUCHER_STATUS_STATUSID,
+     VOUCHER_STATUS."VOUCHERID" AS VOUCHER_STATUS_VOUCHERID,
+     VOUCHER_STATUS."STATUS" AS VOUCHER_STATUS_STATUS,
+     VOUCHER_TYPE."VTYPEID" AS VOUCHER_TYPE_VTYPEID,
+     VOUCHER_TYPE."TITLE" AS VOUCHER_TYPE_TITLE,
+     VOUCHER."VOUCHERID" AS VOUCHER_VOUCHERID,
+     VOUCHER."VTYPEID" AS VOUCHER_VTYPEID,
+     VOUCHER_STATUS."STATUSID" AS VOUCHER_STATUS_STATUSID,
+     VOUCHER_STATUS."VOUCHERID" AS VOUCHER_STATUS_VOUCHERID,
+     VOUCHER_STATUS."STATUS" AS VOUCHER_STATUS_STATUS,
+     VOUCHER."VOUCHERID" AS VOUCHER_VOUCHERID,
+     VOUCHER."VTYPEID" AS VOUCHER_VTYPEID,
+     VOUCHER_TYPE."VTYPEID" AS VOUCHER_TYPE_VTYPEID,
+     VOUCHER_TYPE."TITLE" AS VOUCHER_TYPE_TITLE
+FROM
+     "VOUCHER_STATUS" VOUCHER_STATUS inner join     "VOUCHER" VOUCHER on (VOUCHER_STATUS.VOUCHERID=VOUCHER.VOUCHERID) inner join
+     "VOUCHER_TYPE" VOUCHER_TYPE  on (VOUCHER.VTYPEID=VOUCHER_TYPE.VTYPEID)]]>
+	</queryString>
+	<field name="VOUCHER_STATUS_STATUSID" class="java.lang.Integer"/>
+	<field name="VOUCHER_STATUS_VOUCHERID" class="java.lang.Integer"/>
+	<field name="VOUCHER_STATUS_STATUS" class="java.lang.String"/>
+	<field name="VOUCHER_TYPE_VTYPEID" class="java.lang.Integer"/>
+	<field name="VOUCHER_TYPE_TITLE" class="java.lang.String"/>
+	<field name="VOUCHER_VOUCHERID" class="java.lang.Integer"/>
+	<field name="VOUCHER_VTYPEID" class="java.lang.Integer"/>
+	<group name="VOUCHER_STATUS_VOUCHERID">
+		<groupExpression><![CDATA[$F{VOUCHER_STATUS_VOUCHERID}]]></groupExpression>
+	</group>
+	<group name="VOUCHER_STATUS_STATUS">
+		<groupExpression><![CDATA[$F{VOUCHER_STATUS_STATUS}]]></groupExpression>
+	</group>
+	<group name="VOUCHER_TYPE_TITLE">
+		<groupExpression><![CDATA[$F{VOUCHER_TYPE_TITLE}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="80ae468a-3ce1-4be7-af2b-17178082a184" x="141" y="20" width="347" height="43"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[MIS Report]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="e1b8ab14-9a8c-46be-ba99-aa36c79a4a86" x="0" y="20" width="141" height="43"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="53">
+			<staticText>
+				<reportElement uuid="40d4d43f-dc1b-4c2f-94ee-4302b353c106" x="65" y="15" width="423" height="28"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ No Of Vouchers In Each Status]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="312" splitType="Stretch">
+			<pieChart>
+				<chart>
+					<reportElement uuid="19b4c503-d30d-41ac-a55a-77a147893e0f" x="65" y="48" width="423" height="229"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<pieDataset>
+					<keyExpression><![CDATA[$F{VOUCHER_STATUS_STATUS}]]></keyExpression>
+					<valueExpression><![CDATA[$V{VOUCHER_STATUS_VOUCHERID_COUNT}]]></valueExpression>
+				</pieDataset>
+				<piePlot>
+					<plot/>
+					<itemLabel/>
+				</piePlot>
+			</pieChart>
+		</band>
+	</summary>
+</jasperReport>

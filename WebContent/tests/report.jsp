@@ -41,8 +41,8 @@ out.println("DONE DATA \n");
 
 
 //method 2 to run with static query
-JasperReport jasperReport2 = JasperCompileManager.compileReport(directory_path+"report2.jrxml");
-JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2,jasperParameter, con);
+JasperReport jasperReport2 = JasperCompileManager.compileReport(directory_path+"VoucherTypes.jrxml");
+JasperPrint jasperPrint2 = JasperFillManager.fillReport(jasperReport2,null, con);
 JasperExportManager.exportReportToPdfFile(jasperPrint2,/*target_path +*/ "test2.pdf");
 
 
