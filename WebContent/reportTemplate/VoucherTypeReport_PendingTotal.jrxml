@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VoucherTypeReport_PendingTotal" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="82fd4cf2-bbd9-4091-a0c3-cdb750732dbc">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VTYPEID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT COALESCE(SUM(AMOUNT),0) AS PENDING_TOTAL FROM VOUCHER WHERE VTYPEID = $P{VTYPEID} AND VOUCHERID IN(SELECT VOUCHERID FROM VOUCHER_STATUS WHERE STATUS NOT IN('sanctioned','rejected') AND TIME IN (SELECT MAX(TIME) FROM VOUCHER_STATUS GROUP BY VOUCHERID))]]>
+	</queryString>
+	<field name="PENDING_TOTAL" class="java.lang.Double"/>
+	<detail>
+		<band height="22" splitType="Stretch">
+			<textField>
+				<reportElement uuid="1b37b99e-39fe-43bf-8e69-0a79472445ee" x="0" y="0" width="257" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs." + $F{PENDING_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

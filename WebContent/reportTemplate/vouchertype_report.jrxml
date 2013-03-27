@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="vouchertype_report2" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ad9ab726-c5be-4513-bb03-07f62f7b7c84">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="New Dataset 1" uuid="1fdaa4c8-d1e7-42bb-ba8c-211f7ba1eb9d">
+		<parameter name="VTYPEID" class="java.lang.Integer">
+			<defaultValueExpression><![CDATA[4]]></defaultValueExpression>
+		</parameter>
+		<queryString>
+			<![CDATA[SELECT
+    distinct DEPARTMENT."DEPTNAME" AS DEPARTMENT_DEPTNAME
+FROM
+     "DB2ADMIN"."VOUCHERTYPE_DEPT" VOUCHERTYPE_DEPT INNER JOIN "DB2ADMIN"."VOUCHER_TYPE" VOUCHER_TYPE ON VOUCHERTYPE_DEPT."VTYPEID" = VOUCHER_TYPE."VTYPEID"
+     INNER JOIN "DB2ADMIN"."DEPARTMENT" DEPARTMENT ON VOUCHERTYPE_DEPT."DEPTID" = DEPARTMENT."DEPTID"
+where
+   VOUCHERTYPE_DEPT.VTYPEID=$P{VTYPEID}]]>
+		</queryString>
+		<field name="DEPARTMENT_DEPTNAME" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/srivathsa/Documents/IBM/reports/saranya/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT VT.VTYPEID,VT.TITLE,VT.DESCRIPTION
+FROM VOUCHER_TYPE VT]]>
+	</queryString>
+	<field name="VTYPEID" class="java.lang.Integer"/>
+	<field name="TITLE" class="java.lang.String"/>
+	<field name="DESCRIPTION" class="java.lang.String"/>
+	<variable name="variable1" class="java.lang.String"/>
+	<title>
+		<band height="58" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8267b0e9-96cf-43d0-8837-f46847de34a3" x="182" y="12" width="314" height="38"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Voucher Type Report]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="140ef5cb-b478-48f2-85a8-d1a8515dcc85" x="22" y="0" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<detail>
+		<band height="121" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="140f3303-83ff-47b3-ac54-44aa74b1d843" x="10" y="62" width="172" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Departments:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="168f7d39-8e1d-4c89-a846-29c873c1c9cb" x="66" y="14" width="430" height="31"/>
+				<textElement textAlignment="Center">
+					<font size="20" isBold="true" isUnderline="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLE}]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement uuid="20a9f87c-3181-48bd-b72b-334b5405ce94" x="10" y="94" width="497" height="20"/>
+				<subreportParameter name="VTYPEID">
+					<subreportParameterExpression><![CDATA[$F{VTYPEID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "VoucherTypeReport_Depts.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="158">
+			<staticText>
+				<reportElement uuid="20c7aaf3-7abe-4f9c-8e23-94eb53e36c46" x="10" y="45" width="241" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No Of Cliams:]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="70673694-7c40-41d5-bafd-2e67a4ea08c3" x="277" y="10" width="278" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{DESCRIPTION}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement uuid="27eba54a-97f0-4ee0-bd5e-7c4c66639654" x="10" y="10" width="241" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Description:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="4ccfbf47-b48d-4888-bac7-9f88955416a9" x="10" y="82" width="241" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Amount Claimed:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1bf6904a-0e34-4e4f-87e6-056897f3c401" x="10" y="116" width="241" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Amount Pending To Be Claimed:]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="0a60c6cd-0668-4630-aad2-138dcb675d15" x="0" y="148" width="555" height="1"/>
+			</line>
+			<subreport>
+				<reportElement uuid="5367c622-41e9-4998-9478-39900541dbd3" x="277" y="45" width="278" height="20"/>
+				<subreportParameter name="VTYPEID">
+					<subreportParameterExpression><![CDATA[$F{VTYPEID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "VoucherTypeReport_ClaimCount.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="cb8b4f83-ed77-4f34-820f-d3f7d916a080" x="277" y="82" width="278" height="20"/>
+				<subreportParameter name="VTYPEID">
+					<subreportParameterExpression><![CDATA[$F{VTYPEID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "VoucherTypeReport_ClaimTotal.jasper"]]></subreportExpression>
+			</subreport>
+			<subreport>
+				<reportElement uuid="75e08782-87b5-4f2a-96f2-f7ae8e3af65b" x="277" y="116" width="278" height="20"/>
+				<subreportParameter name="VTYPEID">
+					<subreportParameterExpression><![CDATA[$F{VTYPEID}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "VoucherTypeReport_PendingTotal.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+</jasperReport>

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="sample_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="b136f364-2e10-4fd8-aa20-2fec46a0f556">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="total_amount" uuid="493f2654-9991-4393-b50b-253d571ac08c">
+		<queryString language="SQL">
+			<![CDATA[SELECT SUM(AMOUNT * (AMOUNTPERCENT/100)) AS SANCTIONED_TOTAL  FROM VOUCHER,POLICY WHERE VOUCHER.POLICYID = POLICY.POLICYID]]>
+		</queryString>
+		<field name="SANCTIONED_TOTAL" class="java.lang.Double"/>
+		<group name="SANCTIONED_TOTAL">
+			<groupExpression><![CDATA[$F{SANCTIONED_TOTAL}]]></groupExpression>
+		</group>
+	</subDataset>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Program Files\\IBM\\SQLLIB\\java\\"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     VOUCHER.VOUCHERID AS VOUCHER_VOUCHERID,
+     VOUCHER.TITLE AS VOUCHER_TITLE,
+     VOUCHER.AMOUNT AS VOUCHER_AMOUNT,
+     VARCHAR_FORMAT(VOUCHER.DATE,'DD-MM-YYYY') AS VOUCHER_DATE,
+     VOUCHER_STATUS.USERID AS VOUCHER_STATUS_USERID,
+     VARCHAR_FORMAT(VOUCHER_STATUS.TIME,'DD-MM-YYYY') AS VOUCHER_STATUS_TIME,
+     POLICY.AMOUNTPERCENT AS POLICY_AMOUNTPERCENT,
+     USER.FIRSTNAME AS USER_FIRSTNAME,
+     USER.MIDDLENAME AS USER_MIDDLENAME,
+     USER.LASTNAME AS USER_LASTNAME
+FROM
+     VOUCHER VOUCHER INNER JOIN VOUCHER_STATUS VOUCHER_STATUS ON VOUCHER.VOUCHERID = VOUCHER_STATUS.VOUCHERID
+     INNER JOIN POLICY POLICY ON VOUCHER.POLICYID = POLICY.POLICYID
+     INNER JOIN USER USER ON VOUCHER_STATUS.USERID = USER.USERID
+WHERE
+     VOUCHER_STATUS.STATUS = 'sanctioned' AND VOUCHER_STATUS.TIME LIKE '2013-03-__%']]>
+	</queryString>
+	<field name="VOUCHER_VOUCHERID" class="java.lang.Integer"/>
+	<field name="VOUCHER_TITLE" class="java.lang.String"/>
+	<field name="VOUCHER_AMOUNT" class="java.lang.Double"/>
+	<field name="VOUCHER_DATE" class="java.lang.String"/>
+	<field name="VOUCHER_STATUS_USERID" class="java.lang.String"/>
+	<field name="VOUCHER_STATUS_TIME" class="java.lang.String"/>
+	<field name="POLICY_AMOUNTPERCENT" class="java.lang.Integer"/>
+	<field name="USER_FIRSTNAME" class="java.lang.String"/>
+	<field name="USER_MIDDLENAME" class="java.lang.String"/>
+	<field name="USER_LASTNAME" class="java.lang.String"/>
+	<variable name="total" class="java.lang.Double" calculation="Sum">
+		<variableExpression><![CDATA[($F{VOUCHER_AMOUNT}*$F{POLICY_AMOUNTPERCENT})/100]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="60" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="12a1bf66-1cc2-41b6-b6cd-74eded75932b" x="136" y="4" width="368" height="52"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Financial Ledger]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="fe55a5bf-91cf-4b8f-a667-b865ed9fd97f" x="3" y="4" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="48" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="4b8c108c-093a-4579-91c7-47dcc96cf8cf" x="0" y="21" width="117" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Voucher Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6f4e67d9-47cc-4717-8e80-61d581b13293" x="117" y="21" width="68" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6487c2c4-829d-4662-98a1-a88c3aa40bf8" x="187" y="21" width="70" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="ec4e0df0-b46d-4224-a083-0bbc4ce9d73a" x="257" y="21" width="104" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sanctioned By]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="0db13b69-fe71-400d-9e1b-60cc86c3ae3d" x="361" y="21" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sanctioned Date]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="1b4cd317-9628-4b85-bed2-9d1a406617d6" x="462" y="21" width="93" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sanctioned]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement uuid="d5031720-0ba0-4785-adee-cc04d0ae119a" x="3" y="11" width="114" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fe3bd9fb-0fd9-44fc-b4a6-89090aee8e39" x="117" y="11" width="73" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_DATE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="822492da-c2ee-43ce-a994-f45c8de12aea" x="190" y="11" width="67" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b84c1e6a-85fc-4207-b273-e2cba80e13b3" x="257" y="11" width="104" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{USER_FIRSTNAME}+" "+$F{USER_LASTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c7470ecf-8825-44d0-a1df-d415bb1fecd6" x="361" y="11" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{VOUCHER_STATUS_TIME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2c3c913b-d408-4e2e-aa55-9181f4a4453e" x="462" y="11" width="93" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA["Rs." + ($F{VOUCHER_AMOUNT}*$F{POLICY_AMOUNTPERCENT})/100]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="45">
+			<staticText>
+				<reportElement uuid="ee40bd84-0815-4a5c-9bee-e1627d2042ae" x="174" y="18" width="262" height="20"/>
+				<textElement>
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Amount Sanctioned]]></text>
+			</staticText>
+			<textField>
+				<reportElement uuid="7c5cb986-a98c-4027-9452-210e00ad3315" x="439" y="18" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs." + $V{total}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

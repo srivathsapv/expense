@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="roleconfig_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="50f9d3f6-1b34-495c-95fc-a017e5e40b65">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     ROLECONFIG.ID AS ROLECONFIG_ID,
+     ROLECONFIG.CLAIM_LIMIT AS ROLECONFIG_CLAIM_LIMIT,
+     ROLECONFIG.ACCEPT_LIMIT AS ROLECONFIG_ACCEPT_LIMIT,
+    CASE(ROLECONFIG.ROLE )
+	WHEN 'employee' THEN 'Employee'
+	WHEN 'mgr' THEN 'Manager'
+	WHEN 'ceo' THEN 'CEO'
+	WHEN 'md' THEN 'Managing Director'
+     END AS ROLECONFIG_ROLE
+FROM
+     ROLECONFIG ROLECONFIG]]>
+	</queryString>
+	<field name="ROLECONFIG_ID" class="java.lang.Integer"/>
+	<field name="ROLECONFIG_CLAIM_LIMIT" class="java.lang.Integer"/>
+	<field name="ROLECONFIG_ACCEPT_LIMIT" class="java.lang.Integer"/>
+	<field name="ROLECONFIG_ROLE" class="java.lang.String"/>
+	<group name="ID">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="ROLE">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="CLAIM_LIMIT">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="ACCEPT_LIMIT">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="7ca5f402-2af1-4cec-b8d9-a96939d38a1b" x="144" y="0" width="411" height="56"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Role Based Limit Configuration
+]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="0b9e4939-32d8-4212-b159-9c2b77d3fb04" x="11" y="0" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="37" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="dfd47a56-7781-4af2-a065-9acd8b41e72b" x="44" y="0" width="111" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Role]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="6cfaa274-c02c-4e50-968b-45936254a1e3" x="381" y="0" width="122" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Claim Limit]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="e080dd1a-8fa1-43f6-90a3-91e05f7bef55" x="210" y="0" width="113" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Acceptance Limit]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="566e9a76-c16a-4174-a933-e343bd782959" x="0" y="30" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement uuid="b9be7dd2-faa6-4599-98c5-0d63aa7b9acf" x="44" y="0" width="111" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ROLECONFIG_ROLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="8628de78-c038-4eba-9b3f-b5164641a490" x="381" y="0" width="122" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ROLECONFIG_CLAIM_LIMIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d77d45c2-5a93-4e15-8b65-e0856b535180" x="210" y="0" width="113" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{ROLECONFIG_ACCEPT_LIMIT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

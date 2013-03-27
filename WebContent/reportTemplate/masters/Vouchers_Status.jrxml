@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Vouchers_Status" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="2647dca9-e8dc-4f25-a91f-8d630170c86f">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VOUCHERID" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[SELECT INITCAP(S.STATUS) AS STATUS,U.FIRSTNAME,U.LASTNAME,VARCHAR_FORMAT(S.TIME,'DD-MM-YYYY') AS TIME FROM VOUCHER_STATUS S,USER U WHERE S.USERID = U.USERID
+AND S.VOUCHERID = $P{VOUCHERID} ORDER BY S.TIME DESC]]>
+	</queryString>
+	<field name="STATUS" class="java.lang.String"/>
+	<field name="FIRSTNAME" class="java.lang.String"/>
+	<field name="LASTNAME" class="java.lang.String"/>
+	<field name="TIME" class="java.lang.String"/>
+	<columnHeader>
+		<band height="27" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="98f46235-01ff-446e-b0a9-64c03b441693" x="40" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="068bfce3-3b5d-4e0c-923c-c49bce8afe00" x="204" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[User]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="952a2c65-585a-4f18-b108-e56851cd9268" x="381" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Date]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26" splitType="Stretch">
+			<textField>
+				<reportElement uuid="e41781da-6894-43a7-b971-fa326ebbd71f" x="45" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STATUS}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="9e1b95c9-1de6-4db7-a30d-1569c8db4092" x="209" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{FIRSTNAME} + " " + $F{LASTNAME}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="997c22a8-9d6c-4148-a332-3c57f019bac6" x="381" y="0" width="149" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TIME}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

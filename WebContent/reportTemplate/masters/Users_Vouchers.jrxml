@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Users_Vouchers" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="86aad0f2-7712-495b-a5af-75655f5e8853">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="USERID" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT V.TITLE,V.AMOUNT,
+CASE(S.STATUS)
+WHEN 'pending' THEN 'Pending'
+WHEN 'edited' THEN 'Edited after a rejection'
+WHEN 'accepted' THEN 'Accepted'
+WHEN 'rejected' THEN 'Rejected'
+WHEN 'under consideration' THEN 'Under Consideration'
+WHEN 'sanctioned' THEN 'Sanctioned'
+END AS STATUS
+FROM
+VOUCHER V , VOUCHER_STATUS S
+WHERE V.USERID = $P{USERID}
+AND S.STATUS = (SELECT STATUS FROM VOUCHER_STATUS WHERE VOUCHERID = V.VOUCHERID
+ORDER BY TIME DESC FETCH FIRST 1 ROWS ONLY) AND V.VOUCHERID = S.VOUCHERID
+]]>
+	</queryString>
+	<field name="TITLE" class="java.lang.String"/>
+	<field name="AMOUNT" class="java.lang.Double"/>
+	<field name="STATUS" class="java.lang.String"/>
+	<columnHeader>
+		<band height="28">
+			<staticText>
+				<reportElement uuid="edde1537-f448-464a-bd81-79e5e15def9d" x="14" y="0" width="157" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Title]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="12d240d0-0a14-4d0d-a78b-c4e0f5564fa1" x="328" y="0" width="157" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Status]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="13b704ab-727b-4d05-b43d-3fbd4a85a41d" x="171" y="0" width="157" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="43" splitType="Stretch">
+			<textField>
+				<reportElement uuid="7d143dbe-3764-4b9c-8514-bcc4069f95e4" x="14" y="14" width="157" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{TITLE}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="bf1ba822-4900-4df6-8894-a0087f7501f9" x="171" y="14" width="157" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs." + $F{AMOUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="64cba23c-1882-4798-ae8c-ddd95432eaf1" x="328" y="14" width="157" height="20"/>
+				<textElement>
+					<font size="12" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{STATUS}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

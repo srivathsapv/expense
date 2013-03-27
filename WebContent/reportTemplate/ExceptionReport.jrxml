@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExceptionReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a51d638-c3b7-4aa7-b7d8-8d4f681899e4">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT CASE(MONTH(TIMESTAMP_ISO(TIME)))
+when 1 then 'January'
+when 2 then 'February'
+when 3 then 'March'
+when 4 then 'April'
+when 5 then 'May'
+when 6 then 'Jun'
+when 7 then 'July'
+when 8 then 'August'
+when 9 then 'September'
+when 10 then 'October'
+when 11 then 'November'
+when 12 then 'December'
+END
+AS MONTH,COUNT(*) AS COUNT FROM VOUCHER_STATUS
+WHERE STATUS IN('pending','under consideration')
+AND STATUSID IN(SELECT STATUSID FROM VOUCHER_STATUS WHERE TIME IN(SELECT MAX(TIME) FROM VOUCHER_STATUS GROUP BY VOUCHERID))
+GROUP BY MONTH(TIMESTAMP_ISO(TIME))
+ORDER BY MONTH(TIMESTAMP_ISO(TIME))]]>
+	</queryString>
+	<field name="MONTH" class="java.lang.String"/>
+	<field name="COUNT" class="java.lang.Integer"/>
+	<title>
+		<band height="61" splitType="Stretch">
+			<image>
+				<reportElement uuid="7d696460-bf60-420b-af70-6cdb3d04ca3f" x="25" y="0" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement uuid="6271635b-ed27-4ee3-b148-d0c96b912dc7" x="191" y="0" width="289" height="56"/>
+				<textElement>
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Exception Report]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="462" splitType="Stretch">
+			<lineChart>
+				<chart>
+					<reportElement uuid="0749ca8e-ec75-4bbe-b7b1-019013bc0ea7" x="0" y="73" width="555" height="285"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["Voucher awaiting acceptance"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{MONTH}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{COUNT}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<linePlot>
+					<plot/>
+				</linePlot>
+			</lineChart>
+		</band>
+	</detail>
+</jasperReport>

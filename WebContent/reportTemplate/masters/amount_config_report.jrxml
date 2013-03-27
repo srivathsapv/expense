@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="amount_config_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6c00709e-b574-4400-b5cd-0a9dd3030ac9">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     AMOUNT_CONFIG.LOWER_LIMIT AS AMOUNT_CONFIG_LOWER_LIMIT,
+     AMOUNT_CONFIG.UPPER_LIMIT AS AMOUNT_CONFIG_UPPER_LIMIT,
+     AMOUNT_CONFIG.MAXCOUNT AS AMOUNT_CONFIG_MAXCOUNT
+FROM
+     AMOUNT_CONFIG AMOUNT_CONFIG]]>
+	</queryString>
+	<field name="AMOUNT_CONFIG_LOWER_LIMIT" class="java.lang.Integer"/>
+	<field name="AMOUNT_CONFIG_UPPER_LIMIT" class="java.lang.Integer"/>
+	<field name="AMOUNT_CONFIG_MAXCOUNT" class="java.lang.Integer"/>
+	<group name="ID">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="LOWER_LIMIT">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="UPPER_LIMIT">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<group name="MAXCOUNT">
+		<groupExpression><![CDATA[]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="68" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="c07889f7-065e-400d-8bed-25112c1efa68" x="143" y="14" width="364" height="42"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Amount Configuration]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="285a260a-eb18-4548-8be4-d723414c174b" x="10" y="6" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="39" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="e7687318-dab0-47b5-b172-01eec3c9a49e" x="43" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Lower Limit Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="c5438cca-738f-4e0c-8c87-a40a6bcf076a" x="222" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Upper Limit Amount]]></text>
+			</staticText>
+			<staticText>
+				<reportElement uuid="812f9818-a1f1-496a-923c-3aac8c4aafdd" x="407" y="0" width="100" height="20"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Maximum Acceptance Count
+]]></text>
+			</staticText>
+			<line>
+				<reportElement uuid="0764284a-5fcd-4386-ae09-eacde873650f" x="0" y="31" width="555" height="1"/>
+			</line>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement uuid="da9544ec-896c-4e66-b32e-11e9269ad31c" x="43" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{AMOUNT_CONFIG_LOWER_LIMIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="61539f18-7f37-43ed-85e4-866f8006163e" x="222" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{AMOUNT_CONFIG_UPPER_LIMIT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="fe4ecdc1-ecde-4dd4-9df8-b5f3a578f522" x="407" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{AMOUNT_CONFIG_MAXCOUNT}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

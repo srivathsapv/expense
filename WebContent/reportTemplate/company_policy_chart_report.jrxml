@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="company_policy_chart_report" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="a1431f1b-47d8-42b9-af35-24ee883c4e23">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["/home/srivathsa/Documents/IBM/reports/saranya/attached/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="IMG_DIR" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT
+     ( SELECT count(VOUCHERTYPE_POLICY.VTYPEID) FROM VOUCHERTYPE_POLICY VOUCHERTYPE_POLICY WHERE VOUCHERTYPE_POLICY.POLICYID = POLICY.POLICYID )as VTYPEID_COUNT,
+     ( SELECT sum(VOUCHER.AMOUNT) FROM VOUCHER VOUCHER WHERE VOUCHER.POLICYID = POLICY.POLICYID ) AS TOTAL_AMOUNT,
+
+     POLICY.AVAILABLE AS POLICY_AVAILABLE,
+     POLICY.AMOUNTPERCENT AS POLICY_AMOUNTPERCENT,
+     POLICY.DESCRIPTION AS POLICY_DESCRIPTION,
+     POLICY.TITLE AS POLICY_TITLE,
+     POLICY.POLICYID AS POLICY_POLICYID,
+     DEPARTMENT.DEPTNAME AS DEPARTMENT_DEPTNAME
+FROM
+     DEPARTMENT DEPARTMENT INNER JOIN VOUCHERTYPE_DEPT VOUCHERTYPE_DEPT ON DEPARTMENT.DEPTID = VOUCHERTYPE_DEPT.DEPTID
+     INNER JOIN VOUCHERTYPE_POLICY VOUCHERTYPE_POLICY ON VOUCHERTYPE_DEPT.VTYPEID = VOUCHERTYPE_POLICY.VTYPEID
+     INNER JOIN POLICY POLICY ON VOUCHERTYPE_POLICY.POLICYID = POLICY.POLICYID
+      INNER JOIN VOUCHER VOUCHER ON POLICY.POLICYID = VOUCHER.POLICYID]]>
+	</queryString>
+	<field name="VTYPEID_COUNT" class="java.lang.Integer"/>
+	<field name="TOTAL_AMOUNT" class="java.lang.Double"/>
+	<field name="POLICY_AVAILABLE" class="java.lang.Integer"/>
+	<field name="POLICY_AMOUNTPERCENT" class="java.lang.Integer"/>
+	<field name="POLICY_DESCRIPTION" class="java.lang.String"/>
+	<field name="POLICY_TITLE" class="java.lang.String"/>
+	<field name="POLICY_POLICYID" class="java.lang.Integer"/>
+	<field name="DEPARTMENT_DEPTNAME" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="66108331-c6d1-4f60-827d-44e3b9a04f00" x="141" y="10" width="393" height="53"/>
+				<textElement textAlignment="Center">
+					<font size="24" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Company Policy Report]]></text>
+			</staticText>
+			<image>
+				<reportElement uuid="6d7691b1-4e19-4866-ba29-138ab1097c65" x="8" y="7" width="133" height="56"/>
+				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
+			</image>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="61" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="6919e88d-ac9e-4862-a913-0b79d5bbb26c" x="55" y="17" width="411" height="22"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Total Amount Stipulated For Each Policy]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<summary>
+		<band height="270" splitType="Stretch">
+			<bar3DChart>
+				<chart>
+					<reportElement uuid="0033f20e-7fb9-4b7c-bc1b-7dc59938f3ff" x="0" y="23" width="555" height="199"/>
+					<chartTitle/>
+					<chartSubtitle/>
+					<chartLegend/>
+				</chart>
+				<categoryDataset>
+					<categorySeries>
+						<seriesExpression><![CDATA["TOTAL AMOUNT"]]></seriesExpression>
+						<categoryExpression><![CDATA[$F{POLICY_POLICYID}]]></categoryExpression>
+						<valueExpression><![CDATA[$F{TOTAL_AMOUNT}]]></valueExpression>
+					</categorySeries>
+				</categoryDataset>
+				<bar3DPlot>
+					<plot/>
+					<itemLabel/>
+				</bar3DPlot>
+			</bar3DChart>
+			<subreport>
+				<reportElement uuid="a19b3dc0-b702-4162-bcbd-5e1316159969" x="127" y="232" width="310" height="26"/>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SUBREPORT_DIR} + "company_policy_chart_report_policylist.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

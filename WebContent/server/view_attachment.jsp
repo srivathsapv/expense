@@ -18,6 +18,7 @@
 					else if(rs.getString(2).equals("doc") || rs.getString(2).equals("docx")){
 						app_type = "msword";
 					}
+					response.setContentType("application/"+app_type);
 					byte[] imgdata = image.getBytes(1,(int)image.length());
 					
 					String filename = rs.getString(3) + "." +rs.getString(2);

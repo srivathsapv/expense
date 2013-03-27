@@ -9,36 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Hindi {
-
-	public String getConvertedText(String text) throws IOException,
-			JSONException {
-		String requestURL = "http://api.mymemory.translated.net/get?q=" + text
-				+ "!&langpair=en|hi";
-		URL wikiRequest = new URL(requestURL);
-		Scanner scanner = new Scanner(wikiRequest.openStream());
-		String response = "";
-		while (scanner.hasNext()) {
-			response = response + scanner.next();
-		}
-		scanner.close();
-		JSONObject jo = new JSONObject(response);
-		JSONObject jo1 = (JSONObject) jo.get("responseData");
-		return getHexCode(jo1.get("translatedText").toString());
-	}
-
-	private String getHexCode(String text) {
-		String dec, decString = "";
-		char chr;
-		int ascii, length = text.length();
-		for (int i = 0; i < length; i++) {
-			chr = text.charAt(i);
-			ascii = chr;
-			dec = Integer.toString(ascii);
-			decString = decString + "&#" + dec + ";";
-		}
-		return decString;
-	}
-	
 	public static String getHindiWord(String str){
 		HashMap<String,String> hm = new HashMap<String,String>();
 		hm.put("Notifications", "&#2309;&#2343;&#2367;&#2360;&#2370;&#2330;&#2344;&#2366;&#2319;&#2306;");

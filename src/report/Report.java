@@ -3,10 +3,12 @@
  */
 package report;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
+
+import java.sql.*;
 import java.util.Date;
 import java.util.HashMap;
+import java.io.*;
 
 import db.Db;
 
@@ -56,9 +58,9 @@ public class Report {
 	/**
 	 * Date on which the report was generated
 	 * 
-	 * @var Date
+	 * @var String
 	 */
-	private Date date;
+	private String date;
 	
 	/**
 	 * Id of the user who generated this report
@@ -73,6 +75,13 @@ public class Report {
 	 * @var String
 	 */
 	private String file;
+	
+	/**
+	 * Boolean variable to set file flag
+	 * 
+	 * @var Boolean
+	 */
+	private boolean fileSet = false;
 	
 	/**
 	 * Creates an empty object
@@ -92,14 +101,14 @@ public class Report {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE ID = " + reportid);
+		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE REPORTID = " + reportid);
 		rs.next();
 		
 		this.reportid = reportid;
 		this.title = rs.getString("TITLE");
 		this.description = rs.getString("DESCRIPTION");
 		this.type = rs.getString("TYPE");
-		this.date = rs.getDate("DATE");
+		this.date = rs.getString("DATE");
 		this.userid = rs.getString("USERID");
 		this.file = rs.getString("FILE");
 		
@@ -172,17 +181,19 @@ public class Report {
 	/**
 	 * Gets the date on which the report was generated
 	 * 
-	 * @return Date
+	 * @return String
 	 */
-	public Date getDate() {
+	public String getDate() {
 		return this.date;
 	}
 	
 	/**
 	 * Sets the date on which the report was generated
+	 * 
+	 * @param String
 	 */
-	public void setDate() {
-		this.date = new Date();
+	public void setDate(String date) {
+		this.date = date;
 	}
 	
 	/**
@@ -219,6 +230,7 @@ public class Report {
 	 */
 	public void setFile(String file) {
 		this.file = file;
+		this.fileSet = true;
 	}
 	
 	/**
@@ -233,33 +245,39 @@ public class Report {
 		Db db = new Db();
 		db.connect();
 		
-		String query = "";
+		Connection con = db.getConnection();
 		
-		int n=0;
-		if(this.reportid == 0) {
-			String values[] = {this.title,this.description,this.type,this.date.toString(),this.userid,this.file};
-			this.reportid = Integer.parseInt(db.insert(t_name,values,true,true).toString());
-		}
-		else {
-			query = "UPDATE " + t_name + " SET TITLE = '" + this.title + "', DESCRIPTION = '" + 
-					this.description + "', TYPE = '" + this.type + "', DATE = '" + this.date.toString() + "' USERID = '" + 
-					this.userid + "', FILE = '" + this.file + "' WHERE REPORTID = " + this.reportid;
-			
-			HashMap<String,String> map = new HashMap<String,String>();
-			
-			map.put("TITLE",this.title);
-			map.put("DESCRIPTION",this.description);
-			map.put("TYPE",this.type);
-			map.put("DATE", this.date.toString());
-			map.put("USERID", this.userid);
-			map.put("FILE",this.file);
-			
-			n = db.update(t_name,map,"REPORTID",Integer.toString(this.reportid));
-		}
-		db.disconnect();
+		String query = "INSERT INTO REPORT(TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE) VALUES(?,?,?,?,?,?)";
 		
-		if(n > 0) return true;
-		else return false;
+		PreparedStatement stmt;
+		
+		stmt=con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
+		
+		stmt.setString(1,this.title);
+		stmt.setString(2,this.description);
+		stmt.setString(3,this.type);
+		stmt.setString(4,this.date);
+		stmt.setString(5, this.userid);
+		
+		File file = new File(this.file);
+		try {
+			FileInputStream fis = new FileInputStream(file);
+			stmt.setBinaryStream(6,(InputStream)fis,(int)(file.length()));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		stmt.executeUpdate();
+		
+		ResultSet rs = stmt.getGeneratedKeys();
+		rs.next();
+		this.reportid = rs.getInt(1);
+		
+		if(this.reportid > 0)
+			return false;
+		else 
+			return true;
+		
 	}
 	
 	/**
@@ -277,16 +295,16 @@ public class Report {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value);
+		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM " + t_name + " WHERE " + column + " = '" + value + "'");
 		rs.next();
 		
 		Report[] list = new Report[rs.getInt(1)];
 		
-		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value);
+		rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE " + column + " = '" + value + "'");
 		
 		int i=0;
 		while(rs.next()) {
-			list[i++] = new Report(rs.getInt("ID"));
+			list[i++] = new Report(rs.getInt("REPORTID"));
 		}
 		
 		return list;
@@ -311,5 +329,20 @@ public class Report {
 		rs.next();
 		
 		return rs.getInt(1);
+	}
+	
+	/**
+	 * Deletes the report
+	 * 
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
+	 */
+	public void delete() throws ClassNotFoundException, SQLException {
+		Db db = new Db();
+		db.connect();
+		
+		db.delete("REPORT", "REPORTID",Integer.toString(this.reportid));
+		
+		db.disconnect();
 	}
 }

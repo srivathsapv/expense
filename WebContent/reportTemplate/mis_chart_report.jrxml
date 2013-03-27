@@ -5,41 +5,14 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="IMG_DIR" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT
-     VOUCHER_STATUS."STATUSID" AS VOUCHER_STATUS_STATUSID,
-     VOUCHER_STATUS."VOUCHERID" AS VOUCHER_STATUS_VOUCHERID,
-     VOUCHER_STATUS."STATUS" AS VOUCHER_STATUS_STATUS,
-     VOUCHER_TYPE."VTYPEID" AS VOUCHER_TYPE_VTYPEID,
-     VOUCHER_TYPE."TITLE" AS VOUCHER_TYPE_TITLE,
-     VOUCHER."VOUCHERID" AS VOUCHER_VOUCHERID,
-     VOUCHER."VTYPEID" AS VOUCHER_VTYPEID,
-     VOUCHER_STATUS."STATUSID" AS VOUCHER_STATUS_STATUSID,
-     VOUCHER_STATUS."VOUCHERID" AS VOUCHER_STATUS_VOUCHERID,
-     VOUCHER_STATUS."STATUS" AS VOUCHER_STATUS_STATUS,
-     VOUCHER."VOUCHERID" AS VOUCHER_VOUCHERID,
-     VOUCHER."VTYPEID" AS VOUCHER_VTYPEID,
-     VOUCHER_TYPE."VTYPEID" AS VOUCHER_TYPE_VTYPEID,
-     VOUCHER_TYPE."TITLE" AS VOUCHER_TYPE_TITLE
-FROM
-     "VOUCHER_STATUS" VOUCHER_STATUS inner join     "VOUCHER" VOUCHER on (VOUCHER_STATUS.VOUCHERID=VOUCHER.VOUCHERID) inner join
-     "VOUCHER_TYPE" VOUCHER_TYPE  on (VOUCHER.VTYPEID=VOUCHER_TYPE.VTYPEID)]]>
+		<![CDATA[SELECT COUNT(*) AS COUNT,STATUS
+FROM VOUCHER_STATUS
+WHERE VOUCHERID IN(SELECT DISTINCT(VOUCHERID) FROM VOUCHER_STATUS)
+AND TIME IN(SELECT MAX(TIME) FROM VOUCHER_STATUS GROUP BY VOUCHERID)
+GROUP BY STATUS]]>
 	</queryString>
-	<field name="VOUCHER_STATUS_STATUSID" class="java.lang.Integer"/>
-	<field name="VOUCHER_STATUS_VOUCHERID" class="java.lang.Integer"/>
-	<field name="VOUCHER_STATUS_STATUS" class="java.lang.String"/>
-	<field name="VOUCHER_TYPE_VTYPEID" class="java.lang.Integer"/>
-	<field name="VOUCHER_TYPE_TITLE" class="java.lang.String"/>
-	<field name="VOUCHER_VOUCHERID" class="java.lang.Integer"/>
-	<field name="VOUCHER_VTYPEID" class="java.lang.Integer"/>
-	<group name="VOUCHER_STATUS_VOUCHERID">
-		<groupExpression><![CDATA[$F{VOUCHER_STATUS_VOUCHERID}]]></groupExpression>
-	</group>
-	<group name="VOUCHER_STATUS_STATUS">
-		<groupExpression><![CDATA[$F{VOUCHER_STATUS_STATUS}]]></groupExpression>
-	</group>
-	<group name="VOUCHER_TYPE_TITLE">
-		<groupExpression><![CDATA[$F{VOUCHER_TYPE_TITLE}]]></groupExpression>
-	</group>
+	<field name="COUNT" class="java.lang.Integer"/>
+	<field name="STATUS" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -53,7 +26,7 @@ FROM
 				<text><![CDATA[MIS Report]]></text>
 			</staticText>
 			<image>
-				<reportElement uuid="e1b8ab14-9a8c-46be-ba99-aa36c79a4a86" x="0" y="20" width="141" height="43"/>
+				<reportElement uuid="053c1ebe-c550-4aa8-a115-f349c2eb84a8" x="8" y="7" width="133" height="56"/>
 				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
 			</image>
 		</band>
@@ -79,10 +52,10 @@ FROM
 					<chartLegend/>
 				</chart>
 				<pieDataset>
-					<keyExpression><![CDATA[$F{VOUCHER_STATUS_STATUS}]]></keyExpression>
-					<valueExpression><![CDATA[$V{VOUCHER_STATUS_VOUCHERID_COUNT}]]></valueExpression>
+					<keyExpression><![CDATA[$F{STATUS}]]></keyExpression>
+					<valueExpression><![CDATA[$F{COUNT}]]></valueExpression>
 				</pieDataset>
-				<piePlot>
+				<piePlot labelFormat="{2}">
 					<plot/>
 					<itemLabel/>
 				</piePlot>

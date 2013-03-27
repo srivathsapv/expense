@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="VoucherTypeReport_ClaimTotal" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="181bb369-dde7-4520-9f5c-8eff42570b50">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="VTYPEID" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT COALESCE(SUM(AMOUNT),0) AS CLAIM_TOTAL FROM VOUCHER WHERE VTYPEID = $P{VTYPEID}
+AND VOUCHERID IN
+(SELECT VOUCHERID FROM VOUCHER_STATUS WHERE STATUS = 'sanctioned'
+AND TIME IN (SELECT MAX(TIME) FROM VOUCHER_STATUS GROUP BY VOUCHERID))]]>
+	</queryString>
+	<field name="CLAIM_TOTAL" class="java.lang.Double"/>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField>
+				<reportElement uuid="a9fb8b45-7e7d-44b5-85e7-42ae82361f22" x="0" y="0" width="170" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Rs." + $F{CLAIM_TOTAL}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>
