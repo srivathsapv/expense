@@ -395,7 +395,7 @@
 					if(l_role.equals("employee")){
 			    		String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
 			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
-			    			"rconfig_add.jsp","report_generate.jsp","report_generate.jsp","report_list.jsp",
+			    			"rconfig_add.jsp","report_generate.jsp","report_list.jsp",
 			    			"user_add.jsp","user_list.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
 			    		};
 			    		for(String p:restricted_pages){
@@ -408,7 +408,7 @@
 					else if(l_role.equals("ceo")){
 						String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
 			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
-			    			"rconfig_add.jsp","report_generate.jsp",
+			    			"rconfig_add.jsp",
 			    			"user_add.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
 			    		};
 			    		for(String p:restricted_pages){
