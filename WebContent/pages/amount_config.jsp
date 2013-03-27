@@ -23,7 +23,7 @@
 			if(request.getParameter("status").equals(Utility.MD5("success"))){
 				%> <div class = "alert alert-success">
 					<button class="close" data-dismiss="alert" type="button">×</button>
-					<%= request.getParameter("message") %>
+					<%=request.getParameter("message")%>
 				</div> <%
 			}
 		}

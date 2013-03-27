@@ -3,7 +3,8 @@
 <%@ page import="java.util.*"
 		import="javax.mail.*"
 		import="javax.mail.internet.*" 
-		import="email.Email" %>
+		import="email.Email"
+		import="sms.SMS" %>
 
 <%
 	String password = Utility.filter(request.getParameter("password"));
@@ -52,4 +53,10 @@
 	} catch (MessagingException e) {
 		throw new RuntimeException(e);
 	}
+
+	SMS sms = new SMS();
+	sms.setAdb_path(config.getServletContext().getRealPath("/")+"adb/");
+	sms.setNumber(user.getMobile());
+	sms.setMessage("Your password has been changed");
+	sms.send();
 %>

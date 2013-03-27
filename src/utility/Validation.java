@@ -72,6 +72,17 @@ public class Validation {
     }
 	
 	/**
+	 * Checks if the string contains any of the special character like & $ * # @
+	 * 
+	 * @param String
+	 * 
+	 * @return Boolean
+	 */
+	public static boolean isSpecialCharacters(String input) {
+        return input.matches("(.*[&$*>#@%^;</].*)+");
+    }
+	
+	/**
 	 * Checks if the given string is a date
 	 * 
 	 * @param Integer - Day of the date

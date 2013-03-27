@@ -7,6 +7,9 @@ import java.text.ParseException;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
+
+import sms.SMS;
+
 import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -270,6 +273,7 @@ public class Notification {
 					message.setContent(email.generateEmail(),"text/html");
 		 
 					Transport.send(message);
+					
 				} catch (MessagingException e) {
 					throw new RuntimeException(e);
 				}

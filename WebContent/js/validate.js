@@ -66,6 +66,13 @@ $(document).ready(function() {
 	});
 	/** Alphabet with space fields**/
 	
+	/** Special Characters  **/
+	$("[valtype~='SpecialCharacters']").blur(function(){
+		if($(this).val() == '') { return ;}
+		ajaxcheck(this,'SpecialCharacters');
+		
+	});
+	/** Special Characters **/
 	
 	/**Alphanumeric fields**/
 	$("[valtype~='alphanumeric']").blur(function(){

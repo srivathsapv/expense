@@ -64,5 +64,9 @@
 		else
 			msg = "true";
 	}
+	
+	if(valtype.equals("SpecialCharacters")){
+		msg = Boolean.toString(!Validation.isSpecialCharacters(value));
+	}
 %>
 <%= msg %>

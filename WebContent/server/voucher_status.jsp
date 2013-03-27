@@ -1,4 +1,4 @@
-<%@ page import = "user.*,auth.Authentication,java.util.Calendar,java.sql.ResultSet,db.Db,voucher.Status,voucher.AmountConfig,user.RoleConfig,voucher.Voucher,utility.Utility" %>
+<%@ page import = "user.*,sms.SMS,auth.Authentication,java.util.Calendar,java.sql.ResultSet,db.Db,voucher.Status,voucher.AmountConfig,user.RoleConfig,voucher.Voucher,utility.Utility" %>
 <%
 	String stat = request.getParameter("status");
 	int vid = Integer.parseInt(request.getParameter("vid"));
@@ -169,8 +169,21 @@
 	user_notif.setUserid(vouch.getUserid());
 	user_notif.setTimeupdate();
 	user_notif.save();
+
+	String statStr = vstatus.getStatus();
+	 if(statStr.equals("under consideration")) {
+	        statStr = "considered";
+	 }
+	String msgBody = "Your voucher - " + vouch.getTitle() + " has been " + statStr;
 	
-		
+	User vuser = new User(vouch.getUserid());
+	
+	SMS sms = new SMS();
+	sms.setAdb_path(config.getServletContext().getRealPath("/")+"adb/");
+	sms.setNumber(vuser.getMobile());
+	sms.setMessage(msgBody);
+	sms.send();
+
 	response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("success") + "&message=Status updated successfully");
 	return;
 %>
