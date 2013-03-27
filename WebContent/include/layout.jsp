@@ -187,6 +187,7 @@
 					
 				});
 				
+				
 				function changeCurrency(fromISO,currency) {
 					$(".currency-change-img").attr("src","../img/"+currency+".png");
 					var curISO = "";

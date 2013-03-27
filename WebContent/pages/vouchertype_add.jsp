@@ -53,7 +53,7 @@
 					voucher type
 				</p>
 			</legend>
-			<br /> <input type="text" class="span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" id="voucher_name"
+			<br /> <input type="text" class="span4 required" valtype = "required SpecialCharacters" valmsg="Title should contain only alphanumeric values" id="voucher_name"
 				placeholder="Enter the Title ..." name = "title"><br />
 			<textarea rows="5" cols="50" placeholder="Enter a description..." name = "description"></textarea>
 			<br />

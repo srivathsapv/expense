@@ -233,7 +233,7 @@
    		</div>
     	<form style = "display:<%=form_style %>" method = "POST" class="validate" action = "../server/voucher_add.jsp" enctype="multipart/form-data">
     		<fieldset>		
-    		<input class = "span4 required" valtype = "required alphanumericwithspace" valmsg="Title should contain only alphanumeric values" type="text" id = "title" name = "title" placeholder="Enter a title..." value = "<%=title%>">
+    		<input class = "span4 required" valtype = "required SpecialCharacters" valmsg="Title should contain only alphanumeric values" type="text" id = "title" name = "title" placeholder="Enter a title..." value = "<%=title%>">
     		
     		<div class="input-prepend">
 				<span class="add-on rupee"><img class = "currency-change-img" src = "../img/<%=session.getAttribute("currency").toString()%>.png"></span>
