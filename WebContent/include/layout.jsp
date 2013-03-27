@@ -289,6 +289,9 @@
 		<%
    			User l_user = (User)session.getAttribute("sessionUser");
    			String l_username = l_user.getUserid();
+   			String l_role = session.getAttribute("sessionUserRole").toString();
+   			
+   			
    		%>
 		<div class = "wrapper">
 			<div class="navbar">
@@ -305,10 +308,17 @@
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop1">
 	                  		<li><a tabindex="-1" href="voucher_add.jsp"><i class = "icon-plus-sign"></i><span class = "to-hindi">New Voucher</span></a></li>
 	                  		<li><a tabindex="-1" href="../pages/voucher_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">My Vouchers</span></a></li>
+	                  		<%
+	              			if(l_role.equals("admin") || l_role.equals("md")) {
+	              			%>
 	                  		<li><a tabindex="-1" href="vouchertype_list.jsp"><i class = "icon-list"></i><span class = "to-hindi">Voucher Types</span></a></li>
 	                  		<li><a tabindex="-1" href = "amount_config.jsp"><i class = "icon-cog"></i><span class = "to-hindi">Amount Configuration</span></a></li>
+	                  		<% } %>
 	                	</ul>
 	              	</li>
+	              	<%
+	              	if(l_role.equals("admin") || l_role.equals("md")) {
+	              	%>
 	              	<li class="dropdown">
 	                	<a id="drop2" title = "Employee's Exclusive Expense Statistical Reports" data-placement = "bottom" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i><img class = "excess" src = "../img/excess.png"><span class = "to-hindi">Reports</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop2">
@@ -316,6 +326,12 @@
 	                  		<li><a tabindex="-1" href="../pages/report_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">My Reports</span></a></li>
 	                	</ul>
 	              	</li>
+	              	<%
+	              	}
+	              	%>
+	              	<%
+	              	if(l_role.equals("admin") || l_role.equals("md")) {
+	              	%>
 	              	<li class="dropdown">
 	                	<a id="drop3" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-user icon-white"></i><span class = "to-hindi">Users</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
@@ -324,6 +340,10 @@
 	                  		<li><a tabindex="-1" href="role_config.jsp"><i class = "icon-pencil"></i><span class = "to-hindi">Role Configuration</span></a>
 	                	</ul>
 	              	</li>
+	              	<% } %>
+	              	<%
+	              	if(l_role.equals("admin") || l_role.equals("md")) {
+	              	%>
 	              	<li class="dropdown">
 	                	<a id="drop4" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-flag icon-white"></i><span class = "to-hindi">Policy</span><b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop4">
@@ -331,6 +351,10 @@
 	                  		<li><a tabindex="-1" href="policy_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">View</span></a></li>
 	                	</ul>
 	              	</li>
+	              	<% } %>
+	              	<%
+	              	if(l_role.equals("admin") || l_role.equals("md")) {
+	              	%>
 	              	<li class="dropdown">
 	                	<a id="drop5" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-briefcase icon-white"></i><span class = "to-hindi">Departments</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop5">
@@ -338,6 +362,7 @@
 	                  		<li><a tabindex="-1" href="dept_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">View</span></a></li>
 	                	</ul>
 	              	</li>
+	              	<% } %>
 	              	<li class="dropdown">
 	                	<a id="drop6" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-wrench icon-white"></i><span class = "to-hindi">My Account</span><b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop6">
@@ -350,7 +375,28 @@
 			    </ul>	
 			    <%
 					String url = request.getRequestURL().toString();
+			    	
+			    	
+			    	
+			    
 					String pagename = url.substring(url.lastIndexOf("/")+1,url.length());
+			    	
+					//check role
+					if(l_role.equals("employee") || l_role.equals("ceo")){
+			    		String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
+			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
+			    			"rconfig_add.jsp","report_generate.jsp","report_list.jsp","role_config.jsp",
+			    			"user_add.jsp","user_list.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
+			    		};
+			    		
+			    		for(String p:restricted_pages){
+			    			if(p.equals(pagename)){
+			    				response.sendRedirect("../pages/dashboard.jsp");
+			    				return;
+			    			}
+			    		}
+			    	}
+			    	
 					String querystr = request.getQueryString() + "&";
 					
 					String[] paramarry = querystr.split("&");

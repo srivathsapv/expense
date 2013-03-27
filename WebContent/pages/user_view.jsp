@@ -33,9 +33,15 @@
 </script>
 	<legend>
 		<h2 class = "profile-name">
+			
 			<%= user.getFirstName() + " " + user.getlastName() %>
+			<%
+				String sUsername = session.getAttribute("sessionUsername").toString();
+				if(sUsername.equals(user.getUserid())){
+			%>
 			<button class = "btn btn-warning edit-user" alt = "user_add.jsp?mode=edit&userid=<%=userid %>"><i class = "icon-white icon-pencil"></i>Edit</button>
 			<button class = "btn btn-danger del-user" alt = "user_add.jsp?mode=edit&userid=<%=userid %>"><i class = "icon-white icon-remove"></i>Delete</button>
+			<% } %>
 		</h2>
 		<span class = 'designation'><%= user.getDesignation() %> - <%= deptname %> Department</span><br>
 		
