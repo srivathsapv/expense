@@ -45,7 +45,11 @@ $(document).ready(function(){
 	<input type = "text" id = "report-title" placeholder = "Enter title..."><br>
 	<textarea id = "description" placeholder = "Enter a short description..."></textarea>
 	<h4>Report Type</h4>
-	<div class="accordion" id="accordion2">  
+	<div class="accordion" id="accordion2">
+	  <%
+	  	String role = session.getAttribute("sessionUserRole").toString();
+	  	if(role.equals("admin") || role.equals("md")) {
+	  %>  
 	  <div class="accordion-group">
 	    <div class="accordion-heading">
 	      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse1">
@@ -129,6 +133,35 @@ $(document).ready(function(){
 	  </div>  
 	  <div class="accordion-group">
 	    <div class="accordion-heading">
+	      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
+	         Master Data Management Reports
+	      </a>
+	    </div>
+	    <div id="collapse6" class="accordion-body collapse">
+	      <div class="accordion-inner">
+	       	<legend>
+	       		<i class = "icon-question-sign"></i>
+	       		A detailed master report which is categorized under the following types.
+	       	</legend>
+	       	<div> 
+	       	<select id="MDMsubType" class="span4">
+		       	<option value = "AMOUNT_CONFIG">Amount Configuration Master</option>
+		       	<option value = "DEPARTMENT">Departments Master</option>
+		       	<option value = "POLICY">Policies Master</option>
+		       	<option value = "ROLECONFIG">Role Configuration Master</option>
+		       	<option value = "USER">Users Master</option>
+		       	<option value = "VOUCHER">Vouchers Master</option>
+		       	<option value = "VOUCHER_TYPE">Voucher Types Master</option>
+	       	</select>
+	       	</div>
+	       	<button class = "btn btn-success generate-MDM" alt = "../server/report_generate.jsp?reportType=Master_Data_Management_Reports"><i class = "icon-white icon-cog"></i>Generate</button>
+	      </div>
+	    </div>
+	  </div>
+	  <% } %>
+	  <% if(role.equals("finance"))  { %>
+	  <div class="accordion-group">
+	    <div class="accordion-heading">
 	      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse5">
 	         Ledger
 	      </a>
@@ -168,32 +201,6 @@ $(document).ready(function(){
 	      </div>
 	    </div>
 	  </div>
-	  <div class="accordion-group">
-	    <div class="accordion-heading">
-	      <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion2" href="#collapse6">
-	         Master Data Management Reports
-	      </a>
-	    </div>
-	    <div id="collapse6" class="accordion-body collapse">
-	      <div class="accordion-inner">
-	       	<legend>
-	       		<i class = "icon-question-sign"></i>
-	       		A detailed master report which is categorized under the following types.
-	       	</legend>
-	       	<div> 
-	       	<select id="MDMsubType" class="span4">
-		       	<option value = "AMOUNT_CONFIG">Amount Configuration Master</option>
-		       	<option value = "DEPARTMENT">Departments Master</option>
-		       	<option value = "POLICY">Policies Master</option>
-		       	<option value = "ROLECONFIG">Role Configuration Master</option>
-		       	<option value = "USER">Users Master</option>
-		       	<option value = "VOUCHER">Vouchers Master</option>
-		       	<option value = "VOUCHER_TYPE">Voucher Types Master</option>
-	       	</select>
-	       	</div>
-	       	<button class = "btn btn-success generate-MDM" alt = "../server/report_generate.jsp?reportType=Master_Data_Management_Reports"><i class = "icon-white icon-cog"></i>Generate</button>
-	      </div>
-	    </div>
-	  </div>
+	  <% } %>
 	</div>
 	

@@ -47,11 +47,18 @@
 		<tbody>
 			<%
 				User[] users = null;
-				if(deptid.equals("")){
-					users = User.list("","");	
+				String role = session.getAttribute("sessionUserRole").toString();
+				if(role.equals("ceo")){
+					User ceo = new User(session.getAttribute("sessionUsername").toString());
+					users = User.list("DEPTID",Integer.toString(ceo.getDeptid()));
 				}
 				else {
-					users = User.list("DEPTID",deptid);
+					if(deptid.equals("")){
+						users = User.list("","");	
+					}
+					else {
+						users = User.list("DEPTID",deptid);
+					}	
 				}
 				if(users.length == 0) {
 					%> No users found <%
