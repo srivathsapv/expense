@@ -48,7 +48,7 @@ $(document).ready(function(){
 	<div class="accordion" id="accordion2">
 	  <%
 	  	String role = session.getAttribute("sessionUserRole").toString();
-	  	if(role.equals("admin") || role.equals("md")) {
+	  	if(role.equals("admin") || role.equals("md") || role.equals("ceo")) {
 	  %>  
 	  <div class="accordion-group">
 	    <div class="accordion-heading">
