@@ -22,7 +22,7 @@
 	<%
 		Report[] vlist = Report.list("USERID",session.getAttribute("sessionUsername").toString());
 		
-		if(vlist.length == 0) %> No bookmarks found <%
+		if(vlist.length == 0) %> No reports found <%
 		for(Report v: vlist){
 			%>
 			<tr>

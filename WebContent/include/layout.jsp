@@ -317,7 +317,7 @@
 	                	</ul>
 	              	</li>
 	              	<%
-	              	if(l_role.equals("admin") || l_role.equals("md")) {
+	              	if(l_role.equals("admin") || l_role.equals("md") || l_role.equals("finance") || l_role.equals("ceo")) {
 	              	%>
 	              	<li class="dropdown">
 	                	<a id="drop2" title = "Employee's Exclusive Expense Statistical Reports" data-placement = "bottom" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-book icon-white"></i><img class = "excess" src = "../img/excess.png"><span class = "to-hindi">Reports</span> <b class="caret"></b></a>
@@ -330,14 +330,22 @@
 	              	}
 	              	%>
 	              	<%
-	              	if(l_role.equals("admin") || l_role.equals("md")) {
+	              	if(l_role.equals("admin") || l_role.equals("md") || l_role.equals("ceo")) {
 	              	%>
 	              	<li class="dropdown">
 	                	<a id="drop3" href="#" role="button" class="dropdown-toggle" data-toggle="dropdown"><i class = "icon-user icon-white"></i><span class = "to-hindi">Users</span> <b class="caret"></b></a>
 	                	<ul class="dropdown-menu" role="menu" aria-labelledby="drop3">
+	                		<%
+	                			if(l_role.equals("admin") || l_role.equals("md")){
+	                		%>
 	                  		<li><a tabindex="-1" href="user_add.jsp"><i class = "icon-plus-sign"></i><span class = "to-hindi">Add New</span></a></li>
+	                  		<% } %>
 	                  		<li><a tabindex="-1" href="user_list.jsp"><i class = "icon-list-alt"></i><span class = "to-hindi">List</span></a></li>
+	                  		<%
+	                  			if(l_role.equals("admin") || l_role.equals("md")){
+	                  		%>
 	                  		<li><a tabindex="-1" href="role_config.jsp"><i class = "icon-pencil"></i><span class = "to-hindi">Role Configuration</span></a>
+	                  		<% } %>
 	                	</ul>
 	              	</li>
 	              	<% } %>
@@ -382,13 +390,13 @@
 					String pagename = url.substring(url.lastIndexOf("/")+1,url.length());
 			    	
 					//check role
-					if(l_role.equals("employee") || l_role.equals("ceo")){
+					
+					if(l_role.equals("employee")){
 			    		String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
 			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
-			    			"rconfig_add.jsp","report_generate.jsp","report_list.jsp","role_config.jsp",
+			    			"rconfig_add.jsp","report_generate.jsp","report_generate.jsp","report_list.jsp",
 			    			"user_add.jsp","user_list.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
 			    		};
-			    		
 			    		for(String p:restricted_pages){
 			    			if(p.equals(pagename)){
 			    				response.sendRedirect("../pages/dashboard.jsp");
@@ -396,7 +404,32 @@
 			    			}
 			    		}
 			    	}
-			    	
+					else if(l_role.equals("ceo")){
+						String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
+			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
+			    			"rconfig_add.jsp","report_generate.jsp",
+			    			"user_add.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
+			    		};
+			    		for(String p:restricted_pages){
+			    			if(p.equals(pagename)){
+			    				response.sendRedirect("../pages/dashboard.jsp");
+			    				return;
+			    			}
+			    		}
+					}
+					else if(l_role.equals("finance")){
+						String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
+				    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
+				    			"rconfig_add.jsp","user_list.jsp",
+				    			"user_add.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
+				    		};
+				    		for(String p:restricted_pages){
+				    			if(p.equals(pagename)){
+				    				response.sendRedirect("../pages/dashboard.jsp");
+				    				return;
+				    			}
+				    		}
+					}
 					String querystr = request.getQueryString() + "&";
 					
 					String[] paramarry = querystr.split("&");
