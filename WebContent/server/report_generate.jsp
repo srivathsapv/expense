@@ -3,9 +3,14 @@
 	import="net.sf.jasperreports.engine.export.*"
 	import="net.sf.jasperreports.engine.design.*"
 	import="net.sf.jasperreports.engine.xml.*"%>
-<%@ page import="java.util.*,utility.Utility" import="db.Db" import="java.sql.*"%>
+<%@ page import="java.util.*,auth.Authentication,utility.Utility,user.User" import="db.Db" import="java.sql.*"%>
 
 <%
+User user = (User)session.getAttribute("sessionUser");
+Authentication auth = new Authentication(user.getUserid());
+String role = auth.getRole();
+
+
 Db db = new Db();
 db.connect();
 Connection con = db.getConnection();
@@ -20,15 +25,27 @@ String date = new Timestamp(d.getTime()).toString();
 	String exportPath = "";
 	String message="";
 	if(reportType.equals("MIS_Report")){
+		JasperDesign jd = JRXmlLoader.load(directory_path+"mis_chart_report.jrxml");
+		if(role.equals("ceo")){
+			
+		}
 		HashMap MISParameter = new HashMap();
 		MISParameter.put("IMG_DIR",img_path+"logo.png");
-		JasperReport MISReport = JasperCompileManager.compileReport(directory_path+"mis_chart_report.jrxml");
+		JasperReport MISReport = JasperCompileManager.compileReport(jd);
 		JasperPrint MISPrint = JasperFillManager.fillReport(MISReport,MISParameter,con);
 		exportPath = target_path + "MIS_Report_"+date+".pdf";
 		JasperExportManager.exportReportToPdfFile(MISPrint,exportPath);
 		message="MIS Report";
 	}
 	else if(reportType.equals("Exception_Report")){
+		if(role.equals("ceo")){
+			
+		}else if(role.equals("md")){
+			
+		}else{
+			
+		}
+		
 		HashMap ExceptionParameter = new HashMap();
 		ExceptionParameter.put("IMG_DIR",img_path+"logo.png");
 		JasperReport ExceptionReport = JasperCompileManager.compileReport(directory_path+"ExceptionReport.jrxml");
