@@ -146,7 +146,7 @@
 		while(rs.next()){
 			Status s = new Status(rs.getInt("STATUSID"));
 			
-			rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE USERID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
+			rs2 = db.executeQuery("SELECT * FROM NOTIFICATION WHERE  ID = '" + s.getUserid() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
 			
 			if(rs2.next()) {
 				Notification n = new Notification(rs2.getInt(1));
@@ -170,6 +170,7 @@
 	user_notif.setTimeupdate();
 	user_notif.save();
 	
+		
 	response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("success") + "&message=Status updated successfully");
 	return;
 %>

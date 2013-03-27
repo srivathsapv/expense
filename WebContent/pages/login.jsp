@@ -124,11 +124,11 @@
 			<p>Get dashboard as well as mail notifications to keep updated of whats happening</p> 
 		</div>
 		<div class="login_page_container" style="margin-top: 25px;">
-			<div class="login_page_title">Mobile App</div>
+			<div class="login_page_title">SMS Alerts</div>
 			<div class="login_img">
 				<img src="../img/mobileapp_logo.png" alt="" border="0"/>
 			</div>
-			<p>Use our Vowcher Mobile App to upload vouchers from mobile</p> 
+			<p>SMS Alerts to the users when their voucher status changes.</p> 
 		</div>
 		<div class="login_page_container" style="margin-top: 25px;">
 			<div class="login_page_title">Localization</div>
