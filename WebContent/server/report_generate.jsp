@@ -27,7 +27,16 @@ String date = new Timestamp(d.getTime()).toString();
 	if(reportType.equals("MIS_Report")){
 		JasperDesign jd = JRXmlLoader.load(directory_path+"mis_chart_report.jrxml");
 		if(role.equals("ceo")){
-			
+			String sql = "SELECT COUNT(*) AS COUNT,STATUS "
+					+"FROM VOUCHER_STATUS "
+					+"WHERE VOUCHERID IN(SELECT DISTINCT(VOUCHERID) FROM VOUCHER_STATUS WHERE VOUCHERID IN "
+					+"(SELECT VOUCHERID FROM VOUCHER WHERE VTYPEID IN "
+					+"(SELECT VTYPEID FROM VOUCHERTYPE_DEPT WHERE DEPTID = "+user.getDeptid()+"))) "
+					+"AND TIME IN(SELECT MAX(TIME) FROM VOUCHER_STATUS GROUP BY VOUCHERID) "
+					+"GROUP BY STATUS";
+			JRDesignQuery query = new JRDesignQuery();
+			query.setText(sql);
+			jd.setQuery(query);
 		}
 		HashMap MISParameter = new HashMap();
 		MISParameter.put("IMG_DIR",img_path+"logo.png");
@@ -38,17 +47,37 @@ String date = new Timestamp(d.getTime()).toString();
 		message="MIS Report";
 	}
 	else if(reportType.equals("Exception_Report")){
+		JasperDesign jd = JRXmlLoader.load(directory_path+"ExceptionReport.jrxml");
 		if(role.equals("ceo")){
-			
-		}else if(role.equals("md")){
-			
-		}else{
-			
+			String sql = "SELECT CASE(MONTH(TIMESTAMP_ISO(TIME))) "
+					+"when 1 then 'January' "
+					+"when 2 then 'February' "
+					+"when 3 then 'March' "
+					+"when 4 then 'April' "
+					+"when 5 then 'May' "
+					+"when 6 then 'Jun' "
+					+"when 7 then 'July' "
+					+"when 8 then 'August' "
+					+"when 9 then 'September' "
+					+"when 10 then 'October' " 
+					+"when 11 then 'November' "
+					+"when 12 then 'December' "
+					+"END "
+					+"AS MONTH,COUNT(*) AS COUNT FROM VOUCHER_STATUS "
+					+"WHERE STATUS IN('pending','under consideration') "
+					+"AND VOUCHERID IN(SELECT DISTINCT(VOUCHERID) FROM VOUCHER_STATUS WHERE VOUCHERID IN "
+					+"(SELECT VOUCHERID FROM VOUCHER WHERE VTYPEID IN "
+					+"(SELECT VTYPEID FROM VOUCHERTYPE_DEPT WHERE DEPTID = "+user.getDeptid()+"))) "
+					+"AND STATUSID IN(SELECT STATUSID FROM VOUCHER_STATUS WHERE TIME IN(SELECT MAX(TIME) FROM VOUCHER_STATUS GROUP BY VOUCHERID)) "
+					+"GROUP BY MONTH(TIMESTAMP_ISO(TIME)) "
+					+"ORDER BY MONTH(TIMESTAMP_ISO(TIME))";
+			JRDesignQuery query = new JRDesignQuery();
+			query.setText(sql);
+			jd.setQuery(query);
 		}
-		
 		HashMap ExceptionParameter = new HashMap();
 		ExceptionParameter.put("IMG_DIR",img_path+"logo.png");
-		JasperReport ExceptionReport = JasperCompileManager.compileReport(directory_path+"ExceptionReport.jrxml");
+		JasperReport ExceptionReport = JasperCompileManager.compileReport(jd);
 		JasperPrint ExceptionPrint = JasperFillManager.fillReport(ExceptionReport,ExceptionParameter, con);
 		exportPath = target_path + "Exception_Report_"+date+".pdf";
 		JasperExportManager.exportReportToPdfFile(ExceptionPrint,exportPath);
