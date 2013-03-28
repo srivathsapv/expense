@@ -44,7 +44,7 @@
 						lang = "English";	
 					}
 				%>			
-				<span id = "links"><span style = 'font-size:18px'><a href="#" onClick= "changelanguage()"id = "language" value="<%=lang %>"> <%=lang %> </a></span> | About | Contact</span>
+				<span id = "links"><span style = 'font-size:18px'><a href="#" onClick= "changelanguage()"id = "language" value="<%=lang %>"> <%=lang %> </a></span> | <a href = "about_us.jsp">About Us</a> | <a href = "contact_us.jsp">Contact Us</a> | <a href = "feedback.jsp"> Feedback</a></span>
 			</small>
 		</div>
 	</body>  
