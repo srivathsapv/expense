@@ -32,13 +32,20 @@
 		
 	<span class = 'profile-info'>
 		<i class = 'icon-star'></i>
-		+919677284964,&nbsp;+919790829078
+		+919677284964
+	</span><br>
+	<span class = 'profile-info'>
+		<i class = 'icon-star'></i>	
+		+919790829078
 	</span><br>	<br>
 	
 	<div class='profile-info'>
-	<i class = 'icon-home'></i>
+	<a style="text-decoration:none;color:inherit !important;" target="_blank"
+	href = "http://goo.gl/maps/0HPxR">
+	<i class = 'icon-map-marker'></i><span>
 		Jerusalem College of Engineering,<br/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Velachery Main Road, Narayanapuram,<br/>
-		&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Pallikaranai, Chennai - 600 100
+		Velachery Main Road, Narayanapuram,<br/>
+		Pallikaranai, Chennai - 600 100.
+	</span></a>
 	</div><br>
 </div>
