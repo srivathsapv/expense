@@ -101,64 +101,50 @@
 				</div>
 			</div>
 		</div>
-		<br/>
-		<br/>
-		<div class="row-fluid">
-		<div class = "span10 offset1">
-		<div class="span4">
+		<div class="center_content">
+		<div class="login_page_container">
 			<div class="login_page_title">Reports</div>
 			<div class="login_img">
 				<img src="../img/reports_logo.png" alt="" border="0"/>
-				
+			</div>
 			<p>Data reports with graphical representation exportable in PDF format</p> 
 		</div>
-		</div>
-		<div class="span4">
+		<div class="login_page_container">
 			<div class="login_page_title">Search</div>	
 			<div class="login_img">
 				<img src="../img/search_logo.png" alt="" border="0"/>
-			
+			</div>
 			<p>Quickly access users and vouchers using the search feature</p> 
 		</div>
-		</div>
-		<div class="span4" >
+		<div class="login_page_container" >
 			<div class="login_page_title">Notification</div>
 			<div class="login_img">
 				<img src="../img/notification_logo.png" alt="" border="0"/>
-			
+			</div>
 			<p>Get dashboard as well as mail notifications to keep updated of whats happening</p> 
 		</div>
-		</div>
-		</div>
-		</div>
-		<br/>
-		<br/>
-		<div class="row-fluid">
-		<div class = "span10 offset1">
-		<div class="span4">
+		<div class="login_page_container" style="margin-top: 25px;">
 			<div class="login_page_title">SMS Alerts</div>
 			<div class="login_img">
 				<img src="../img/mobileapp_logo.png" alt="" border="0"/>
+			</div>
 			<p>SMS Alerts to the users when their voucher status changes.</p> 
 		</div>
-		</div>
-		<div class="span4">
+		<div class="login_page_container" style="margin-top: 25px;">
 			<div class="login_page_title">Localization</div>
 			<div class="login_img">
 				<img src="../img/localization_logo.png" alt="" border="0"/>
-			
+			</div>
 			<p>GUI provided both in English and Hindi for greater reach</p> 
 		</div>
-		</div>	
-		<div class="span4">
+	
+		<div class="login_page_container" style="margin-top: 25px;">
 			<div class="login_page_title">User Friendly GUI</div>
 			<div class="login_img">
 				<img src="../img/userfriendlygui_logo.png" alt="" border="0"/>
-			
+			</div>
 			<p>Intuitive menu driven and easy to understand GUI for greater user experience</p> 
 		</div>
-		</div>
-	</div>
 	</div>
 </body>
 </html>
