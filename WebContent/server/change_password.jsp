@@ -51,12 +51,16 @@
 			return;
 		}
 	} catch (MessagingException e) {
-		throw new RuntimeException(e);
+		response.sendRedirect("../pages/change_password.jsp?status="+Utility.MD5("email-error"));
 	}
+try {
 
 	SMS sms = new SMS();
 	sms.setAdb_path(config.getServletContext().getRealPath("/")+"adb/");
 	sms.setNumber(user.getMobile());
 	sms.setMessage("Your password has been changed");
 	sms.send();
+}catch(Exception e ){
+	//response.sendRedirect("../pages/change_password.jsp?status="+Utility.MD5("sms-error"));
+}
 %>

@@ -4,6 +4,7 @@
 	int vid = Integer.parseInt(request.getParameter("vid"));
 	
 	String status = "";
+	String emailError = "";
 	Voucher vouch = new Voucher(vid);
 	String voucher_level = "middle";
 	if(stat.equals("accept")) {
@@ -111,7 +112,9 @@
 				n.setCategoryid(Integer.toString(vid));
 				n.setTimeupdate();
 				n.setUserid(a.getUserid());
-				n.save();
+				if(n.save()==-1){
+					emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+				}
 			}
 		}
 		else {
@@ -129,7 +132,9 @@
 			n.setCategoryid(Integer.toString(vid));
 			n.setTimeupdate();
 			n.setUserid(rs.getString(1));
-			n.save();
+			if(n.save()==-1){
+				emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";		
+			}
 		}
 	}
 	else if(status.equals("rejected")){
@@ -152,7 +157,9 @@
 				Notification n = new Notification(rs2.getInt(1));
 				n.setCategory("rejected");
 				n.setCategoryid(Integer.toString(vstatus.getStatusid()));
-				n.save();
+				if(n.save()==-1){
+					emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+				}
 			}
 			s.delete();
 			
@@ -161,14 +168,18 @@
 		}
 	}
 	if(notif.getCategory() != null)
-		notif.save();
+		if(notif.save()==-1){
+			emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";			
+		}
 	
 	Notification user_notif = new Notification();
 	user_notif.setCategory("voucher status change");
 	user_notif.setCategoryid(Integer.toString(vstatus.getStatusid()));
 	user_notif.setUserid(vouch.getUserid());
 	user_notif.setTimeupdate();
-	user_notif.save();
+	if(user_notif.save()==-1){
+		emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+	}
 
 	String statStr = vstatus.getStatus();
 	 if(statStr.equals("under consideration")) {
@@ -177,13 +188,15 @@
 	String msgBody = "Your voucher - " + vouch.getTitle() + " has been " + statStr;
 	
 	User vuser = new User(vouch.getUserid());
-	
+try{	
 	SMS sms = new SMS();
 	sms.setAdb_path(config.getServletContext().getRealPath("/")+"adb/");
 	sms.setNumber(vuser.getMobile());
 	sms.setMessage(msgBody);
 	sms.send();
-
-	response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("success") + "&message=Status updated successfully");
+}catch(Exception e){
+	//response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("sms-error") + "&message=Status updated successfully");
+}
+	response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("success") + "&message=Status updated successfully" + emailError);
 	return;
 %>

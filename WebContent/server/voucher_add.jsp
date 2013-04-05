@@ -147,6 +147,7 @@
 	voucher.setAttachment(path);
 	voucher.setExtension(ext);
 	
+	String emailError ="";
 	boolean voucher_success = voucher.save();
 	if(modestr.equals("edited")){
 		Status[] stats = Status.list("VOUCHERID",values[6]);
@@ -165,7 +166,9 @@
 				edited_notif.setCategoryid(values[6]);
 				edited_notif.setTimeupdate();
 				edited_notif.setUserid(user.getManager());
-				edited_notif.save();
+				if(edited_notif.save() == -1){
+					emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+				}
 			}
 		}
 		
@@ -185,7 +188,9 @@
 		notif.setCategoryid(Integer.toString(voucher.getVoucherid()));
 		notif.setUserid(user.getManager());
 		notif.setTimeupdate();
-		notif.save();
+		if(notif.save() == -1){
+			emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+		}
 	}
 	
 	if(voucher_success)
@@ -195,7 +200,7 @@
 			File draft_file = new File(config.getServletContext().getRealPath("/")+"drafts/"+values[5]);
 			draft_file.delete();
 		}
-		response.sendRedirect("../pages/voucher_view.jsp?status=" + Utility.MD5("success")+"&id="+voucher.getVoucherid() + "&message=Voucher " + modestr + " successfully");
+		response.sendRedirect("../pages/voucher_view.jsp?status=" + Utility.MD5("success")+"&id="+voucher.getVoucherid() + "&message=Voucher " + modestr + " successfully"+ emailError);
 		return;
 	}
 %>

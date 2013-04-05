@@ -17,6 +17,9 @@
 			}
 			else if(request.getParameter("status").equals(Utility.MD5("error"))) {
 				%> <div class = "alert alert-error">Error while changing password</div> <%	
+			}else if(request.getParameter("status").equals(Utility.MD5("email-error"))) {
+				%><div class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Password changed successfully 
+				<span class="text-error"><br>Error in sending Email notification due to network problem</span></div> <%	
 			}	
 		}
 	%>

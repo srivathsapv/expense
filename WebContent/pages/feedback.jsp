@@ -10,6 +10,11 @@
 			<button class="close" data-dismiss="alert" type="button">×</button>
 			Thank you for your feedback
 		</div> <%
+	}else {
+		%> <div class = "alert alert-error">
+		<button class="close" data-dismiss="alert" type="button">×</button>
+		Problem in sending feedback.
+	</div> <%
 	}
 }
 %> 

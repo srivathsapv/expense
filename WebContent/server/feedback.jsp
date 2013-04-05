@@ -45,7 +45,7 @@
 		
 		response.sendRedirect("../pages/feedback.jsp?status="+Utility.MD5("success"));		
 		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			response.sendRedirect("../pages/feedback.jsp?status="+Utility.MD5("email-error"));
 		}
 	
 	%> 
