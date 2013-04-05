@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import = "voucher.Voucher,org.apache.commons.lang3.ArrayUtils"%>
+    pageEncoding="UTF-8" import = "voucher.Voucher,org.apache.commons.lang3.ArrayUtils,java.sql.ResultSet"%>
 <%@ include file = "../include/layout.jsp" %>
 <title>Vowcher - List</title>
 <script>
@@ -35,13 +35,25 @@
 		
 		if(vlist.length == 0) %> No vouchers found <%
 		for(Voucher v: vlist){
+			Db db = new Db();
+			db.connect();
+			String query = "SELECT STATUS FROM VOUCHER_STATUS WHERE TIME = (SELECT MAX(TIME) FROM VOUCHER_STATUS WHERE VOUCHERID = " + v.getVoucherid() + ") AND VOUCHERID = " + v.getVoucherid();
+			ResultSet rs = db.executeQuery(query);
+			System.out.println(query);
+			String disabled = "";
+			if(rs.next()){
+				if(!rs.getString(1).equals("pending")) {
+					disabled = " disabled";
+				}	
+			}
+			db.disconnect();
 			%>
 			<tr>
 				<td>
 					<a href = "voucher_view.jsp?id=<%=v.getVoucherid()%>"><%=v.getTitle() %></a>
 				</td>
 				<td>
-					<button alt = "voucher_add.jsp?mode=edit&vid=<%=v.getVoucherid() %>" class = "btn btn-warning edit-voucher"><i class = "icon-white icon-pencil"></i>Edit</button>
+					<button alt = "voucher_add.jsp?mode=edit&vid=<%=v.getVoucherid() %>" class = "btn btn-warning edit-voucher<%=disabled%>"><i class = "icon-white icon-pencil"></i>Edit</button>
 				</td>
 				<td>
 					<button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger"><i class = "icon-white icon-remove"></i>Delete</button>

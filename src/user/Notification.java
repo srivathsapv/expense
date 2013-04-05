@@ -211,7 +211,7 @@ public class Notification {
 			
 			String values[] = {this.userid,this.category,this.categoryid,this.timeupdate};
 			this.id = Integer.parseInt(db.insert(t_name,values,true,true).toString());
-			
+			n = this.id;
 			
 			//mail notifications
 			user.User usr = new User(this.userid);
@@ -275,7 +275,7 @@ public class Notification {
 		 
 					Transport.send(message);
 					
-				} catch (MessagingException e) {
+				} catch (Exception e) {
 					return -1;
 				}
 			}
