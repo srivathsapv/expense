@@ -190,12 +190,13 @@ public class Notification {
 	/**
 	 * Saves the local values to the database
 	 * 
-	 * @return Boolean - Returns true on success
-	 * 
+	 * @return int - Returns number greater than zero on success
+	 * 			   - Returns zero on failure
+	 * 			   - Returns -1 on email error
 	 * @throws SQLException 
 	 * @throws ClassNotFoundException 
 	 */
-	public boolean save() throws ClassNotFoundException, SQLException {
+	public int save() throws ClassNotFoundException, SQLException {
 		Db db = new Db();
 		db.connect();
 		
@@ -275,7 +276,7 @@ public class Notification {
 					Transport.send(message);
 					
 				} catch (MessagingException e) {
-					throw new RuntimeException(e);
+					return -1;
 				}
 			}
 		}
@@ -292,8 +293,7 @@ public class Notification {
 		}
 		db.disconnect();
 		
-		if(n > 0) return true;
-		else return false;
+		return n;
 	}
 	
 	/**
