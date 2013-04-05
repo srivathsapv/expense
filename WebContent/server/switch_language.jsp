@@ -3,6 +3,7 @@
 		session.setAttribute("lang","eng");
 	else
 		session.setAttribute("lang","hin");
-	out.println(session.getAttribute("lang"));
+	
+	response.sendRedirect(session.getAttribute("redirectAfterLangChange").toString());
 %>
 

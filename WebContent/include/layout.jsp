@@ -234,7 +234,14 @@
 								});
 							});
 							<%
-						}	
+						}
+						else {
+							%>
+							$(".to-hindi").each(function(){
+								$(this).attr("title",$(this).html());
+							});
+							<%
+						}
 					}
 				%>
 				
