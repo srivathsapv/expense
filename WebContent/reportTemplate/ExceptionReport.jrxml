@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExceptionReport" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="6a51d638-c3b7-4aa7-b7d8-8d4f681899e4">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="9"/>
 	<parameter name="IMG_DIR" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT CASE(MONTH(TIMESTAMP_ISO(TIME)))
@@ -28,7 +28,7 @@ ORDER BY MONTH(TIMESTAMP_ISO(TIME))]]>
 	<field name="MONTH" class="java.lang.String"/>
 	<field name="COUNT" class="java.lang.Integer"/>
 	<title>
-		<band height="61" splitType="Stretch">
+		<band height="56" splitType="Stretch">
 			<image>
 				<reportElement uuid="7d696460-bf60-420b-af70-6cdb3d04ca3f" x="25" y="0" width="133" height="56"/>
 				<imageExpression><![CDATA[$P{IMG_DIR}]]></imageExpression>
@@ -42,17 +42,11 @@ ORDER BY MONTH(TIMESTAMP_ISO(TIME))]]>
 			</staticText>
 		</band>
 	</title>
-	<pageHeader>
-		<band splitType="Stretch"/>
-	</pageHeader>
-	<columnHeader>
-		<band splitType="Stretch"/>
-	</columnHeader>
-	<detail>
-		<band height="462" splitType="Stretch">
+	<summary>
+		<band height="333">
 			<lineChart>
 				<chart>
-					<reportElement uuid="0749ca8e-ec75-4bbe-b7b1-019013bc0ea7" x="0" y="73" width="555" height="285"/>
+					<reportElement uuid="0749ca8e-ec75-4bbe-b7b1-019013bc0ea7" x="0" y="35" width="555" height="285"/>
 					<chartTitle/>
 					<chartSubtitle/>
 					<chartLegend/>
@@ -69,5 +63,5 @@ ORDER BY MONTH(TIMESTAMP_ISO(TIME))]]>
 				</linePlot>
 			</lineChart>
 		</band>
-	</detail>
+	</summary>
 </jasperReport>
