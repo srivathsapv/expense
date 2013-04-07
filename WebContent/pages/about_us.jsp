@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8" import="utility.Utility" %>
 <%@ include file = "../include/layout.jsp" %>
 
-<title>Vowcher - Contact Us</title>
+<title>Vowcher - About Us</title>
 <div id="body-content">
 			<legend>
 				About Us	

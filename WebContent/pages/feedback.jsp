@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8" import="utility.Utility" %>
 <%@ include file = "../include/layout.jsp" %>
 
-<title>Vowcher - Feeback</title>
+<title>Vowcher - Feedback</title>
 <div id="body-content">
 <%if(request.getParameter("status") != null) {
 	if(request.getParameter("status").equals(Utility.MD5("success"))){

@@ -21,6 +21,10 @@ import db.Db;
  * 
  * Authentication class provides all functions that maintain the user's authenticity
  */
+/**
+ * @author root
+ *
+ */
 public class Authentication {
 	
 	/**
