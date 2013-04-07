@@ -118,38 +118,39 @@
 			return new PasswordAuthentication(username, pwd);
 		}
 	  });
+	if(modestr.equals("added")){
+		try {
+			Email email = new Email();
+			email.setImg("http://i1307.photobucket.com/albums/s589/sasipraveen/logo_zpsc6b0c2d1.png");
+			email.setTitle("Welcome to Vowcher");
+			email.setContent("<p>Hello " + user.getFirstName() + ",</p><br>"
+							 +"Vowcher is an online expense management system that takes care of your entire expense claim process."
+							 + "Its meticulously designed voucher flow hierarchical system takes care the needs of your reimbursement process."
+							 + "Some of Vowcher's exciting features are <br><br>"
+							 + "<ul>"
+							 + "<li>Graphical reports exportable in PDF Format</li>"
+							 + "<li>Quick access to users and vouchers through search</li>"
+							 + "<li>Notifications in dashboard and also through email</li>"
+							 + "<li>Mobile Application to upload vouchers from mobile</li>"
+							 + "<li>GUI provided both in English and Hindi</li>"
+							 + "<li>Intuitive menu driven and easy to understand GUI for greater user experience</li><br><br>"
+							 + "Want to get the real taste of Vowcher? Login <a href = 'http://localhost:8080/expense/pages/login.jsp'>here</a> using the following credentials <br><br>"
+							 + "<b>Username:</b>" + user.getUserid() + "<br><br>"
+							 + "<b>Password:</b>" + randomstr +"<br><br>"
+							 + "You can later change the password <a href = 'http://localhost:8080/expense/pages/change_password.jsp'>here</a>");
+			
+			Message message = new MimeMessage(session1);
+			message.setFrom(new InternetAddress("admn.vowcher@gmail.com"));
+			message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse(user.getEmail()));
+			message.setSubject("Welcome to Vowcher");
+			message.setContent(email.generateEmail(),"text/html");
 
-	try {
-		Email email = new Email();
-		email.setImg("http://i1307.photobucket.com/albums/s589/sasipraveen/logo_zpsc6b0c2d1.png");
-		email.setTitle("Welcome to Vowcher");
-		email.setContent("<p>Hello " + user.getFirstName() + ",</p><br>"
-						 +"Vowcher is an online expense management system that takes care of your entire expense claim process."
-						 + "Its meticulously designed voucher flow hierarchical system takes care the needs of your reimbursement process."
-						 + "Some of Vowcher's exciting features are <br><br>"
-						 + "<ul>"
-						 + "<li>Graphical reports exportable in PDF Format</li>"
-						 + "<li>Quick access to users and vouchers through search</li>"
-						 + "<li>Notifications in dashboard and also through email</li>"
-						 + "<li>Mobile Application to upload vouchers from mobile</li>"
-						 + "<li>GUI provided both in English and Hindi</li>"
-						 + "<li>Intuitive menu driven and easy to understand GUI for greater user experience</li><br><br>"
-						 + "Want to get the real taste of Vowcher? Login <a href = 'http://localhost:8080/expense/pages/login.jsp'>here</a> using the following credentials <br><br>"
-						 + "<b>Username:</b>" + user.getUserid() + "<br><br>"
-						 + "<b>Password:</b>" + randomstr +"<br><br>"
-						 + "You can later change the password <a href = 'http://localhost:8080/expense/pages/change_password.jsp'>here</a>");
-		
-		Message message = new MimeMessage(session1);
-		message.setFrom(new InternetAddress("admn.vowcher@gmail.com"));
-		message.setRecipients(Message.RecipientType.TO,
-			InternetAddress.parse(user.getEmail()));
-		message.setSubject("Welcome to Vowcher");
-		message.setContent(email.generateEmail(),"text/html");
-
-		Transport.send(message);
-		
-	} catch (MessagingException e) {
-		throw new RuntimeException(e);
+			Transport.send(message);
+			
+		} catch (MessagingException e) {
+			throw new RuntimeException(e);
+		}	
 	}
 	
 	if(user_success && login_success){
