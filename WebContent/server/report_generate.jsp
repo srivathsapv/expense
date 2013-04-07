@@ -95,6 +95,7 @@ String date = new Timestamp(d.getTime()).toString();
 	else if(reportType.equals("Voucher_Type_Report")){
 		HashMap VoucherParameter = new HashMap();
 		VoucherParameter.put("IMG_DIR",img_path+"logo.png");
+		VoucherParameter.put("SUBREPORT_DIR",directory_path);
 		JasperReport VoucherReport = JasperCompileManager.compileReport(directory_path+"vouchertype_report.jrxml");
 		JasperPrint VoucherPrint = JasperFillManager.fillReport(VoucherReport,VoucherParameter, con);
 		exportPath = target_path + "Voucher_Type_Report_"+date+".pdf";
@@ -104,6 +105,7 @@ String date = new Timestamp(d.getTime()).toString();
 	else if(reportType.equals("Company_Policy_Report")){
 		HashMap VoucherParameter = new HashMap();
 		VoucherParameter.put("IMG_DIR",img_path+"logo.png");
+		VoucherParameter.put("SUBREPORT_DIR",directory_path);
 		JasperReport VoucherReport = JasperCompileManager.compileReport(directory_path+"company_policy_chart_report.jrxml");
 		JasperPrint VoucherPrint = JasperFillManager.fillReport(VoucherReport,VoucherParameter, con);
 		exportPath = target_path + "Company_Policy_Report_"+date+".pdf";
@@ -156,18 +158,23 @@ String date = new Timestamp(d.getTime()).toString();
 		directory_path += "/masters/";
 		if(subType.equals("AMOUNT_CONFIG")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"amount_config_report.jrxml");
+			
 		}else if(subType.equals("DEPARTMENT")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"Departments.jrxml");
+			MasterParameter.put("SUBREPORT_DIR",directory_path);
 		}else if(subType.equals("POLICY")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"policy_report.jrxml");
 		}else if(subType.equals("ROLECONFIG")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"roleconfig_report.jrxml");
 		}else if(subType.equals("USER")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"Users.jrxml");
+			MasterParameter.put("SUBREPORT_DIR",directory_path);
 		}else if(subType.equals("VOUCHER")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"Vouchers.jrxml");
+			MasterParameter.put("SUBREPORT_DIR",directory_path);
 		}else if(subType.equals("VOUCHER_TYPE")){
 			MasterReport = JasperCompileManager.compileReport(directory_path+"VoucherTypes.jrxml");
+			MasterParameter.put("SUBREPORT_DIR",directory_path);
 		}	
 		JasperPrint MasterPrint = JasperFillManager.fillReport(MasterReport,MasterParameter, con);
 		exportPath = target_path + "Master_Data_Management_Reports_"+subType+date+".pdf";
