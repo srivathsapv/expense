@@ -39,7 +39,6 @@
 			db.connect();
 			String query = "SELECT STATUS FROM VOUCHER_STATUS WHERE TIME = (SELECT MAX(TIME) FROM VOUCHER_STATUS WHERE VOUCHERID = " + v.getVoucherid() + ") AND VOUCHERID = " + v.getVoucherid();
 			ResultSet rs = db.executeQuery(query);
-			System.out.println(query);
 			String disabled = "";
 			if(rs.next()){
 				if(!rs.getString(1).equals("pending")) {
@@ -56,7 +55,7 @@
 					<button alt = "voucher_add.jsp?mode=edit&vid=<%=v.getVoucherid() %>" class = "btn btn-warning edit-voucher<%=disabled%>"><i class = "icon-white icon-pencil"></i>Edit</button>
 				</td>
 				<td>
-					<button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger"><i class = "icon-white icon-remove"></i>Delete</button>
+					<button alt = "../server/delete.jsp?type=voucher&source=userlist&vid=<%=v.getVoucherid() %>" class = "del-voucher btn btn-danger<%=disabled%>"><i class = "icon-white icon-remove"></i>Delete</button>
 				</td>
 			</tr> <%
 		}

@@ -75,6 +75,7 @@
 				</div> <%
 			}
 		}
+		String role = session.getAttribute("sessionUserRole").toString();
 	%>
 	<legend>
 		<h3>Voucher Types</h3>
@@ -91,12 +92,14 @@
 				<th>
 					<h4>View</h4>
 				</th>
+				<% if(!role.equals("employee") && !role.equals("mgr") && !role.equals("ceo") && !role.equals("finance")) { %>
 				<th>
 					<h4>Edit</h4>
 				</th>
 				<th>
 					<h4>Delete</h4>
 				</th>
+				<% } %>
 			</tr>
 		</thead>
 		<tbody>
@@ -122,6 +125,7 @@
 								View
 							</button>
 						</td>
+						<% if(!role.equals("employee") && !role.equals("mgr") && !role.equals("ceo") && !role.equals("finance")) { %>
 						<td>
 							<button class = "btn btn-warning edit-vtype" alt = "vouchertype_add.jsp?mode=edit&vtypeid=<%=t.getVtypeid() %>"><i class = "icon-white icon-pencil"></i>Edit</button>
 						</td>
@@ -131,6 +135,7 @@
 								Delete
 							</button>
 						</td>
+						<% } %>
 					</tr> <%
 				}
 			%>

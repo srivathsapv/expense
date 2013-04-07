@@ -102,7 +102,7 @@
 				%> 
 				<li class = "user-item">
 					<img src = "<%=imgsrc %>" style = "width:32px" class = "img-rounded profile-picture" >
-					<a href = "user_view.jsp?<%=uid %>"><%= user.getFirstName() + " " + user.getlastName() %></a>
+					<a href = "user_view.jsp?userid=<%=uid %>"><%= user.getFirstName() + " " + user.getlastName() %></a>
 				</li>
 			<%
 			}

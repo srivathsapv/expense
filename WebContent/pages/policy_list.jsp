@@ -27,6 +27,7 @@
 				</div> <%
 			}
 		}
+		String role = session.getAttribute("sessionUserRole").toString();
 	%>
 	<legend>
 		<h1>Policy list</h1>
@@ -46,12 +47,14 @@
 				<th>
 					<h4>Available</h4>
 				</th>
+				<% if(!role.equals("employee") && !role.equals("mgr") && !role.equals("ceo") && !role.equals("finance")) { %>
 				<th>
 					<h4>Edit</h4>
 				</th>
 				<th>
 					<h4>Delete</h4>
 				</th>
+				<% } %>
 			</tr>
 		</thead>
 		<tbody>
@@ -91,12 +94,14 @@
 								}
 							%>
 						</td>
+						<% if(!role.equals("employee") && !role.equals("mgr") && !role.equals("ceo") && !role.equals("finance")) { %>
 						<td>
 							<button class = "btn btn-warning edit-policy" alt = "policy_add.jsp?mode=edit&pid=<%=p.getPolicyid() %>"><i class = "icon-white icon-pencil"></i>Edit</button>
 						</td>
 						<td>
 							<button class = "delete-policy btn btn-danger" alt = "../server/delete.jsp?type=policy&pid=<%=p.getPolicyid() %>&source=list"><i class = "icon-white icon-remove"></i>Delete</button>
 						</td>
+						<% } %>
 					</tr> 
 					<%
 				}

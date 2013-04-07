@@ -63,6 +63,11 @@
 	String title = "Vowcher - Add new User";
 	if(request.getParameter("mode") != null){
 		userid = request.getParameter("userid");
+		String sUserid = session.getAttribute("sessionUsername").toString();
+		if(!sUserid.equals(userid)){
+			%> <div id = "body-content"><div class = "alert alert-error">You don't have access to this page</div></div><%
+			return;
+		}
 		title = "Vowcher - Edit User";
 		%>
 		<script>

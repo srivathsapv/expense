@@ -127,7 +127,7 @@
 				}
 			%>
 			<%
-				if(session.getAttribute("sessionUsername").equals(voucher.getUserid())) {
+				if((vstatus.equals("pending") || vstatus.equals("rejected")) && session.getAttribute("sessionUsername").equals(voucher.getUserid())) {
 					%> <button class = "btn btn-danger" id = "delete-voucher" alt = "../server/delete.jsp?type=voucher&vid=<%=vid %>&source=view"><i class = "icon-white icon-remove"></i>Delete</button> <%	
 				}
 			%>

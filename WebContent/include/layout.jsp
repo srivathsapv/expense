@@ -215,6 +215,7 @@
 					});
 				}
 				<%
+					boolean page_access = true;
 					if(session.getAttribute("lang") != null) {
 						if(session.getAttribute("lang").equals("hin")) {
 							%>
@@ -391,50 +392,45 @@
 			    </ul>	
 			    <%
 					String url = request.getRequestURL().toString();
-			    	
-			    	
-			    	
 			    
 					String pagename = url.substring(url.lastIndexOf("/")+1,url.length());
 			    	
 					//check role
 					
-					if(l_role.equals("employee")){
+					if(l_role.equals("employee") || l_role.equals("mgr")){
 			    		String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
-			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
+			    			"dept_add.jsp","policy_add.jsp",
 			    			"rconfig_add.jsp","report_generate.jsp","report_list.jsp",
-			    			"user_add.jsp","user_list.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
+			    			"user_list.jsp","vouchertype_add.jsp","dept_list.jsp"
 			    		};
+			    		
 			    		for(String p:restricted_pages){
 			    			if(p.equals(pagename)){
-			    				response.sendRedirect("../pages/dashboard.jsp");
-			    				return;
+			    				page_access = false;
 			    			}
 			    		}
 			    	}
 					else if(l_role.equals("ceo")){
 						String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
-			    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
+			    			"dept_add.jsp","policy_add.jsp",
 			    			"rconfig_add.jsp",
-			    			"user_add.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
+			    			"vouchertype_add.jsp","dept_list.jsp"
 			    		};
 			    		for(String p:restricted_pages){
 			    			if(p.equals(pagename)){
-			    				response.sendRedirect("../pages/dashboard.jsp");
-			    				return;
+			    				page_access = false;
 			    			}
 			    		}
 					}
 					else if(l_role.equals("finance")){
 						String[] restricted_pages = {"aconfig_add.jsp","amount_config.jsp",
-				    			"dept_add.jsp","dept_list.jsp","policy_add.jsp","policy_list.jsp",
+				    			"dept_add.jsp","policy_add.jsp",
 				    			"rconfig_add.jsp","user_list.jsp",
-				    			"user_add.jsp","vouchertype_add.jsp","vouchertype_list.jsp"
+				    			"vouchertype_add.jsp","dept_list.jsp"
 				    		};
 				    		for(String p:restricted_pages){
 				    			if(p.equals(pagename)){
-				    				response.sendRedirect("../pages/dashboard.jsp");
-				    				return;
+				    				page_access = false;
 				    			}
 				    		}
 					}
@@ -444,7 +440,6 @@
 					Vector<String> params = new Vector<String>(Arrays.asList(paramarry));
 					String paramstr = "";
 					for(int i=0;i<params.size();i++){
-						
 						if(params.get(i).toString().indexOf("message") >= 0 || params.get(i).toString().indexOf("status") >= 0){
 							continue;	
 						}
@@ -599,7 +594,12 @@
 						</div>
 					</div>
 					<div class = "span9">
-						
+						<%
+							if(!page_access) {
+								%> <div class = "alert alert-error">You don't have access to this page</div> <%
+								return;
+							}
+						%>
 					</div>
 				</div>
 			</div> 

@@ -3,7 +3,7 @@
 
 <html>
 <head>
-	<title>Vowcher - Login</title>
+	<title>Vowcher - Web based expense management system</title>
 	<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
 	<link rel="stylesheet/less" href="../less/bootstrap.less">
 	<script src = "../js/jquery-1.8.3.min.js"></script>
@@ -106,15 +106,13 @@
 		<div class="row-fluid">
 		<div class = "span10 offset1">
 		<div class="span4">
-			<div class="login_page_title">Reports</div>
 			<div class="login_img">
 				<img src="../img/reports_logo.png" alt="" border="0"/>
 				
 			<p>Data reports with graphical representation exportable in PDF format</p> 
 		</div>
 		</div>
-		<div class="span4">
-			<div class="login_page_title">Search</div>	
+		<div class="span4">	
 			<div class="login_img">
 				<img src="../img/search_logo.png" alt="" border="0"/>
 			
@@ -122,7 +120,6 @@
 		</div>
 		</div>
 		<div class="span4" >
-			<div class="login_page_title">Notification</div>
 			<div class="login_img">
 				<img src="../img/notification_logo.png" alt="" border="0"/>
 			
@@ -136,14 +133,12 @@
 		<div class="row-fluid">
 		<div class = "span10 offset1">
 		<div class="span4">
-			<div class="login_page_title">SMS Alerts</div>
 			<div class="login_img">
 				<img src="../img/mobileapp_logo.png" alt="" border="0"/>
 			<p>SMS Alerts to the users when their voucher status changes.</p> 
 		</div>
 		</div>
 		<div class="span4">
-			<div class="login_page_title">Localization</div>
 			<div class="login_img">
 				<img src="../img/localization_logo.png" alt="" border="0"/>
 			
@@ -151,7 +146,6 @@
 		</div>
 		</div>	
 		<div class="span4">
-			<div class="login_page_title">User Friendly GUI</div>
 			<div class="login_img">
 				<img src="../img/userfriendlygui_logo.png" alt="" border="0"/>
 			
