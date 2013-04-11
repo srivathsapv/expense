@@ -80,6 +80,12 @@
 						currency = session.getAttribute("currency").toString();
 						currencyText = session.getAttribute("currencyText").toString();
 						currencyISO = session.getAttribute("currencyISO").toString();	
+						
+					}
+					else {
+						currency = "rupees";
+						currencyText = "Indian Rupees";
+						currencyISO = "INR";
 					}
 				%>
 				$("#main-button").html('<img class = "currency-white" src = "../img/<%=currency%>-white.png"><%=currencyText%> <span class = "custom-caret">&#9660;</span>');
@@ -261,9 +267,16 @@
 					if(request.getParameter("username") != null) {
 						User sessionUser = new User(request.getParameter("username"));
 						session.setAttribute("sessionUser",sessionUser);
+						session.setAttribute("sessionUsername",request.getParameter("username"));
 						
 						Authentication auth = new Authentication(request.getParameter("username"));
 						session.setAttribute("lastlogin",auth.getLastlogin());
+						session.setAttribute("sessionUserRole",auth.getRole());
+						
+						session.setAttribute("currency","rupees");
+						session.setAttribute("currencyText","Indian Rupees");
+						session.setAttribute("currencyISO","INR");
+						session.setAttribute("lang","eng");
 					}
 				%>
 			}

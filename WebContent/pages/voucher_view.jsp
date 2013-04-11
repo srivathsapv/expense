@@ -149,7 +149,9 @@
 	<legend>
 		<h4><i class = "voucher-view icon-envelope"></i>Attachment</h4>
 		<%
-			String ext = voucher.getExtension().toLowerCase();
+			String ext = "";
+			if(voucher.getExtension() != null)
+				ext = voucher.getExtension().toLowerCase();
 			if(ext.equals("")){
 				%> No attachments added <%
 			}

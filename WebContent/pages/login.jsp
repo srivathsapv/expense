@@ -1,17 +1,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<%@ page import="utility.Utility" %>
+<%@ page import="utility.Utility,java.io.File" %>
 
 <html>
 <head>
-	<title>Vowcher - Web based expense management system</title>
+	<title>Vowcher - A web based solution for expense management</title>
 	<link rel="shortcut icon" type = "image/ico" href = "../img/favico.ico">
 	<link rel="stylesheet/less" href="../less/bootstrap.less">
 	<script src = "../js/jquery-1.8.3.min.js"></script>
 	<script src="../js/less.js" type="text/javascript"></script>
-	
 </head>
 <body>
 	<%
+		String path = config.getServletContext().getRealPath("/")+"temp/";
+		File f = new File(path + "dbconfig.cfg");
+		if(!f.exists()){
+			response.sendRedirect("dbinit.jsp");
+		}
+		
 		if(session.getAttribute("sessionUser") != null){
 			response.sendRedirect("dashboard.jsp");
 			return;

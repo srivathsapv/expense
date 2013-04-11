@@ -3,9 +3,12 @@
  */
 package db;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -17,8 +20,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
-
-import utility.LocalValues;
 
 /**
  * @author	Srivathsa PV
@@ -60,11 +61,42 @@ public class Db {
 	
 	/**
 	 * Accesses the dbconfig.cfg file ,reads the values and initialized it to the respective variables
+	 * @throws IOException 
 	 */
 	public Db() {
-		this.username = LocalValues.dbUsername;
-		this.password = LocalValues.dbPwd;
-		this.database = LocalValues.dbName;
+		
+		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		if(path.indexOf("Db.class") >= 0) {
+			path = path.replace("Db.class","");
+			path += "/../../../temp/";
+		}
+		else {
+			path += "/temp/";
+		}
+		
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new FileReader(path + "dbconfig.cfg"));
+
+			String str = "";
+
+			while((str = br.readLine() ) != null) {
+				String[] dat = str.split(":");
+				if(dat[0].equals("database")) {
+					this.database = dat[1];
+				}
+				else if(dat[0].equals("username")){
+					this.username = dat[1];
+				}
+				else if(dat[0].equals("password")){
+					this.password = dat[1];
+				}
+			}
+		}
+		catch(IOException e){
+			e.printStackTrace();
+		}
+			
 	}
 	
 	/**
