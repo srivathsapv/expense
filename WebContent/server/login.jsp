@@ -11,7 +11,9 @@
 				java.security.NoSuchAlgorithmException,
 				java.sql.Timestamp,
 				java.text.SimpleDateFormat,
-				java.util.Date"%>
+				java.util.Date,
+				org.json.JSONArray,
+				org.json.JSONObject"%>
 <%
 	String username = Utility.filter(request.getParameter("username"));
 	String password = Utility.filter(request.getParameter("password"));
@@ -27,14 +29,15 @@
 	try{
 		rs.next();
 		if(rs.getInt(1) == 1) {
+			// Writing the user object to the session
+			User sessionUser = new User(username);
 			
 			// for OpenAuthentication
 			if(request.getParameter("mode") != null){
-				if(request.getParameter("mode").equals("sid")){
+				if(request.getParameter("mode").equals("sid") && request.getMethod().equals("POST")){
 					Date d = new Date();
 					Timestamp t = new Timestamp(d.getTime());
 					String timestamp = t.toString();
-					
 					String encUnameStr = Utility.MD5(Utility.MD5("{vowcher---secure--id--!|-" + username + "==|=" + password + "}"));
 					String sid = Utility.MD5(encUnameStr + Utility.MD5(timestamp));
 					
@@ -42,13 +45,16 @@
 					secureAuth.setSecureId(sid);
 					secureAuth.save();
 					
-					%> <%= sid %> <%
+					JSONObject json_obj = new JSONObject();
+					json_obj.put("USERNAME",username);
+					json_obj.put("SECUREID",sid);
+					json_obj.put("FULLNAME",sessionUser.getFirstName() + " " + sessionUser.getlastName());
+					
+					out.println(json_obj.toString());
 					return;
 				}
 			}
 			
-			 // Writing the user object to the session
-			User sessionUser = new User(username);
 			session.setAttribute("sessionUser",sessionUser);
 			session.setAttribute("sessionUsername",username);
 			
@@ -74,7 +80,6 @@
 			session.setAttribute("lastlogin",lastLogin);
 			
 			auth.setLastlogin();
-			auth.setSecureId("");
 			auth.save();			
 			if(request.getParameter("redirect").equals("dashboard")) {	
 				response.sendRedirect("../pages/dashboard.jsp");
@@ -87,8 +92,8 @@
 		}
 		else {
 			if(request.getParameter("mode") != null){
-				if(request.getParameter("mode").equals("sid")){
-					%> invalid <%
+				if(request.getParameter("mode").equals("sid") && request.getMethod().equals("POST")){
+					out.println("AUTH_ERROR");
 					return;
 				}
 			}
