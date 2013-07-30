@@ -65,15 +65,22 @@
 	db.connect();
 	
 	ResultSet rs = db.executeQuery("SELECT SUM(AMOUNT) FROM VOUCHER WHERE USERID = '" + user.getUserid() + "' AND DATE LIKE '" + year + "-" + mstr + "-__'");
-	rs.next();
 	
-	ResultSet rs2 = db.executeQuery("SELECT CLAIM_LIMIT FROM ROLECONFIG WHERE ROLE = '" + auth.getRole() + "'");
-	rs2.next();
+	double total = 0;
 	
-	if(rs.getInt(1) + Double.parseDouble(values[1]) > rs2.getInt(1) && values[6].equals("0")){
-		response.sendRedirect("../pages/voucher_add.jsp?message=overlimit");
-		return;
+	if(rs.next()){
+		total = rs.getInt(1);
 	}
+	ResultSet rs2 = db.executeQuery("SELECT CLAIM_LIMIT FROM ROLECONFIG WHERE ROLE = '" + auth.getRole() + "'");
+	
+	if(rs2.next()){
+		if(total + Double.parseDouble(values[1]) > rs2.getInt(1) && values[6].equals("0")){
+			response.sendRedirect("../pages/voucher_add.jsp?message=overlimit");
+			return;
+		}	
+	}
+	
+	
 	//claim limit check ends
 	
 	Voucher voucher = null;
@@ -102,6 +109,7 @@
 		amount = conv.getConvertedAmount(amount);
 	}
 	voucher.setAmount(amount);
+	
 	voucher.setVtypeid(Integer.parseInt(values[2]));
 	
 	SimpleDateFormat fmt = new SimpleDateFormat("dd-MM-yyyy");
@@ -176,18 +184,31 @@
 	
 	//set status of voucher to pending
 	if(modestr.equals("added")){
+		auth = new Authentication(user.getUserid());
+		
 		voucher.Status status = new voucher.Status();
 		status.setStatus("pending");
 		status.setVoucherid(voucher.getVoucherid());
-		status.setUserid(user.getManager());
+		if(!auth.getRole().equals("md"))
+			status.setUserid(user.getManager());
+		else
+			status.setUserid(user.getUserid());
 		status.setTime();
 		status.save();
 		
 		Notification notif = new Notification();
 		notif.setCategory("voucher");
 		notif.setCategoryid(Integer.toString(voucher.getVoucherid()));
-		notif.setUserid(user.getManager());
 		notif.setTimeupdate();
+		
+		
+		if(!auth.getRole().equals("md")){
+			notif.setUserid(user.getManager());
+		}
+		else {
+			notif.setUserid(user.getUserid());
+		}
+		
 		if(notif.save() == -1){
 			emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
 		}

@@ -135,6 +135,7 @@
 		<%
 			if(!session.getAttribute("sessionUsername").toString().equals(voucher.getUserid())){
 				User vouch_user = new User(voucher.getUserid());
+				
 				String vouch_username = vouch_user.getFirstName() + " " + vouch_user.getlastName();
 				%> <h4><b>Submitted by <a href = "user_view.jsp?userid=<%=vouch_user.getUserid() %>"><%= vouch_username %></a></b></h4> <%
 			}

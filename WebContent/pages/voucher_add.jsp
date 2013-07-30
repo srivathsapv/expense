@@ -166,15 +166,19 @@
 		}
 		else if(mode.equals("from_existing") || mode.equals("edit")){
 			vid = Integer.parseInt(request.getParameter("vid"));
+			
 			Voucher exist_voucher = new Voucher(vid);
 			title = exist_voucher.getTitle();
+			
 			amount = Double.toString(exist_voucher.getAmount());
 			type = Integer.toString(exist_voucher.getVtypeid());
+			
 			date = exist_voucher.getDate();
 			description = exist_voucher.getDescription();
 			description = description.replace("<","&lt;");
 			description = description.replace(">","&gt;");
 			description = description.replace("/","&#47");
+			
 		}
 		String pagetitle = "Vowcher - Add New Voucher";
 		String legend = "Add new voucher<p class = 'legend-desc'><i class = 'icon-question-sign'></i>Enter details about your voucher and submit to claim your expenses</p>"; 
@@ -210,7 +214,6 @@
 			form_style = "block";
 			option_style = "none";
 		}
-		
 		
 	%>
 		<title><%=pagetitle %></title>
@@ -248,7 +251,8 @@
    			<select class = "span4 required" id = "type" name = "type">
    				<option value = "">Choose Voucher Type</option>
    				<%
-   					
+
+   				
    					User sUser = (User)session.getAttribute("sessionUser");
    					Department[] vtypedepts = Department.list("DEPTID",Integer.toString(sUser.getDeptid()));
    					
@@ -266,6 +270,7 @@
  						}
    						
    					}
+   					
    				%>
    			</select><br>
    			<div class = "input-append">
@@ -278,8 +283,13 @@
    				if(request.getParameter("vid") != null) {
    					vid = Integer.parseInt(request.getParameter("vid"));
    					Voucher voucher = new Voucher(vid);
-   					String ext = voucher.getExtension().toLowerCase();
+   					
+   					String ext = "" ;
+   					if(voucher.getExtension() != null) {
+   						ext = voucher.getExtension().toLowerCase();
+   					}
    					if(ext.equals("")) attach = "Upload";
+   					
    	   				if(mode.equals("edit") && !ext.equals("")){
    	   					%> <label>Attachment</label> <%
    	   					if(ext.equals("jpg") || ext.equals("jpeg") || ext.equals("png")){
@@ -303,6 +313,7 @@
    	   					%> <br><br> <%
    	   				}	
    				}
+   				
    			%>
 			<label><%=attach %> Attachment (doc,docx,pdf,jpg,jpeg,png)</label><input class = "span4" type="file" id = "attachment" name = "attachment"><br>			
     		<br>

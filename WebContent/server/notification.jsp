@@ -1,15 +1,31 @@
 <%@page import = "java.text.SimpleDateFormat,
 				  java.sql.ResultSet,
+				  auth.Authentication,
 				  db.Db,
 				  user.Notification,
 				  user.User,
 				  java.util.Date,
 				  voucher.Status,
 				  voucher.Voucher,
-				  com.ocpsoft.pretty.time.*"%>
+				  com.ocpsoft.pretty.time.*,
+				  org.jsoup.*,
+				  org.json.*"%>
 <%
-	
-	String username = session.getAttribute("sessionUsername").toString();
+	String username="";
+	String mode="web";
+	if(request.getMethod().equals("POST") && request.getParameter("sid") != null){
+		String sid = request.getParameter("sid");
+		username = request.getParameter("username");
+		Authentication auth = new Authentication(username);
+		if(!auth.getSecureId().equals(sid)) {
+			out.println("AUTH_ERROR");
+			return;
+		}
+		mode="mobile";
+	}
+	else {
+		username = session.getAttribute("sessionUsername").toString();	
+	}
 	Notification[] notifs = Notification.list("USERID",username);
 	if(notifs.length == 0) {
 		%> No notifications to be displayed <%
@@ -19,6 +35,7 @@
 	String img_url = "";
 %>
 <%
+	JSONArray json_arr = new JSONArray();
 	for(Notification notif:notifs){
 		Status stat = null;
 		Voucher vouch = null;
@@ -116,13 +133,28 @@
 		
 		PrettyTime timeago = new PrettyTime();
 		String smarttime = timeago.format(d);
-		%> 
-		<div class = "note-leaf alert alert-<%=notif_class%>">
-			<small style = "float:right" title = "<%=timeupdate%>">
-				<%= smarttime %>
-			</small><br>
-			<img src = "<%=img_url%>" style = "<%=style%>">
-			<%= notif_msg %>
-		</div> <%
+		%>
+		<% if(mode.equals("web")) { %>
+			<div class = "note-leaf alert alert-<%=notif_class%>">
+				<small style = "float:right" title = "<%=timeupdate%>">
+					<%= smarttime %>
+				</small><br>
+				<img src = "<%=img_url%>" style = "<%=style%>">
+				<%= notif_msg %>
+			</div> 
+		<% }
+		else if(mode.equals("mobile")) {
+			String mobile_msg = Jsoup.parse(notif_msg).text();
+			JSONObject json_obj = new JSONObject();
+			json_obj.put("NOTIF_CLASS",notif_class);
+			json_obj.put("NOTIF_MSG",mobile_msg);
+			json_obj.put("NOTIF_TIME",smarttime);
+			json_arr.put(json_obj);
+		}
+	}
+	if(mode.equals("mobile")){
+		JSONObject finalJSON = new JSONObject();
+		finalJSON.put("NOTIFICATIONS",json_arr);
+		out.println(finalJSON.toString());	
 	}
 %>

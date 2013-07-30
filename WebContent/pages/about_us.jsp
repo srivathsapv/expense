@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="utility.Utility" %>
-<%@ include file = "../include/layout.jsp" %>
+<%@ include file="../include/layout.jsp" %>
 
 <title>Vowcher - About Us</title>
 <div id="body-content">
