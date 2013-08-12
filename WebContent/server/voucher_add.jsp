@@ -191,8 +191,11 @@
 		status.setVoucherid(voucher.getVoucherid());
 		if(!auth.getRole().equals("md"))
 			status.setUserid(user.getManager());
-		else
+		else {
 			status.setUserid(user.getUserid());
+			status.setStatus("accepted");
+		}
+			
 		status.setTime();
 		status.save();
 		
@@ -204,13 +207,22 @@
 		
 		if(!auth.getRole().equals("md")){
 			notif.setUserid(user.getManager());
+			if(notif.save() == -1){
+				emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+			}
 		}
 		else {
-			notif.setUserid(user.getUserid());
-		}
-		
-		if(notif.save() == -1){
-			emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+			Authentication[] finance_officers = Authentication.list("ROLE","finance");
+			for(Authentication a:finance_officers){
+				Notification n = new Notification();
+				n.setCategory("sanction");
+				n.setCategoryid(Integer.toString(voucher.getVoucherid()));
+				n.setTimeupdate();
+				n.setUserid(a.getUserid());
+				if(n.save()==-1){
+					emailError = "<span class=\"text-error\"><br>Error in sending Email notification due to network problem</span>";
+				}
+			}
 		}
 	}
 	

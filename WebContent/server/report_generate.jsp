@@ -112,7 +112,7 @@ String date = new Timestamp(d.getTime()).toString();
 		JasperExportManager.exportReportToPdfFile(VoucherPrint,exportPath);
 		message="Company Policy Report";
 	}
-	else if(reportType.equals("Ledger")){
+	else if(reportType.equals("Ledger_Report")){
 			
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");

@@ -42,12 +42,13 @@
 			ResultSet rs4 = db.executeQuery(query);
 			rs4.next();
 			
-			if((rs3.getInt(1) + amount) > rs4.getInt(1)){
-				response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("error") + "&message=Sorry. You cannot accept this voucher as your acceptance limit is over");
-				return;
+			if(!auth.getRole().equals("md")) {
+				if((rs3.getInt(1) + amount) > rs4.getInt(1)){
+					response.sendRedirect("../pages/voucher_view.jsp?id=" + Integer.toString(vid) + "&status="+Utility.MD5("error") + "&message=Sorry. You cannot accept this voucher as your acceptance limit is over");
+					return;
+				}	
 			}
 			voucher_level = "terminal";
-			
 		}
 		//accept limit check
 		

@@ -82,16 +82,23 @@ public class Policy {
 	public Policy(int policyid)throws ClassNotFoundException,SQLException{
 		Db db = new Db();
 		db.connect();
-		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE policyid = " + policyid);
-		rs.next();
-		
-		this.policyid = policyid;
-		this.title = rs.getString("TITLE");
-		this.description=rs.getString("DESCRIPTION");
-		this.amountPercent=rs.getInt("AMOUNTPERCENT");
-		this.available=rs.getInt("AVAILABLE");
-		
+		if(policyid==0){
+			this.policyid=0;
+			this.title="";
+			this.description="";
+			this.amountPercent=100;
+			this.available=1;
+		}
+		else {
+			ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE policyid = " + policyid);
+			rs.next();
+			
+			this.policyid = policyid;
+			this.title = rs.getString("TITLE");
+			this.description=rs.getString("DESCRIPTION");
+			this.amountPercent=rs.getInt("AMOUNTPERCENT");
+			this.available=rs.getInt("AVAILABLE");
+		}
 		db.disconnect();
 	}
 	
