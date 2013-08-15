@@ -34,10 +34,15 @@ public class BackupAndRestore{
 	 * @return boolean 
 	 * true - database backed up successfully
 	 * false - error while taking backup of database
+	 * @throws SQLException 
+	 * @throws ClassNotFoundException 
 	 */
 	
-	public boolean onlineBackup(){
-		
+	public boolean onlineBackup() throws ClassNotFoundException, SQLException{
+		Db db = new Db();
+		db.connect();
+		ResultSet rs = db.executeQuery("CALL SYSPROC.ADMIN_CMD('backup database employee ONLINE to /home/db2inst1/backup/OnlineBackups COMPRESS INCLUDE LOGS')");
+		db.disconnect();
 		return true;
 	}
 	
@@ -71,7 +76,6 @@ public class BackupAndRestore{
 		rs.next();
 		
 		String timestamp = rs.getString("SQLM_ELM_LAST_BACKUP");
-		System.out.println(timestamp);
 		db.disconnect();
 		return timestamp;
 	}
