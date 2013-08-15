@@ -27,7 +27,7 @@
 		username = session.getAttribute("sessionUsername").toString();	
 	}
 	Notification[] notifs = Notification.list("USERID",username);
-	if(notifs.length == 0) {
+	if(notifs.length == 0 && mode.equals("web")) {
 		%> No notifications to be displayed <%
 	}
 	String notif_msg = "";
@@ -154,6 +154,11 @@
 	}
 	if(mode.equals("mobile")){
 		JSONObject finalJSON = new JSONObject();
+		if(json_arr.length() == 0){
+			JSONObject json_obj = new JSONObject();
+			json_obj.put("NOTIF_MSG","No notifications to be displayed");
+			json_arr.put(json_obj);
+		}
 		finalJSON.put("NOTIFICATIONS",json_arr);
 		out.println(finalJSON.toString());	
 	}

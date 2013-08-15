@@ -197,7 +197,7 @@ $(document).ready(function(){
 	       		</select>
 	       	</div>
 	       	<br/>
-	       	<button class = "btn btn-success generate-ledger" alt = "../server/report_generate.jsp?reportType=Ledger"><i class = "icon-white icon-cog"></i>Generate</button>
+	       	<button class = "btn btn-success generate-ledger" alt = "../server/report_generate.jsp?reportType=Ledger_Report"><i class = "icon-white icon-cog"></i>Generate</button>
 	      </div>
 	    </div>
 	  </div>
