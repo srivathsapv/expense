@@ -113,22 +113,19 @@
 		<div class="span4">
 			<div class="login_img">
 				<img src="../img/reports_logo.png" alt="" border="0"/>
-				
 			<p>Data reports with graphical representation exportable in PDF format</p> 
 		</div>
 		</div>
 		<div class="span4">	
 			<div class="login_img">
 				<img src="../img/search_logo.png" alt="" border="0"/>
-			
-			<p>Quickly access users and vouchers using the search feature</p> 
+			<p>Quick access to user and voucher information using the search feature</p> 
 		</div>
 		</div>
 		<div class="span4" >
 			<div class="login_img">
 				<img src="../img/notification_logo.png" alt="" border="0"/>
-			
-			<p>Get dashboard as well as mail notifications to keep updated of whats happening</p> 
+			<p>Get dashboard as well as mail notifications about voucher status</p> 
 		</div>
 		</div>
 		</div>
@@ -140,20 +137,18 @@
 		<div class="span4">
 			<div class="login_img">
 				<img src="../img/mobileapp_logo.png" alt="" border="0"/>
-			<p>SMS Alerts to the users when their voucher status changes.</p> 
+			<p>Mobile application to check notifications on the go</p> 
 		</div>
 		</div>
 		<div class="span4">
 			<div class="login_img">
 				<img src="../img/localization_logo.png" alt="" border="0"/>
-			
 			<p>GUI provided both in English and Hindi for greater reach</p> 
 		</div>
 		</div>	
 		<div class="span4">
 			<div class="login_img">
 				<img src="../img/userfriendlygui_logo.png" alt="" border="0"/>
-			
 			<p>Intuitive menu driven and easy to understand GUI for greater user experience</p> 
 		</div>
 		</div>
