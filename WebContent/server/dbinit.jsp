@@ -1,4 +1,4 @@
-<%@page import="java.io.File,java.io.FileWriter,java.io.BufferedWriter" %>
+<%@page import="java.io.File,java.io.FileWriter,java.io.BufferedWriter,backupandrestore.BackupAndRestore" %>
 <%
 	String dbname = request.getParameter("dbname");
 	String username = request.getParameter("username");
@@ -16,6 +16,9 @@
 	
 	bw.write(content);
 	bw.close();
+	
+	BackupAndRestore bk = new BackupAndRestore();
+	bk.init();
 	
 	response.sendRedirect("../pages/login.jsp");
 %>
