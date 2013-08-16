@@ -35,7 +35,7 @@
 		Email email = new Email();
 		email.setImg("http://i1307.photobucket.com/albums/s589/sasipraveen/logo_zpsc6b0c2d1.png");
 		email.setTitle("Password Change");
-		email.setContent("Your password has been changed successfully. You can login to your account from <a href = 'http://127.0.0.1:8080/expense/pages/login.jsp'>here</a>");
+		email.setContent("Your password has been changed successfully. You can login to your account from <a href = 'http://127.0.0.1:8080/WebApp_ID/pages/login.jsp'>here</a>");
 		
 		Message message = new MimeMessage(session1);
 		message.setFrom(new InternetAddress("admn.vowcher@gmail.com"));

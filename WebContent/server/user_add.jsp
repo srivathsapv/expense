@@ -137,10 +137,10 @@
 							 + "<li>Mobile Application to upload vouchers from mobile</li>"
 							 + "<li>GUI provided both in English and Hindi</li>"
 							 + "<li>Intuitive menu driven and easy to understand GUI for greater user experience</li><br><br>"
-							 + "Want to get the real taste of Vowcher? Login <a href = 'http://localhost:8080/expense/pages/login.jsp'>here</a> using the following credentials <br><br>"
+							 + "Want to get the real taste of Vowcher? Login <a href = 'http://localhost:8080/WebApp_ID/pages/login.jsp'>here</a> using the following credentials <br><br>"
 							 + "<b>Username:</b>" + user.getUserid() + "<br><br>"
 							 + "<b>Password:</b>" + randomstr +"<br><br>"
-							 + "You can later change the password <a href = 'http://localhost:8080/expense/pages/change_password.jsp'>here</a>");
+							 + "You can later change the password <a href = 'http://localhost:8080/WebApp_ID/pages/change_password.jsp'>here</a>");
 			
 			Message message = new MimeMessage(session1);
 			message.setFrom(new InternetAddress("admn.vowcher@gmail.com"));

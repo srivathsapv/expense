@@ -3,16 +3,20 @@
  */
 package user;
 
-import java.text.ParseException;
-import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
-
-import sms.SMS;
-
-import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Properties;
+
+import javax.mail.Message;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 
 import db.Db;
 import email.Email;
@@ -256,9 +260,9 @@ public class Notification {
 					user.User statuser = new User(stat.getUserid());
 					String statusername = statuser.getFirstName() + " " + statuser.getlastName();
 					
-					content = "Your voucher <a href = 'http://127.0.0.1:8080/expense/pages/voucher_view.jsp?id="
+					content = "Your voucher <a href = 'http://127.0.0.1:8080/WebApp_ID/pages/voucher_view.jsp?id="
 							  + vouch.getVoucherid() + "'>" + vouch.getTitle() + "</a> has been " + statstr
-							  + " by <a href = 'http://127.0.0.1:8080/expense/pages/user_view.jsp?userid=" + stat.getUserid() + "'>"
+							  + " by <a href = 'http://127.0.0.1:8080/WebApp_ID/pages/user_view.jsp?userid=" + stat.getUserid() + "'>"
 							  + statusername + "</a>";
 					
 					Email email = new Email();

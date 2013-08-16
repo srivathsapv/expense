@@ -61,12 +61,26 @@
 <%
 	String userid = "";
 	String title = "Vowcher - Add new User";
+	String sUserid = session.getAttribute("sessionUsername").toString();
+	Authentication cUser = new Authentication(sUserid);
 	if(request.getParameter("mode") != null){
 		userid = request.getParameter("userid");
-		String sUserid = session.getAttribute("sessionUsername").toString();
 		if(!sUserid.equals(userid)){
+			boolean allowed=false;
+			if(cUser.getRole().equals("md")){
+				allowed = true;
+			}
+			else if(cUser.getRole().equals("ceo")){
+				User curUser = new User(sUserid);
+				User profileUser = new User(userid);
+				if(curUser.getDeptid() == profileUser.getDeptid()){
+					allowed=true;
+				}
+			}
+			if(!allowed) {
 			%> <div id = "body-content"><div class = "alert alert-error">You don't have access to this page</div></div><%
 			return;
+			}
 		}
 		title = "Vowcher - Edit User";
 		%>
@@ -151,6 +165,7 @@
    				<input type = "radio" alt = "female" id = "gender" name = "gender" value = "F">
    				Female
    			</label>
+   			<% if(!request.getParameter("mode").equals("edit") && cUser.getRole().equals("md")) { %>
    			<select class = "span4 required" valtype = "required" id = "role" name = "role">
    				<option value = "">Type of user</option>
    				<option value = "employee">Employee</option>
@@ -173,7 +188,9 @@
    			<select class = "span4 required" valtype = "required" id = "manager" name = "manager">
    				<option value = "">Choose Manager</option>
    			</select><br>
+   			
    			<input class = "span4 required" id = "designation" name = "designation" valtype = "required alpha" valmsg="Designation should contain only alphabets" type="text" placeholder="Designation..."><br>
+   			<% } %>
     		<textarea rows="5" cols = "50" name = "address" placeholder="Address..."></textarea><br>
     		<div>
     		<span class="input-prepend">
