@@ -47,6 +47,7 @@
 	
 	//create new login
 	Authentication new_login = null;
+	System.out.println(values[16]);
 	if(values[16].equals("")) {
 		 new_login = new Authentication();
 	}
@@ -57,7 +58,9 @@
 	String randomstr = Utility.randomstr(8);
 	
 	new_login.setUserid(values[0]);
-	new_login.setPassword(randomstr);
+	if(values[16].equals("")) {
+		new_login.setPassword(randomstr);
+	}
 	new_login.setRole(values[7]);
 	new_login.setLastlogin();
 	new_login.setSecureId(""); //OAuth ID is initially null
