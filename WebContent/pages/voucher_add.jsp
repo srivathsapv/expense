@@ -12,7 +12,17 @@
     							   java.util.Date,
     							   voucher.vouchertype.Department"%>
 <%@ include file = "../include/layout.jsp" %>
-
+<%
+	String mode="";
+	String pagetitle="Vowcher - Add New Voucher";
+	if(request.getParameter("mode") != null){
+		mode = request.getParameter("mode");
+	}
+	if(mode.equals("edit")) {
+		pagetitle="Vowcher - Edit Voucher";
+	}
+%>
+<title><%=pagetitle %></title>
 <link rel = "stylesheet" href = "../less/datepicker.css">
 <script src = "../js/bootstrap-datepicker.js"></script>
 <script src = "../js/tiny_mce/tiny_mce.js"></script>
@@ -138,14 +148,10 @@
 		}
 	%>
 	<%
-		
-		String mode = "";
 		String title="";String amount="";String type="";String date="";String description="";
 		String filename="";
 		int vid=0;
-		if(request.getParameter("mode") != null){
-			mode = request.getParameter("mode");
-		}
+		
 		if(mode.equals("drafts")){
 			filename = request.getParameter("filename");
 			String path = config.getServletContext().getRealPath("/")+"drafts/"+filename;
@@ -180,14 +186,9 @@
 			description = description.replace("/","&#47");
 			
 		}
-		String pagetitle = "Vowcher - Add New Voucher";
 		String legend = "Add new voucher<p class = 'legend-desc'><i class = 'icon-question-sign'></i>Enter details about your voucher and submit to claim your expenses</p>"; 
 		String attach = "Upload";
-		if(mode.equals("edit")){
-			pagetitle = "Vowcher - Edit Voucher";
-			legend = "Edit voucher";
-			attach = "Change";
-		}
+		
 		
 		String buttonset = "";
 		if(mode.equals("") || mode.equals("from_existing")){
@@ -216,7 +217,6 @@
 		}
 		
 	%>
-		<title><%=pagetitle %></title>
    		<legend>
    			<%= legend %>
    		</legend>

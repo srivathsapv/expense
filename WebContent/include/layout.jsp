@@ -605,9 +605,11 @@
 									%>
 							</div>
 						</div>
+						<% if(l_role.equals("admin")) { %>
 						<form action="../pages/backupandrestore.jsp">
 							<button type = "submit" class="btn btn-warning"><i class="icon-white icon-repeat"></i>Backup / Restore</button>
 						</form>
+						<% } %>
 					</div>
 					<div class = "span9">
 						<%
