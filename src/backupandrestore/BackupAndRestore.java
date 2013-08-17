@@ -68,7 +68,7 @@ public class BackupAndRestore{
 			}
 		}
 		
-		Runtime rt = Runtime.getRuntime();
+		/*Runtime rt = Runtime.getRuntime();
 		Process child1  = rt.exec("mkdir /home/"+this.dbUsername+"/backup");
 		child1.waitFor();
 		Process child2  = rt.exec("mkdir /home/"+this.dbUsername+"/backup/OnlineBackups");
@@ -82,7 +82,7 @@ public class BackupAndRestore{
 		Process child6  = rt.exec("chown "+this.dbUsername+":db2iadm1 /home/"+this.dbUsername+"/backup/ArchiveDest");
 		child6.waitFor();
 		Process child7  = rt.exec("chown "+this.dbUsername+":db2iadm1 /home/"+this.dbUsername+"/backup/logs");
-		child7.waitFor();
+		child7.waitFor();*/
 	}
 	/**
 	 * takes online backup of the database
@@ -98,26 +98,26 @@ public class BackupAndRestore{
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     	Calendar cal = Calendar.getInstance();
     	String timestamp = dateFormat.format(cal.getTime()).toString();
-    	PrintWriter logwriter = new PrintWriter("/home/srivathsa/Desktop/backup_log", "UTF-8");
+    	PrintWriter logwriter = new PrintWriter("/home/sasipraveen/Desktop/backup_log", "UTF-8");
     	logwriter.println(timestamp);
     	logwriter.close();
     	
-		PrintWriter writer = new PrintWriter("/home/srivathsa/Desktop/backup-"+timestamp+".sql", "UTF-8");
+		PrintWriter writer = new PrintWriter("/home/sasipraveen/Desktop/backup-"+timestamp+".sql", "UTF-8");
 		Db db = new Db();
 		db.connect();
 		ResultSet rs1 = db.executeQuery("SELECT * FROM AMOUNT_CONFIG");
 		while(rs1.next()){
-			writer.println("INSERT INTO AMOUNT_CONFIG(LOWER_LIMIT,UPPER_LIMIT,MAXCOUNT) VALUES("+rs1.getString("ID")+","+rs1.getString("LOWER_LIMIT")+","+rs1.getString("UPPER_LIMIT")+","+rs1.getString("MAXCOUNT")+");");
+			writer.println("INSERT INTO AMOUNT_CONFIG(LOWER_LIMIT,UPPER_LIMIT,MAXCOUNT) VALUES("+rs1.getString("LOWER_LIMIT")+","+rs1.getString("UPPER_LIMIT")+","+rs1.getString("MAXCOUNT")+");");
 		}
 		
 		ResultSet rs2 = db.executeQuery("SELECT * FROM BOOKMARK");
 		while(rs2.next()){
-			writer.println("INSERT INTO BOOKMARK(USERID,TITLE,LINK) VALUES("+rs2.getString("ID")+",'"+rs2.getString("USERID")+"','"+rs2.getString("TITLE")+"','"+rs2.getString("LINK")+"');");
+			writer.println("INSERT INTO BOOKMARK(USERID,TITLE,LINK) VALUES('"+rs2.getString("USERID")+"','"+rs2.getString("TITLE")+"','"+rs2.getString("LINK")+"');");
 		}
 		
 		ResultSet rs3 = db.executeQuery("SELECT * FROM DEPARTMENT");
 		while(rs3.next()){
-			writer.println("INSERT INTO DEPARTMENT(DEPTNAME,SHORTNAME,DESCRIPTION,USERID) VALUES("+rs3.getString("DEPTID")+",'"+rs3.getString("DEPTNAME")+"','"+rs3.getString("SHORTNAME")+"','"+rs3.getString("DESCRIPTION")+"','"+rs3.getString("USERID")+"');");
+			writer.println("INSERT INTO DEPARTMENT(DEPTNAME,SHORTNAME,DESCRIPTION,USERID) VALUES('"+rs3.getString("DEPTNAME")+"','"+rs3.getString("SHORTNAME")+"','"+rs3.getString("DESCRIPTION")+"','"+rs3.getString("USERID")+"');");
 		}
 		
 		ResultSet rs4 = db.executeQuery("SELECT * FROM LOGIN");
@@ -127,56 +127,68 @@ public class BackupAndRestore{
 		
 		ResultSet rs5 = db.executeQuery("SELECT * FROM NOTIFICATION");
 		while(rs5.next()){
-			writer.println("INSERT INTO NOTIFICATION(USERID,CATEGORY,CATEGORYID,TIMEUPDATE) VALUES("+rs5.getString("ID")+",'"+rs5.getString("USERID")+"','"+rs5.getString("CATEGORY")+"','"+rs5.getString("CATEGORYID")+"','"+rs5.getString("TIMEUPDATE")+"');");
+			writer.println("INSERT INTO NOTIFICATION(USERID,CATEGORY,CATEGORYID,TIMEUPDATE) VALUES('"+rs5.getString("USERID")+"','"+rs5.getString("CATEGORY")+"','"+rs5.getString("CATEGORYID")+"','"+rs5.getString("TIMEUPDATE")+"');");
 		}
 		
 		ResultSet rs6 = db.executeQuery("SELECT * FROM POLICY");
 		while(rs6.next()){
-			writer.println("INSERT INTO POLICY(TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE) VALUES("+rs6.getString("POLICYID")+",'"+rs6.getString("TITLE")+"','"+rs6.getString("DESCRIPTION")+"','"+rs6.getString("AMOUNTPERCENT")+"','"+rs6.getString("AVAILABLE")+"');");
+			writer.println("INSERT INTO POLICY(TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE) VALUES('"+rs6.getString("TITLE")+"','"+rs6.getString("DESCRIPTION")+"','"+rs6.getString("AMOUNTPERCENT")+"','"+rs6.getString("AVAILABLE")+"');");
 		}
 		
+		String FILE = "NULL";
 		ResultSet rs7 = db.executeQuery("SELECT * FROM REPORT");
 		while(rs7.next()){
-			writer.println("INSERT INTO REPORT(TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE) VALUES("+rs7.getString("REPORTID")+",'"+rs7.getString("TITLE")+"','"+rs7.getString("DESCRIPTION")+"','"+rs7.getString("TYPE")+"','"+rs7.getString("DATE")+"','"+rs7.getString("USERID")+"','"+rs7.getString("FILE")+"');");
+			if(rs7.getString("FILE")!= null){
+				FILE = "'"+rs7.getString("FILE")+"'";
+    		}
+			writer.println("INSERT INTO REPORT(TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE) VALUES('"+rs7.getString("TITLE")+"','"+rs7.getString("DESCRIPTION")+"','"+rs7.getString("TYPE")+"','"+rs7.getString("DATE")+"','"+rs7.getString("USERID")+"',"+FILE+");");
 		}
 		
 		ResultSet rs8 = db.executeQuery("SELECT * FROM ROLECONFIG");
 		while(rs8.next()){
-			writer.println("INSERT INTO ROLECONFIG(ROLE,CLAIM_LIMIT,ACCEPT_LIMIT) VALUES("+rs8.getString("ID")+",'"+rs8.getString("ROLE")+"','"+rs8.getString("CLAIM_LIMIT")+"','"+rs8.getString("ACCEPT_LIMIT")+"');");
+			writer.println("INSERT INTO ROLECONFIG(ROLE,CLAIM_LIMIT,ACCEPT_LIMIT) VALUES('"+rs8.getString("ROLE")+"','"+rs8.getString("CLAIM_LIMIT")+"','"+rs8.getString("ACCEPT_LIMIT")+"');");
 		}
 		
+		String PHOTO = "NULL";
 		ResultSet rs = db.executeQuery("SELECT * FROM USER");
     	while(rs.next()){
+    		if(rs.getString("PHOTO")!= null){
+    			PHOTO = "'"+rs.getString("PHOTO")+"'";
+    		}
     		writer.println("INSERT INTO USER(USERID,SOCIALSECURITY,FIRSTNAME,MIDDLENAME,LASTNAME,GENDER,DEPTID,MANAGER,DESIGNATION,ADDRESS,PHONE,MOBILE,EMAIL,PHOTO,DOB) " +
     				"VALUES('"+rs.getString("USERID")+"','"+rs.getString("SOCIALSECURITY")+"','"+rs.getString("FIRSTNAME")+"','"+rs.getString("MIDDLENAME")+"','"+rs.getString("LASTNAME")+"','"+rs.getString("GENDER")+"'," +
     						"'"+rs.getString("DEPTID")+"','"+rs.getString("MANAGER")+"','"+rs.getString("DESIGNATION")+"','"+rs.getString("ADDRESS")+"'," +
-    								"'"+rs.getString("PHONE")+"','"+rs.getString("MOBILE")+"','"+rs.getString("EMAIL")+"','"+rs.getString("PHOTO")+"','"+rs.getString("DOB")+"');");
+    								"'"+rs.getString("PHONE")+"','"+rs.getString("MOBILE")+"','"+rs.getString("EMAIL")+"',"+PHOTO+",'"+rs.getString("DOB")+"');");
     	}
     	
+    	String ATTACHMENT = "NULL";
     	ResultSet rs9 = db.executeQuery("SELECT * FROM VOUCHER");
     	while(rs9.next()){
-    		writer.println("INSERT INTO VOUCHER(USERID,TITLE,AMOUNT,VTYPEID,DATE,DESCRIPTION,ATTACHMENT,EXTENSION,REJECTREASON,POLICYID)" +
-    				" VALUES("+rs9.getString("VOUCHERID")+",'"+rs9.getString("USERID")+"','"+rs9.getString("TITLE")+"','"+rs9.getString("AMOUNT")+"','"+rs9.getString("VTYPEID")+"','"+rs9.getString("DATE")+"','"+rs9.getString("ATTACHMENT")+"','"+rs9.getString("DESCRIPTION")+"','"+rs9.getString("EXTENSION")+"','"+rs9.getString("REJECTREASON")+"','"+rs9.getString("POLICYID")+"');");
+    		if(rs9.getString("ATTACHMENT")!= null){
+    			ATTACHMENT = "'"+rs9.getString("ATTACHMENT")+"'";
+    		}
+    		writer.println("INSERT INTO VOUCHER(USERID,TITLE,AMOUNT,VTYPEID,DATE,ATTACHMENT,DESCRIPTION,EXTENSION,REJECTREASON,POLICYID)" +
+    				" VALUES('"+rs9.getString("USERID")+"','"+rs9.getString("TITLE")+"','"+rs9.getString("AMOUNT")+"','"+rs9.getString("VTYPEID")+"','"+rs9.getString("DATE")+"',"+ATTACHMENT+",'"+rs9.getString("DESCRIPTION")+"','"+rs9.getString("EXTENSION")+"','"+rs9.getString("REJECTREASON")+"','"+rs9.getString("POLICYID")+"');");
     	}
     	
 		ResultSet rs10 = db.executeQuery("SELECT * FROM VOUCHER_STATUS");
 		while(rs10.next()){
-			writer.println("INSERT INTO VOUCHER_STATUS(VOUCHERID,STATUS,USERID,TIME) VALUES("+rs10.getString("STATUSID")+","+rs10.getString("VOUCHERID")+",'"+rs10.getString("STATUS")+"','"+rs10.getString("USERID")+"','"+rs10.getString("TIME")+"');");
+			writer.println("INSERT INTO VOUCHER_STATUS(VOUCHERID,STATUS,USERID,TIME) VALUES("+rs10.getString("VOUCHERID")+",'"+rs10.getString("STATUS")+"','"+rs10.getString("USERID")+"','"+rs10.getString("TIME")+"');");
 		}
 		
 		ResultSet rs11 = db.executeQuery("SELECT * FROM VOUCHER_TYPE");
 		while(rs11.next()){
-			writer.println("INSERT INTO VOUCHER_TYPE(TITLE,DESCRIPTION) VALUES("+rs11.getString("VTYPEID")+",'"+rs11.getString("TITLE")+"','"+rs11.getString("DESCRIPTION")+"');");
+			writer.println("INSERT INTO VOUCHER_TYPE(TITLE,DESCRIPTION) VALUES('"+rs11.getString("TITLE")+"','"+rs11.getString("DESCRIPTION")+"');");
 		}
 		
 		ResultSet rs12 = db.executeQuery("SELECT * FROM VOUCHERTYPE_DEPT");
 		while(rs12.next()){
-			writer.println("INSERT INTO VOUCHERTYPE_DEPT(VTYPEID,DEPTID) VALUES("+rs12.getString("ID")+","+rs12.getString("VTYPEID")+","+rs12.getString("DEPTID")+");");
+			writer.println("INSERT INTO VOUCHERTYPE_DEPT(VTYPEID,DEPTID) VALUES("+rs12.getString("VTYPEID")+","+rs12.getString("DEPTID")+");");
 		}
 		
 		ResultSet rs13 = db.executeQuery("SELECT * FROM VOUCHERTYPE_POLICY");
 		while(rs13.next()){
-			writer.println("INSERT INTO VOUCHERTYPE_POLICY(VTYPEID,POLICYID) VALUES("+rs13.getString("ID")+","+rs13.getString("VTYPEID")+","+rs13.getString("POLICYID")+");");
+			writer.println("INSERT INTO VOUCHERTYPE_POLICY(VTYPEID,POLICYID) VALUES("+rs13.getString("VTYPEID")+","+rs13.getString("POLICYID")+");");
 		}
 		writer.close();
 
@@ -199,11 +211,12 @@ public class BackupAndRestore{
 	 * @throws ClassNotFoundException 
 	 * @throws IOException 
 	 * @throws InterruptedException 
+	 * @throws ParseException 
 	 */
-	public boolean restore(String timestamp) throws ClassNotFoundException, SQLException, IOException, InterruptedException{
+	public boolean restore(String timestamp) throws ClassNotFoundException, SQLException, IOException, InterruptedException, ParseException{
 		BufferedReader in = null;
 		Db db = null;
-		try {
+		//try {
 			String t = this.lastBackupDate();
 			final String NEW_FORMAT = "yyyyMMddHHmmss";
 	    	final String OLD_FORMAT = "dd/MM/yyyy HH:mm:ss";
@@ -241,20 +254,29 @@ public class BackupAndRestore{
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM VOUCHERTYPE_POLICY");
 			stmt.executeUpdate();
-			System.out.println("1");
+			stmt = con.prepareStatement("ALTER TABLE DEPARTMENT ALTER COLUMN DEPTID RESTART WITH 1");
+			stmt.executeUpdate();
+			stmt = con.prepareStatement("ALTER TABLE POLICY ALTER COLUMN POLICYID RESTART WITH 1");
+			stmt.executeUpdate();
+			stmt = con.prepareStatement("ALTER TABLE VOUCHER ALTER COLUMN VOUCHERID RESTART WITH 1");
+			stmt.executeUpdate();
+			stmt = con.prepareStatement("ALTER TABLE VOUCHER_TYPE ALTER COLUMN VTYPEID RESTART WITH 1");
+			stmt.executeUpdate();
+			
 			
 			in = new BufferedReader(new FileReader("/home/sasipraveen/Desktop/backup-"+time+".sql"));
             String str="";
             while ((str = in.readLine()) != null) {
-               db.executeQuery(str.substring(0,str.length()-1));
+            	stmt = con.prepareStatement(str.substring(0,str.length()-1));
+            	stmt.executeUpdate();
             }
             System.out.println("3");
             in.close();
         	db.disconnect();
         	return true;
-        } catch (Exception e) {
-            return false;
-        }
+        //} catch (Exception e) {
+          //  return false;
+        //}
 	}
 	
 	/**
