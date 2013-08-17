@@ -25,5 +25,4 @@
 		response.sendRedirect("../pages/backupandrestore.jsp?status="+Utility.MD5("restore-error"));
 		}
 	}
-	
 %>
