@@ -47,7 +47,6 @@
 	
 	//create new login
 	Authentication new_login = null;
-	System.out.println(values[16]);
 	if(values[16].equals("")) {
 		 new_login = new Authentication();
 	}
