@@ -190,7 +190,12 @@
    			</select><br>
    			
    			<input class = "span4 required" id = "designation" name = "designation" valtype = "required alpha" valmsg="Designation should contain only alphabets" type="text" placeholder="Designation..."><br>
-   			<% } %>
+   			<% } else{%>
+   			<input type = "hidden" id = "role" name ="role">
+   			<input type = "hidden" id = "deptid" name = "deptid">
+   			<input type = "hidden" id = "manager" name ="manager">
+   			<input type = "hidden" id = "designation" name = "designation">
+   			<%} %>
     		<textarea rows="5" cols = "50" name = "address" placeholder="Address..."></textarea><br>
     		<div>
     		<span class="input-prepend">

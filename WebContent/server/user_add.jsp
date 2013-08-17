@@ -29,7 +29,7 @@
         while (itr.hasNext()) {
 	        FileItem item = (FileItem) itr.next();
 	        if (item.isFormField()) {
-	        		values[i++] = item.getString();
+	        		values[i++] =  item.getString();
 	        } 
 	        else {
 	        	try {	        		
@@ -47,6 +47,7 @@
 	
 	//create new login
 	Authentication new_login = null;
+	
 	if(values[16].equals("")) {
 		 new_login = new Authentication();
 	}
