@@ -62,12 +62,14 @@
 	String userid = "";
 	String title = "Vowcher - Add new User";
 	String sUserid = session.getAttribute("sessionUsername").toString();
+	String mode="add";
 	Authentication cUser = new Authentication(sUserid);
 	if(request.getParameter("mode") != null){
+		mode="edit";
 		userid = request.getParameter("userid");
 		if(!sUserid.equals(userid)){
 			boolean allowed=false;
-			if(cUser.getRole().equals("md")){
+			if(cUser.getRole().equals("md") || cUser.getRole().equals("admin")){
 				allowed = true;
 			}
 			else if(cUser.getRole().equals("ceo")){
@@ -77,9 +79,10 @@
 					allowed=true;
 				}
 			}
+			
 			if(!allowed) {
-			%> <div id = "body-content"><div class = "alert alert-error">You don't have access to this page</div></div><%
-			return;
+				%> <div id = "body-content"><div class = "alert alert-error">You don't have access to this page</div></div><%
+				return;
 			}
 		}
 		title = "Vowcher - Edit User";
@@ -143,6 +146,7 @@
     					New User
     			<p class = "legend-desc"><i class = "icon-question-sign"></i>Enter the details of the new user to be added</p> <%
     				}
+    			
     			%>
     		</legend><br>
     		<input class = "span4 required" type = "text" valtype = "required alphanumeric <% if(userid.equals("")) { %>unique_username<%} %>" valmsg = "Username should be alphanumeric" id = "userid" name = "userid" placeholder = "Choose a login ID ..."><br/>
@@ -165,7 +169,7 @@
    				<input type = "radio" alt = "female" id = "gender" name = "gender" value = "F">
    				Female
    			</label>
-   			<% if(!request.getParameter("mode").equals("edit") && cUser.getRole().equals("md")) { %>
+   			<% if(!mode.equals("edit") && (cUser.getRole().equals("md") || cUser.getRole().equals("admin"))) { %>
    			<select class = "span4 required" valtype = "required" id = "role" name = "role">
    				<option value = "">Type of user</option>
    				<option value = "employee">Employee</option>
@@ -190,6 +194,11 @@
    			</select><br>
    			
    			<input class = "span4 required" id = "designation" name = "designation" valtype = "required alpha" valmsg="Designation should contain only alphabets" type="text" placeholder="Designation..."><br>
+   			<% } else { %>
+   			<input type = "hidden" id = "role" name ="role">
+   			<input type = "hidden" id = "deptid" name = "deptid">
+   			<input type = "hidden" id = "manager" name ="manager">
+   			<input type = "hidden" id = "designation" name = "designation">
    			<% } %>
     		<textarea rows="5" cols = "50" name = "address" placeholder="Address..."></textarea><br>
     		<div>
@@ -210,8 +219,6 @@
     			String attach = "Upload";
     			if(!userid.equals("")) {
     				User user = new User(userid);
-    				
-    				
     				if(user.getPhoto() != null) {
     					if(!user.getPhoto().equals("")){
     						attach = "Change";

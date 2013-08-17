@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
     pageEncoding="UTF-8" import = "voucher.Status,utility.Utility,user.User,user.Department,java.sql.*,java.io.*,com.ocpsoft.pretty.time.*" %>
 <%@ include file = "../include/layout.jsp" %>
-
+<title>Vowcher - Personal Details</title>
 <div id = "body-content">
 	<%
 		String userid = request.getParameter("userid");
@@ -136,12 +136,17 @@
 	%>
 	</ul>
 	<br>
+	<%
+		Authentication adminAuth = new Authentication(userid);
+		if(!adminAuth.getRole().equals("admin")) { 
+	%>
 	<legend>
 		<h4><i class = "icon-road"></i>User Hierarchy</h4>
 	</legend>
 	<center>
 	<%
 		User hUser = new User(userid);
+		
 		Vector<User> hierarchy = new Vector<User>();
 		while(true){
 			hierarchy.add(hUser);
@@ -182,6 +187,7 @@
 			
 			<%
 		}
+	}
 	%>
 	</center>
 </div>
