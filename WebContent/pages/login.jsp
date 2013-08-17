@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ page import="utility.Utility,java.io.File" %>
-
 <html>
 <head>
 	<title>Vowcher - A web based solution for expense management</title>
@@ -82,6 +81,7 @@
 													Keep me logged in
 												</label>
 											</div>
+											<a href='forgot_password.jsp'>Forgot Password?</a>
 										</div>
 										
 								</form>
