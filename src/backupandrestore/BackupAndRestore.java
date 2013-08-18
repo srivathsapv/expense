@@ -55,8 +55,10 @@ public class BackupAndRestore{
 		//clear the old backup files
 		File bkFilePath = new File(FILEPATH);
 		File[] fileList = bkFilePath.listFiles();
+		if(fileList!=null){
 		for(File f:fileList){
 			f.delete();
+		}
 		}
 	}
 	/**
@@ -206,8 +208,6 @@ public class BackupAndRestore{
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM LOGIN");
 			stmt.executeUpdate();
-			stmt = con.prepareStatement("DELETE FROM NOTIFICATION");
-			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM POLICY");
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM REPORT");
@@ -217,8 +217,6 @@ public class BackupAndRestore{
 			stmt = con.prepareStatement("DELETE FROM USER");
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM VOUCHER");
-			stmt.executeUpdate();
-			stmt = con.prepareStatement("DELETE FROM VOUCHER_STATUS");
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM VOUCHER_TYPE");
 			stmt.executeUpdate();
@@ -262,12 +260,6 @@ public class BackupAndRestore{
 			callStmt.setString(1, param);
 			callStmt.execute();
 			
-			param = "import from "+FILEPATH+"NOTIFICATION.ixf of ixf " +
-					"lobs from "+LOBPATH+" messages on server	" +
-					" insert into NOTIFICATION (USERID,CATEGORY,CATEGORYID,TIMEUPDATE)";
-			callStmt.setString(1, param);
-			callStmt.execute();
-			
 			param = "import from "+FILEPATH+"POLICY.ixf of ixf " +
 					"lobs from "+LOBPATH+" messages on server	" +
 					" insert into POLICY (TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE)";
@@ -296,12 +288,6 @@ public class BackupAndRestore{
 			param = "import from "+FILEPATH+"VOUCHER.ixf of ixf " +
 					"lobs from "+LOBPATH+" messages on server	" +
 					" insert into VOUCHER (USERID,TITLE,AMOUNT,VTYPEID,DATE,DESCRIPTION,ATTACHMENT,EXTENSION,REJECTREASON,POLICYID)";
-			callStmt.setString(1, param);
-			callStmt.execute();
-			
-			param = "import from "+FILEPATH+"VOUCHER_STATUS.ixf of ixf " +
-					"lobs from "+LOBPATH+" messages on server	" +
-					" insert into VOUCHER_STATUS (VOUCHERID,STATUS,USERID,TIME)";
 			callStmt.setString(1, param);
 			callStmt.execute();
 			
