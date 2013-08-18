@@ -2,21 +2,22 @@ package backupandrestore;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import db.Db;
 
@@ -40,7 +41,9 @@ public class BackupAndRestore{
 	
 	private String FILEPATH = "/home/sasipraveen/backup/";
 	
-	private String LOBPATH = "/home/sasipraveen/backup/lobfile";
+	private String LOBPATH = "/home/sasipraveen/backup";
+	
+	private String zipDir = "/home/sasipraveen/Desktop/";
 	
 	/**
 	 * Intializes db2 database for backup and recovery
@@ -227,6 +230,7 @@ public class BackupAndRestore{
           System.out.println("Total number of rows exported  : " + rows_exported);
        
         } */
+		this.compressFiles(zipDir+"backup-"+timestamp+".zip" , LOBPATH);
 
 		return true;
 		}catch(Exception e){
@@ -428,5 +432,50 @@ public class BackupAndRestore{
     		}
     	}
 		return newDateString;
+	}
+	
+	private boolean compressFiles(String zipFile, String sourceDirectory){
+		try
+        {
+                byte[] buffer = new byte[1024];
+                
+                FileOutputStream fout = new FileOutputStream(zipFile);
+                 
+                 ZipOutputStream zout = new ZipOutputStream(fout);
+                
+                 File dir = new File(sourceDirectory);
+                 
+                 if(!dir.isDirectory())
+                 {
+                        return false;
+                 }
+                 else
+                 {
+                        File[] files = dir.listFiles();
+                       
+                        for(int i=0; i < files.length ; i++)
+                        {
+                            
+                                FileInputStream fin = new FileInputStream(files[i]);
+                                zout.putNextEntry(new ZipEntry(files[i].getName()));
+                                int length;
+                 
+                                while((length = fin.read(buffer)) > 0)
+                                {
+                                   zout.write(buffer, 0, length);
+                                }
+                                 zout.closeEntry();
+                
+                                 fin.close();
+                        }
+                 }
+        
+                  zout.close();
+                  return true;
+        }
+        catch(IOException ioe)
+        {
+                return false;
+        }
 	}
 }
