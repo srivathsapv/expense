@@ -2,9 +2,12 @@ package backupandrestore;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,6 +30,18 @@ import db.Db;
  */
 
 public class BackupAndRestore{
+	
+	
+	private String dbUsername;
+	
+	private String dbName;
+	
+	private String dbPwd;
+	
+	private String FILEPATH = "/home/sasipraveen/backup/";
+	
+	private String LOBPATH = "/home/sasipraveen/backup/lobfile";
+	
 	/**
 	 * Intializes db2 database for backup and recovery
 	 * 
@@ -36,13 +51,6 @@ public class BackupAndRestore{
 	 * @throws ClassNotFoundException 
 	 * 
 	 */
-	
-	private String dbUsername;
-	
-	private String dbName;
-	
-	private String dbPwd;
-	
 	public void init() throws IOException, InterruptedException, ClassNotFoundException, SQLException{
 		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 		if(path.indexOf("BackupAndRestore.class") >= 0) {
@@ -98,99 +106,127 @@ public class BackupAndRestore{
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     	Calendar cal = Calendar.getInstance();
     	String timestamp = dateFormat.format(cal.getTime()).toString();
-    	PrintWriter logwriter = new PrintWriter("/home/sasipraveen/Desktop/backup_log", "UTF-8");
+    	PrintWriter logwriter = new PrintWriter(FILEPATH+"backup_log", "UTF-8");
     	logwriter.println(timestamp);
     	logwriter.close();
     	
-		PrintWriter writer = new PrintWriter("/home/sasipraveen/Desktop/backup-"+timestamp+".sql", "UTF-8");
 		Db db = new Db();
 		db.connect();
-		ResultSet rs1 = db.executeQuery("SELECT * FROM AMOUNT_CONFIG");
-		while(rs1.next()){
-			writer.println("INSERT INTO AMOUNT_CONFIG(LOWER_LIMIT,UPPER_LIMIT,MAXCOUNT) VALUES("+rs1.getString("LOWER_LIMIT")+","+rs1.getString("UPPER_LIMIT")+","+rs1.getString("MAXCOUNT")+");");
-		}
+		Connection con = db.getConnection();
+		String sql = "CALL SYSPROC.ADMIN_CMD(?)";
+		CallableStatement callStmt = con.prepareCall(sql);
 		
-		ResultSet rs2 = db.executeQuery("SELECT * FROM BOOKMARK");
-		while(rs2.next()){
-			writer.println("INSERT INTO BOOKMARK(USERID,TITLE,LINK) VALUES('"+rs2.getString("USERID")+"','"+rs2.getString("TITLE")+"','"+rs2.getString("LINK")+"');");
-		}
 		
-		ResultSet rs3 = db.executeQuery("SELECT * FROM DEPARTMENT");
-		while(rs3.next()){
-			writer.println("INSERT INTO DEPARTMENT(DEPTNAME,SHORTNAME,DESCRIPTION,USERID) VALUES('"+rs3.getString("DEPTNAME")+"','"+rs3.getString("SHORTNAME")+"','"+rs3.getString("DESCRIPTION")+"','"+rs3.getString("USERID")+"');");
-		}
 		
-		ResultSet rs4 = db.executeQuery("SELECT * FROM LOGIN");
-		while(rs4.next()){
-			writer.println("INSERT INTO LOGIN(USERID,PASSWORD,ROLE,LASTLOGIN,SECUREID) VALUES('"+rs4.getString("USERID")+"','"+rs4.getString("PASSWORD")+"','"+rs4.getString("ROLE")+"','"+rs4.getString("LASTLOGIN")+"','"+rs4.getString("SECUREID")+"');");
-		}
+		String param = "export to "+FILEPATH+"AMOUNT_CONFIG.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select LOWER_LIMIT,UPPER_LIMIT,MAXCOUNT from AMOUNT_CONFIG";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		ResultSet rs5 = db.executeQuery("SELECT * FROM NOTIFICATION");
-		while(rs5.next()){
-			writer.println("INSERT INTO NOTIFICATION(USERID,CATEGORY,CATEGORYID,TIMEUPDATE) VALUES('"+rs5.getString("USERID")+"','"+rs5.getString("CATEGORY")+"','"+rs5.getString("CATEGORYID")+"','"+rs5.getString("TIMEUPDATE")+"');");
-		}
+		param = "export to "+FILEPATH+"BOOKMARK.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select USERID,TITLE,LINK from BOOKMARK";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		ResultSet rs6 = db.executeQuery("SELECT * FROM POLICY");
-		while(rs6.next()){
-			writer.println("INSERT INTO POLICY(TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE) VALUES('"+rs6.getString("TITLE")+"','"+rs6.getString("DESCRIPTION")+"','"+rs6.getString("AMOUNTPERCENT")+"','"+rs6.getString("AVAILABLE")+"');");
-		}
+		param = "export to "+FILEPATH+"DEPARTMENT.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select DEPTNAME,SHORTNAME,DESCRIPTION,USERID from DEPARTMENT";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		String FILE = "NULL";
-		ResultSet rs7 = db.executeQuery("SELECT * FROM REPORT");
-		while(rs7.next()){
-			if(rs7.getString("FILE")!= null){
-				FILE = "'"+rs7.getString("FILE")+"'";
-    		}
-			writer.println("INSERT INTO REPORT(TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE) VALUES('"+rs7.getString("TITLE")+"','"+rs7.getString("DESCRIPTION")+"','"+rs7.getString("TYPE")+"','"+rs7.getString("DATE")+"','"+rs7.getString("USERID")+"',"+FILE+");");
-		}
+		param = "export to "+FILEPATH+"LOGIN.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select USERID,PASSWORD,ROLE,LASTLOGIN,SECUREID from LOGIN";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		ResultSet rs8 = db.executeQuery("SELECT * FROM ROLECONFIG");
-		while(rs8.next()){
-			writer.println("INSERT INTO ROLECONFIG(ROLE,CLAIM_LIMIT,ACCEPT_LIMIT) VALUES('"+rs8.getString("ROLE")+"','"+rs8.getString("CLAIM_LIMIT")+"','"+rs8.getString("ACCEPT_LIMIT")+"');");
-		}
+		param = "export to "+FILEPATH+"NOTIFICATION.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select USERID,CATEGORY,CATEGORYID,TIMEUPDATE from NOTIFICATION";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		String PHOTO = "NULL";
-		ResultSet rs = db.executeQuery("SELECT * FROM USER");
-    	while(rs.next()){
-    		if(rs.getString("PHOTO")!= null){
-    			PHOTO = "'"+rs.getString("PHOTO")+"'";
-    		}
-    		writer.println("INSERT INTO USER(USERID,SOCIALSECURITY,FIRSTNAME,MIDDLENAME,LASTNAME,GENDER,DEPTID,MANAGER,DESIGNATION,ADDRESS,PHONE,MOBILE,EMAIL,PHOTO,DOB) " +
-    				"VALUES('"+rs.getString("USERID")+"','"+rs.getString("SOCIALSECURITY")+"','"+rs.getString("FIRSTNAME")+"','"+rs.getString("MIDDLENAME")+"','"+rs.getString("LASTNAME")+"','"+rs.getString("GENDER")+"'," +
-    						"'"+rs.getString("DEPTID")+"','"+rs.getString("MANAGER")+"','"+rs.getString("DESIGNATION")+"','"+rs.getString("ADDRESS")+"'," +
-    								"'"+rs.getString("PHONE")+"','"+rs.getString("MOBILE")+"','"+rs.getString("EMAIL")+"',"+PHOTO+",'"+rs.getString("DOB")+"');");
-    	}
-    	
-    	String ATTACHMENT = "NULL";
-    	ResultSet rs9 = db.executeQuery("SELECT * FROM VOUCHER");
-    	while(rs9.next()){
-    		if(rs9.getString("ATTACHMENT")!= null){
-    			ATTACHMENT = "'"+rs9.getString("ATTACHMENT")+"'";
-    		}
-    		writer.println("INSERT INTO VOUCHER(USERID,TITLE,AMOUNT,VTYPEID,DATE,ATTACHMENT,DESCRIPTION,EXTENSION,REJECTREASON,POLICYID)" +
-    				" VALUES('"+rs9.getString("USERID")+"','"+rs9.getString("TITLE")+"','"+rs9.getString("AMOUNT")+"','"+rs9.getString("VTYPEID")+"','"+rs9.getString("DATE")+"',"+ATTACHMENT+",'"+rs9.getString("DESCRIPTION")+"','"+rs9.getString("EXTENSION")+"','"+rs9.getString("REJECTREASON")+"','"+rs9.getString("POLICYID")+"');");
-    	}
-    	
-		ResultSet rs10 = db.executeQuery("SELECT * FROM VOUCHER_STATUS");
-		while(rs10.next()){
-			writer.println("INSERT INTO VOUCHER_STATUS(VOUCHERID,STATUS,USERID,TIME) VALUES("+rs10.getString("VOUCHERID")+",'"+rs10.getString("STATUS")+"','"+rs10.getString("USERID")+"','"+rs10.getString("TIME")+"');");
-		}
+		param = "export to "+FILEPATH+"POLICY.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE from POLICY";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		ResultSet rs11 = db.executeQuery("SELECT * FROM VOUCHER_TYPE");
-		while(rs11.next()){
-			writer.println("INSERT INTO VOUCHER_TYPE(TITLE,DESCRIPTION) VALUES('"+rs11.getString("TITLE")+"','"+rs11.getString("DESCRIPTION")+"');");
-		}
+		param = "export to "+FILEPATH+"REPORT.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE from REPORT";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		ResultSet rs12 = db.executeQuery("SELECT * FROM VOUCHERTYPE_DEPT");
-		while(rs12.next()){
-			writer.println("INSERT INTO VOUCHERTYPE_DEPT(VTYPEID,DEPTID) VALUES("+rs12.getString("VTYPEID")+","+rs12.getString("DEPTID")+");");
-		}
+		param = "export to "+FILEPATH+"ROLECONFIG.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select ROLE,CLAIM_LIMIT,ACCEPT_LIMIT from ROLECONFIG";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
 		
-		ResultSet rs13 = db.executeQuery("SELECT * FROM VOUCHERTYPE_POLICY");
-		while(rs13.next()){
-			writer.println("INSERT INTO VOUCHERTYPE_POLICY(VTYPEID,POLICYID) VALUES("+rs13.getString("VTYPEID")+","+rs13.getString("POLICYID")+");");
-		}
-		writer.close();
+		param = "export to "+FILEPATH+"USER.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select USERID,SOCIALSECURITY,FIRSTNAME,MIDDLENAME,LASTNAME,GENDER,DEPTID,MANAGER," +
+				"DESIGNATION,ADDRESS,PHONE,MOBILE,EMAIL,PHOTO,DOB from USER";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
+		
+		param = "export to "+FILEPATH+"VOUCHER.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select USERID,TITLE,AMOUNT,VTYPEID,DATE,DESCRIPTION,ATTACHMENT,EXTENSION,REJECTREASON,POLICYID from VOUCHER";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
+        
+		param = "export to "+FILEPATH+"VOUCHER_STATUS.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select VOUCHERID,STATUS,USERID,TIME from VOUCHER_STATUS";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
+		
+		param = "export to "+FILEPATH+"VOUCHER_TYPE.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select TITLE,DESCRIPTION from VOUCHER_TYPE";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
+		
+		param = "export to "+FILEPATH+"VOUCHERTYPE_DEPT.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select VTYPEID,DEPTID from VOUCHERTYPE_DEPT";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
+		
+		param = "export to "+FILEPATH+"VOUCHERTYPE_POLICY.ixf of ixf" +
+				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
+				"select VTYPEID,POLICYID from VOUCHERTYPE_POLICY";
+		//System.out.println(param);
+		callStmt.setString(1, param);
+		callStmt.execute();
+		
+		/*ResultSet rs = callStmt.getResultSet();
+     
+        if	( rs.next())
+        { 
+          
+          int rows_exported = rs.getInt(1);
+    
+          System.out.println("Total number of rows exported  : " + rows_exported);
+       
+        } */
 
 		return true;
 		}catch(Exception e){
@@ -207,16 +243,11 @@ public class BackupAndRestore{
 	 * @return boolean 
 	 * true - database restored successfully
 	 * false - error while restoring database
-	 * @throws SQLException 
-	 * @throws ClassNotFoundException 
-	 * @throws IOException 
-	 * @throws InterruptedException 
-	 * @throws ParseException 
+	 * 
 	 */
-	public boolean restore(String timestamp) throws ClassNotFoundException, SQLException, IOException, InterruptedException, ParseException{
-		BufferedReader in = null;
-		Db db = null;
-		//try {
+	public boolean restore(String timestamp){
+		try {
+			/*
 			String t = this.lastBackupDate();
 			final String NEW_FORMAT = "yyyyMMddHHmmss";
 	    	final String OLD_FORMAT = "dd/MM/yyyy HH:mm:ss";
@@ -224,8 +255,8 @@ public class BackupAndRestore{
 			Date d = sdf.parse(t);
 			sdf.applyPattern(NEW_FORMAT);
 			String time = sdf.format(d); 
-			
-            db = new Db();
+			*/
+            Db db = new Db();
 			db.connect();
 			Connection con = db.getConnection();
 			PreparedStatement stmt = con.prepareStatement("DELETE FROM AMOUNT_CONFIG");
@@ -246,6 +277,8 @@ public class BackupAndRestore{
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM USER");
 			stmt.executeUpdate();
+			stmt = con.prepareStatement("DELETE FROM VOUCHER");
+			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM VOUCHER_STATUS");
 			stmt.executeUpdate();
 			stmt = con.prepareStatement("DELETE FROM VOUCHER_TYPE");
@@ -263,20 +296,108 @@ public class BackupAndRestore{
 			stmt = con.prepareStatement("ALTER TABLE VOUCHER_TYPE ALTER COLUMN VTYPEID RESTART WITH 1");
 			stmt.executeUpdate();
 			
+			String sql = "CALL SYSPROC.ADMIN_CMD(?)";
+			CallableStatement callStmt = con.prepareCall(sql);
 			
-			in = new BufferedReader(new FileReader("/home/sasipraveen/Desktop/backup-"+time+".sql"));
-            String str="";
-            while ((str = in.readLine()) != null) {
-            	stmt = con.prepareStatement(str.substring(0,str.length()-1));
-            	stmt.executeUpdate();
-            }
-            System.out.println("3");
-            in.close();
+			String param = "import from "+FILEPATH+"AMOUNT_CONFIG.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into AMOUNT_CONFIG (LOWER_LIMIT,UPPER_LIMIT,MAXCOUNT)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"BOOKMARK.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into BOOKMARK (USERID,TITLE,LINK)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"DEPARTMENT.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into DEPARTMENT (DEPTNAME,SHORTNAME,DESCRIPTION,USERID)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"LOGIN.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into LOGIN (USERID,PASSWORD,ROLE,LASTLOGIN,SECUREID)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"NOTIFICATION.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into NOTIFICATION (USERID,CATEGORY,CATEGORYID,TIMEUPDATE)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"POLICY.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into POLICY (TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"REPORT.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into REPORT (TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"ROLECONFIG.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into ROLECONFIG (ROLE,CLAIM_LIMIT,ACCEPT_LIMIT)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"USER.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into USER (USERID,SOCIALSECURITY,FIRSTNAME,MIDDLENAME" +
+					",LASTNAME,GENDER,DEPTID,MANAGER,DESIGNATION,ADDRESS,PHONE,MOBILE,EMAIL,PHOTO,DOB)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"VOUCHER.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into VOUCHER (USERID,TITLE,AMOUNT,VTYPEID,DATE,DESCRIPTION,ATTACHMENT,EXTENSION,REJECTREASON,POLICYID)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"VOUCHER_STATUS.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into VOUCHER_STATUS (VOUCHERID,STATUS,USERID,TIME)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"VOUCHER_TYPE.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into VOUCHER_TYPE (TITLE,DESCRIPTION)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"VOUCHERTYPE_DEPT.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into VOUCHERTYPE_DEPT (VTYPEID,DEPTID)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+			param = "import from "+FILEPATH+"VOUCHERTYPE_POLICY.ixf of ixf " +
+					"lobs from "+LOBPATH+" messages on server	" +
+					" insert into VOUCHERTYPE_POLICY (VTYPEID,POLICYID)";
+			callStmt.setString(1, param);
+			callStmt.execute();
+			
+	        /*ResultSet rs = callStmt.getResultSet(); 
+	        if( rs.next())
+	        { 
+	          
+	          int rows_exported = rs.getInt(1);
+	    
+	          System.out.println("Total number of rows imported  : " + rows_exported);
+	       
+	        } */
         	db.disconnect();
         	return true;
-        //} catch (Exception e) {
-          //  return false;
-        //}
+        } catch (Exception e) {
+        	return false;
+        }
 	}
 	
 	/**
@@ -293,7 +414,7 @@ public class BackupAndRestore{
     	final String NEW_FORMAT = "dd/MM/yyyy HH:mm:ss";
     	String oldDateString="";
     	String newDateString="";
-    	File f = new File("/home/sasipraveen/Desktop/backup_log");
+    	File f = new File(FILEPATH+"backup_log");
     	if(f.exists()) {
     		BufferedReader reader = new BufferedReader(new FileReader(f));
     		String line = null;
