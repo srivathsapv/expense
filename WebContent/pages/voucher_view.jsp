@@ -248,6 +248,7 @@
 					double pcent = accept_policy.getAmountPercent();
 					double ramnt = voucher.getAmount();
 					double sanctioned = ramnt * (pcent/100);
+					sanctioned = Math.floor(sanctioned*100)/100;
 					disp_msg  = "Sanctioned <img src = '../img/rupee.png' class = 'currency-change-img'><span class = 'currency-change-amount'>" + sanctioned + "</span>";
 				}
 				

@@ -69,8 +69,8 @@ public class Type {
 	public Type(int vtypeid) throws ClassNotFoundException, SQLException {
 		Db db = new Db();
 		db.connect();
-		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE VTYPEID = " + vtypeid);
+		String query = "SELECT * FROM " + t_name + " WHERE VTYPEID = " + vtypeid;
+		ResultSet rs = db.executeQuery(query);
 		rs.next();
 		
 		this.vtypeid = vtypeid;

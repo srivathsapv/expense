@@ -17,8 +17,5 @@
 	bw.write(content);
 	bw.close();
 	
-	BackupAndRestore bk = new BackupAndRestore();
-	bk.init();
-	
 	response.sendRedirect("../pages/login.jsp");
 %>

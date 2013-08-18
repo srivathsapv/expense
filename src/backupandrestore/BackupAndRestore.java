@@ -33,18 +33,11 @@ import db.Db;
 
 public class BackupAndRestore{
 	
+	private String FILEPATH = "/home/srivathsa/backup/";
 	
-	private String dbUsername;
+	private String LOBPATH = "/home/srivathsa/backup";
 	
-	private String dbName;
-	
-	private String dbPwd;
-	
-	private String FILEPATH = "/home/sasipraveen/backup/";
-	
-	private String LOBPATH = "/home/sasipraveen/backup";
-	
-	private String zipDir = "/home/sasipraveen/Desktop/";
+	private String zipDir = "";
 	
 	
 	/**
@@ -56,46 +49,15 @@ public class BackupAndRestore{
 	 * @throws ClassNotFoundException 
 	 * 
 	 */
-	public void init() throws IOException, InterruptedException, ClassNotFoundException, SQLException{
-		String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-		if(path.indexOf("BackupAndRestore.class") >= 0) {
-			path = path.replace("BackupAndRestore.class","");
-			path += "/../../../temp/";
-		}
-		else {
-			path += "/temp/";
-		}
-		BufferedReader br = new BufferedReader(new FileReader(path + "dbconfig.cfg"));
-		String str = "";
-
-		while((str = br.readLine() ) != null) {
-			String[] dat = str.split(":");
-			if(dat[0].equals("database")) {
-				this.dbName = dat[1];
-			}
-			else if(dat[0].equals("username")){
-				this.dbUsername = dat[1];
-			}
-			else if(dat[0].equals("password")){
-				this.dbPwd = dat[1];
-			}
-		}
+	public void init(String path) throws IOException, InterruptedException, ClassNotFoundException, SQLException{
+		this.zipDir = path;
 		
-		/*Runtime rt = Runtime.getRuntime();
-		Process child1  = rt.exec("mkdir /home/"+this.dbUsername+"/backup");
-		child1.waitFor();
-		Process child2  = rt.exec("mkdir /home/"+this.dbUsername+"/backup/OnlineBackups");
-		child2.waitFor();
-		Process child3  = rt.exec("mkdir /home/"+this.dbUsername+"/backup/logs");
-		child3.waitFor();
-		Process child4  = rt.exec("mkdir /home/"+this.dbUsername+"/backup/ArchiveDest");
-		child4.waitFor();
-		Process child5  = rt.exec("chown "+this.dbUsername+":db2iadm1 /home/"+this.dbUsername+"/backup/OnlineBackups");
-		child5.waitFor();
-		Process child6  = rt.exec("chown "+this.dbUsername+":db2iadm1 /home/"+this.dbUsername+"/backup/ArchiveDest");
-		child6.waitFor();
-		Process child7  = rt.exec("chown "+this.dbUsername+":db2iadm1 /home/"+this.dbUsername+"/backup/logs");
-		child7.waitFor();*/
+		//clear the old backup files
+		File bkFilePath = new File(FILEPATH);
+		File[] fileList = bkFilePath.listFiles();
+		for(File f:fileList){
+			f.delete();
+		}
 	}
 	/**
 	 * takes online backup of the database
@@ -106,7 +68,7 @@ public class BackupAndRestore{
 	 * 
 	 */
 	
-	public boolean onlineBackup(){
+	public String onlineBackup(){
 		try{
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     	Calendar cal = Calendar.getInstance();
@@ -206,11 +168,12 @@ public class BackupAndRestore{
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
-		this.compressFiles(zipDir+"backup-"+timestamp+".zip" , LOBPATH);
-
-		return true;
+		String zipFileOutput = zipDir+"backup-"+timestamp+".zip";
+		this.compressFiles(zipFileOutput , LOBPATH);
+		
+		return zipFileOutput.substring(zipFileOutput.indexOf("/uploads"));
 		}catch(Exception e){
-			return false;
+			return "";
 		}
 	}
 	
@@ -225,19 +188,10 @@ public class BackupAndRestore{
 	 * false - error while restoring database
 	 * 
 	 */
-	public boolean restore(String timestamp){
+	public boolean restore(String timestamp,String path){
 		try {
-			/*
-			String t = this.lastBackupDate();
-			final String NEW_FORMAT = "yyyyMMddHHmmss";
-	    	final String OLD_FORMAT = "dd/MM/yyyy HH:mm:ss";
-	    	SimpleDateFormat sdf = new SimpleDateFormat(OLD_FORMAT);
-			Date d = sdf.parse(t);
-			sdf.applyPattern(NEW_FORMAT);
-			String time = sdf.format(d); 
-			*/
 			
-			if(!this.decompressFiles(zipDir+"backup-20130818202252.zip", LOBPATH)){
+			if(!this.decompressFiles(path, LOBPATH)){
 				return false;
 			}
 			

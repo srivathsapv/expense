@@ -8,19 +8,20 @@
 		font-size:14px!important;
 	}
 </style>
-<script type = "text/javascript">
-$(document).ready(function(){
-	$(".btn").click(function(){
-		window.location = $(this).attr("alt");
+<script type="text/javascript">
+	$(document).ready(function(){
+		$(".btn-success").click(function(){
+			window.location = $(this).attr("alt");
+		});
 	});
-});
 </script>
-
 <div id= "body-content">
 <%
 		if(request.getParameter("status") != null) {
 			if(request.getParameter("status").equals(Utility.MD5("backup-success"))){
-				%> <div class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Backup taken successfully</div> <%
+				String filename = request.getParameter("zipfile");
+				filename = filename.substring(filename.lastIndexOf("/")+1);
+				%> <div class = "alert alert-success"><button class="close" data-dismiss="alert" type="button">×</button>Backup taken successfully.You can download the file from <a href='../uploads/<%=filename %>'>here</a></div> <%
 			}
 			else if(request.getParameter("status").equals(Utility.MD5("backup-error"))) {
 				%> <div class = "alert alert-error">Error while taking backup</div> <%	
@@ -72,7 +73,11 @@ $(document).ready(function(){
 	       		<i class = "icon-question-sign"></i>
 	       		Restore data from previous backup.
 	       	</legend>
-	       	<button class = "btn btn-warning" alt = "../server/backupandrestore.jsp?action=restore"><i class = "icon-white icon-wrench"></i>Restore</button>
+	       	<form action="../server/backupandrestore.jsp?action=restore" method="POST" enctype="multipart/form-data">
+	       		<label>Upload your backup file</label>
+	       		<input type="file" name = "bkfile" id="bkfile" class="span4"><br>
+	       		<button class = "btn btn-warning"><i class = "icon-white icon-wrench"></i>Restore</button>
+	       	</form>
 	      </div>
 	    </div>
 	  </div>  

@@ -12,6 +12,14 @@ import org.jsoup.*;
 public class Utility {
 	
 	/**
+	 * @var Boolean
+	 * 
+	 * Indicates whether the restore operation is going on or not
+	 */
+	public static boolean restoreInProgress=false;
+	
+	
+	/**
 	 * Hashes a given string MD5 and returns the hashed value
 	 * 
 	 * @param String
