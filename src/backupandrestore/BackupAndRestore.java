@@ -17,6 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 import db.Db;
@@ -44,6 +45,7 @@ public class BackupAndRestore{
 	private String LOBPATH = "/home/sasipraveen/backup";
 	
 	private String zipDir = "/home/sasipraveen/Desktop/";
+	
 	
 	/**
 	 * Intializes db2 database for backup and recovery
@@ -119,61 +121,51 @@ public class BackupAndRestore{
 		String sql = "CALL SYSPROC.ADMIN_CMD(?)";
 		CallableStatement callStmt = con.prepareCall(sql);
 		
-		
-		
 		String param = "export to "+FILEPATH+"AMOUNT_CONFIG.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select LOWER_LIMIT,UPPER_LIMIT,MAXCOUNT from AMOUNT_CONFIG";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"BOOKMARK.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select USERID,TITLE,LINK from BOOKMARK";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"DEPARTMENT.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select DEPTNAME,SHORTNAME,DESCRIPTION,USERID from DEPARTMENT";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"LOGIN.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select USERID,PASSWORD,ROLE,LASTLOGIN,SECUREID from LOGIN";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"NOTIFICATION.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select USERID,CATEGORY,CATEGORYID,TIMEUPDATE from NOTIFICATION";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"POLICY.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select TITLE,DESCRIPTION,AMOUNTPERCENT,AVAILABLE from POLICY";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"REPORT.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select TITLE,DESCRIPTION,TYPE,DATE,USERID,FILE from REPORT";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"ROLECONFIG.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select ROLE,CLAIM_LIMIT,ACCEPT_LIMIT from ROLECONFIG";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
@@ -181,55 +173,39 @@ public class BackupAndRestore{
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select USERID,SOCIALSECURITY,FIRSTNAME,MIDDLENAME,LASTNAME,GENDER,DEPTID,MANAGER," +
 				"DESIGNATION,ADDRESS,PHONE,MOBILE,EMAIL,PHOTO,DOB from USER";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"VOUCHER.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select USERID,TITLE,AMOUNT,VTYPEID,DATE,DESCRIPTION,ATTACHMENT,EXTENSION,REJECTREASON,POLICYID from VOUCHER";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
         
 		param = "export to "+FILEPATH+"VOUCHER_STATUS.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select VOUCHERID,STATUS,USERID,TIME from VOUCHER_STATUS";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"VOUCHER_TYPE.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select TITLE,DESCRIPTION from VOUCHER_TYPE";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"VOUCHERTYPE_DEPT.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select VTYPEID,DEPTID from VOUCHERTYPE_DEPT";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
 		param = "export to "+FILEPATH+"VOUCHERTYPE_POLICY.ixf of ixf" +
 				" lobs to "+LOBPATH+" modified by lobsinfile messages on server " +
 				"select VTYPEID,POLICYID from VOUCHERTYPE_POLICY";
-		//System.out.println(param);
 		callStmt.setString(1, param);
 		callStmt.execute();
 		
-		/*ResultSet rs = callStmt.getResultSet();
-     
-        if	( rs.next())
-        { 
-          
-          int rows_exported = rs.getInt(1);
-    
-          System.out.println("Total number of rows exported  : " + rows_exported);
-       
-        } */
 		this.compressFiles(zipDir+"backup-"+timestamp+".zip" , LOBPATH);
 
 		return true;
@@ -260,6 +236,11 @@ public class BackupAndRestore{
 			sdf.applyPattern(NEW_FORMAT);
 			String time = sdf.format(d); 
 			*/
+			
+			if(!this.decompressFiles(zipDir+"backup-20130818202252.zip", LOBPATH)){
+				return false;
+			}
+			
             Db db = new Db();
 			db.connect();
 			Connection con = db.getConnection();
@@ -388,15 +369,6 @@ public class BackupAndRestore{
 			callStmt.setString(1, param);
 			callStmt.execute();
 			
-	        /*ResultSet rs = callStmt.getResultSet(); 
-	        if( rs.next())
-	        { 
-	          
-	          int rows_exported = rs.getInt(1);
-	    
-	          System.out.println("Total number of rows imported  : " + rows_exported);
-	       
-	        } */
         	db.disconnect();
         	return true;
         } catch (Exception e) {
@@ -434,6 +406,12 @@ public class BackupAndRestore{
 		return newDateString;
 	}
 	
+	/**
+	 * To compress the files within the sourceDirectory to a single zip file
+	 * @param zipFile
+	 * @param sourceDirectory
+	 * @return boolean
+	 */
 	private boolean compressFiles(String zipFile, String sourceDirectory){
 		try
         {
@@ -478,4 +456,54 @@ public class BackupAndRestore{
                 return false;
         }
 	}
+	
+	/**
+	 * To decompress zip file 
+	 * @param zipFile
+	 * @param outputFolder
+	 * @return	boolean
+	 */
+	private boolean decompressFiles(String zipFile, String outputFolder){
+		 
+	     byte[] buffer = new byte[1024];
+	 
+	     try{
+	 
+	    	File folder = new File(outputFolder);
+	    	if(!folder.exists()){
+	    		folder.mkdir();
+	    	}
+	 
+	    	ZipInputStream zis = new ZipInputStream(new FileInputStream(zipFile));
+	    	
+	    	ZipEntry ze = zis.getNextEntry();
+	 
+	    	while(ze!=null){
+	 
+	    	   String fileName = ze.getName();
+	           File newFile = new File(outputFolder + File.separator + fileName);
+	 
+	            new File(newFile.getParent()).mkdirs();
+	 
+	            FileOutputStream fos = new FileOutputStream(newFile);             
+	 
+	            int len;
+	            while ((len = zis.read(buffer)) > 0) {
+	       		fos.write(buffer, 0, len);
+	            }
+	 
+	            fos.close();   
+	            ze = zis.getNextEntry();
+	    	}
+	 
+	        zis.closeEntry();
+	    	zis.close();
+	 
+	    	return true;
+	 
+	    }catch(IOException ex){
+	       ex.printStackTrace();
+	       return false;
+	    }
+	   }
 }
