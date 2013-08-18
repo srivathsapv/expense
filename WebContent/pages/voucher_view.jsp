@@ -294,7 +294,6 @@
 		db.connect();
 		ResultSet rs = db.executeQuery("SELECT COUNT(*) FROM NOTIFICATION WHERE USERID = '" + session.getAttribute("sessionUsername").toString() + "' AND CATEGORY = 'voucher' AND CATEGORYID = '" + Integer.toString(vid) + "'");
 		rs.next();
-		
 		String query = "";
 		User vouch_user = new User(voucher.getUserid());
 		if(session.getAttribute("sessionUsername").toString().equals(vouch_user.getManager())){
@@ -322,6 +321,7 @@
 			<%
 				User vouchuser = new User(voucher.getUserid());
 				if(session.getAttribute("sessionUsername").toString().equals(vouchuser.getManager())){
+						
 					%><button class = "btn btn-success mgr-accept" id = "accept"><i class = "icon-white icon-ok"></i>Accept</button> <% 
 				}
 				else {

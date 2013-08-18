@@ -25,7 +25,6 @@ import db.Db;
  * Voucher contains detail regarding the employee's expense.
  */
 
-
 public class Voucher {
 	/**
 	 * Name of the table to which the class is mapped to
@@ -138,7 +137,9 @@ public class Voucher {
 		Db db = new Db();
 		db.connect();
 		
-		ResultSet rs = db.executeQuery("SELECT * FROM " + t_name + " WHERE voucherid = " + voucherid);
+		String query = "SELECT * FROM " + t_name + " WHERE voucherid = " + voucherid;
+		
+		ResultSet rs = db.executeQuery(query);
 		rs.next();
 		
 		this.voucherid = voucherid;
